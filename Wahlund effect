@@ -1,0 +1,155 @@
+###################################
+## Wahlund effect (FST-HOM) plot ##
+###################################
+
+##BEFORE RUNNING THIS SCRIPT, MAKE SURE TO HAVE DONE THE HOMOZYGOSITY + FST PLOTS AS THIS SCRIPT IS CONTINGENT ON THOSE DATASETS BEING READ INTO R##
+
+#Merge datasets
+Chr6_FST_HOM <- cbind(FST_CHR6_POP, CHR6_AVG)
+HLA_FST_HOM <- cbind(FST_HLA_POP, HLA_AVG)
+
+#Rename populations
+Chr6_FST_HOM <- as.data.frame(t(Chr6_FST_HOM))
+Chr6_FST_HOM <- Chr6_FST_HOM %>%
+  row_to_names(row_number = 1)
+Chr6_FST_HOM <- Chr6_FST_HOM %>%
+  rename(
+    "Alor"=AlorAF,
+    "Bali"=BaliAF,
+    "Bangladeshi"=BEB,
+    "Dai"=CDX,
+    "European"=CEU,
+    "Han"=CHB,
+    "Southern Han"=CHS,
+    "Fl. Bama"=FloBamAF,
+    "Fl. Bena"=FloBenAF,
+    "Fl. Rampasasa"=FloRamAF,
+    "Gujarati"=GIH,
+    "Telugu"=ITU,
+    "Java"=JavaAF,
+    "Japanese"=JPT,
+    "Vietnam (KHV)"=KHV,
+    "Lembata"=LembatAF,
+    "Malay"=MalayAF,
+    "Mentawai"=MentawAF,
+    "Nias"=NiasAF,
+    "Pantar"=PantarAF,
+    "Phil. Kankanaey"=PHIgorTR,
+    "Phil. Negritos"=PHNegr,
+    "Phil. Non-Kankanaey"=PHOther,
+    "Punjabi"=PJL,
+    "PNG Baining"=PNGBaiAF,
+    "PNG Coastal"=PNGCAF,
+    "PNG Highland"=PNGHAF,
+    "PNG Naisoi"=PNGNasAF,
+    "Tamil"=STU,
+    "Sumba (Ana)"=SumAnaAF,
+    "Sumatra"=SumatrAF,
+    "Sumba (Rin)"=SumRinAF,
+    "Sumba (Wun)"=SumWunAF,
+    "Taiwan"=TaiwanAF,
+    "Timor (Kam)"=TimKamAF,
+    "Timor (ULa)"=TimULaAF,
+    "Timor (Uma)"=TimUmaAF,
+    "Yoruba"=YRI
+  )
+
+#Make sure all numbers are numeric, removing non-ISEA data
+Chr6_FST_HOM <- as.data.frame(t(Chr6_FST_HOM))
+Chr6_FST_HOM <- tibble::rownames_to_column(Chr6_FST_HOM, "FID")
+Chr6_FST_HOM$FST <- as.numeric(Chr6_FST_HOM$FST)
+Chr6_FST_HOM$PercentageChange <- as.numeric(Chr6_FST_HOM$PercentageChange)
+Chr6_FST_HOM <- Chr6_FST_HOM[-c(4:8, 13:14, 16:17, 23:26, 31, 36, 39:41),]
+
+
+#Rename populations
+HLA_FST_HOM <- as.data.frame(t(HLA_FST_HOM))
+HLA_FST_HOM <- HLA_FST_HOM %>%
+  row_to_names(row_number = 1)
+HLA_FST_HOM <- HLA_FST_HOM %>%
+  rename(
+    "Alor"=AlorAF,
+    "Bali"=BaliAF,
+    "Bangladeshi"=BEB,
+    "Dai"=CDX,
+    "European"=CEU,
+    "Han"=CHB,
+    "Southern Han"=CHS,
+    "Fl. Bama"=FloBamAF,
+    "Fl. Bena"=FloBenAF,
+    "Fl. Rampasasa"=FloRamAF,
+    "Gujarati"=GIH,
+    "Telugu"=ITU,
+    "Java"=JavaAF,
+    "Japanese"=JPT,
+    "Vietnam (KHV)"=KHV,
+    "Lembata"=LembatAF,
+    "Malay"=MalayAF,
+    "Mentawai"=MentawAF,
+    "Nias"=NiasAF,
+    "Pantar"=PantarAF,
+    "Phil. Kankanaey"=PHIgorTR,
+    "Phil. Negritos"=PHNegr,
+    "Phil. Non-Kankanaey"=PHOther,
+    "Punjabi"=PJL,
+    "PNG Baining"=PNGBaiAF,
+    "PNG Coastal"=PNGCAF,
+    "PNG Highland"=PNGHAF,
+    "PNG Naisoi"=PNGNasAF,
+    "Tamil"=STU,
+    "Sumba (Ana)"=SumAnaAF,
+    "Sumatra"=SumatrAF,
+    "Sumba (Rin)"=SumRinAF,
+    "Sumba (Wun)"=SumWunAF,
+    "Taiwan"=TaiwanAF,
+    "Timor (Kam)"=TimKamAF,
+    "Timor (ULa)"=TimULaAF,
+    "Timor (Uma)"=TimUmaAF,
+    "Yoruba"=YRI
+  )
+
+#Make sure all numbers are numeric, removing non-ISEA data
+HLA_FST_HOM <- as.data.frame(t(HLA_FST_HOM))
+HLA_FST_HOM <- tibble::rownames_to_column(HLA_FST_HOM, "FID")
+HLA_FST_HOM$FST <- as.numeric(HLA_FST_HOM$FST)
+HLA_FST_HOM$PercentageChange <- as.numeric(HLA_FST_HOM$PercentageChange)
+HLA_FST_HOM <- HLA_FST_HOM[-c(4:8, 13:14, 16:17, 23:26, 31, 36, 39:41),]
+
+#Create plots (Chr6 and HLA)
+p1 <- ggplot(data=Chr6_FST_HOM)+
+  aes(x=FST, y=PercentageChange, color=FID)+
+  geom_point(size=3)+
+  ggtitle("Homozygosity-FST, Chromosome 6")+
+  labs(color="Family ID")+
+  ylab("Homozygosity")+
+  xlim(-0.1,0.5)+
+  geom_smooth(aes(group=1), method = "lm")+
+  scale_y_continuous(breaks= c(-1, 0, 1, 2, 3),
+                     labels = c("-1%", "0%", "1%", "2%", "3%"),
+                     limits = c(-1,4))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+p2 <- ggplot(data=HLA_FST_HOM)+
+  aes(x=FST, y=PercentageChange, color=FID)+
+  geom_point(size=3)+
+  ggtitle("Homozygosity-FST, HLA genes")+
+  labs(color="Family ID")+
+  ylab("Homozygosity")+
+  xlim(-0.1,0.7)+
+  geom_smooth(aes(group=1), method = "lm")+
+  scale_y_continuous(breaks= c( -1, 0, 1, 2, 3),
+                     labels = c( "-1%", "0%", "1%", "2%", "3%"),
+                     limits = c(-1,4))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Arrange plots on one chart
+ggarrange(p1, p2, common.legend = TRUE, legend = "bottom")
+
+#Run generalised linear regressions (as non-normal dist. data)
+WahlundChr6 <- glm(PercentageChange~FST, Chr6_FST_HOM, family="gaussian")
+WahlundHLA <- glm(PercentageChange~FST, HLA_FST_HOM, family="gaussian")
+
+#Arrange GLM output in table
+tab_model(WahlundChr6, WahlundHLA, pred.labels=c("Intercept", "FST"), dv.labels = c("Homozygosity (Chromosome 6)", "Homozygosity (HLA genes)"), string.pred = "Coeffcient", string.ci = "Conf. Int (95%)", string.p = "P-Value")

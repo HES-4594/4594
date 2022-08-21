@@ -1,0 +1,219 @@
+#####################################
+## Required packages for code book ##
+#####################################
+
+library(plink)
+library(tidyverse)
+library(tibble)
+library(dplyr)
+library(hierfstat)
+library(ggplot2)
+library(scales)
+library(gplots)
+library(SNPRelate)
+library(ggfortify)
+library(ggrepel)
+library(gridExtra)
+library(grid)
+library(gtable)
+library(ggpubr)
+library(readxl)
+library(reactablefmtr)
+library(htmltools)
+library(flextable)
+library(data.table)
+library(kableExtra)
+library(ggbeeswarm)
+library(janitor)
+library(gt)
+library(FinePop2)
+library(pophelper)
+library(sjPlot)
+library(tidyr)
+library(gamlss)
+library(broom)
+
+############################################################################
+##Creating population-specific pop. reference files for other experiments ##
+############################################################################
+
+#Set working directory
+#Read .fam file from main plink dataset
+Indo <- read_tsv("HUDHLAonly.fam", col_names= F, show_col_types = FALSE)
+
+#Separate column
+Indo <- Indo %>% separate(X1, c('FID','ID', 'PAT', 'MAT', 'SEX', 'PHENO'), extra='drop')
+
+#Filtering by population label + writing .txt files
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "AlorAF") %>%
+  write_delim("AlorAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "BaliAF") %>%
+  write_delim("BaliAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "BEB") %>%
+  write_delim("BEB.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "Borneo") %>%
+  write_delim("Borneo.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "CDX") %>%
+  write_delim("CDX.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "CEU") %>%
+  write_delim("CEU.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "CHB") %>%
+  write_delim("CHB.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "CHS") %>%
+  write_delim("CHS.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "FloBamAF") %>%
+  write_delim("FloBamAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "FloBenAF") %>%
+  write_delim("FloBenAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "FloRamAF") %>%
+  write_delim("FloRamAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "GIH") %>%
+  write_delim("GIH.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "ITU") %>%
+  write_delim("ITU.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "JavaAF") %>%
+  write_delim("JavaAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "JPT") %>%
+  write_delim("JPT.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "KHV") %>%
+  write_delim("KHV.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "LembatAF") %>%
+  write_delim("LembatAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "MalayAF") %>%
+  write_delim("MalayAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "MentawAF") %>%
+  write_delim("MentawAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "NiasAF") %>%
+  write_delim("NiasAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PantarAF") %>%
+  write_delim("PantarAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PHIgorTR") %>%
+  write_delim("PHIgorTR.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PHNegr") %>%
+  write_delim("PHNegr.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PHOther") %>%
+  write_delim("PHOther.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PJL") %>%
+  write_delim("PJL.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PNGBaiAF") %>%
+  write_delim("PNGBaiAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PNGCAF") %>%
+  write_delim("PNGCAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "PNGNasAF") %>%
+  write_delim("PNGNasAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "STU") %>%
+  write_delim("STU.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "Sulawesi") %>%
+  write_delim("Sulawesi.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "SumAnaAF") %>%
+  write_delim("SumAnaAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "SumRunAF") %>%
+  write_delim("SumRunAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "SumWunAF") %>%
+  write_delim("SumWunAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "TaiwanAF") %>%
+  write_delim("TaiwanAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "TimKamAF") %>%
+  write_delim("TimKamAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "TimULaAF") %>%
+  write_delim("TimULaAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "TimUmaAF") %>%
+  write_delim("TimUmaAF.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "Vietnam") %>%
+  write_delim("Vietnam.txt",col_names = FALSE)
+Indo %>%
+  select(FID, ID) %>%
+  filter(FID == "YRI") %>%
+  write_delim("YRI.txt",col_names = FALSE)
+
+
+#####################################################################
+### Create Population Reference .txt file for various experiments ###
+#####################################################################
+setwd()
+
+PopRefFULL <- read.csv(FILE LOCATION.csv, header=TRUE)
+PopRefFULL <- PopRefFULL %>% separate(FID.ID.Population, c('FID','IID', 'X'), extra='drop')
+PopRefFULL$X=NULL
+PopRefFULL <- PopRefFULL[ , c('IID', 'FID')]
+write.table(PopRefFULL, "PopRefFULL.txt", row.names = FALSE, col.names = FALSE, quote=FALSE)
+
+
+
+

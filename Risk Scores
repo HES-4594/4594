@@ -1,0 +1,627 @@
+##############################
+### RISK SCORE CALCULATION ###
+##############################
+##Set working directory
+setwd()
+
+##Load relevant files (disease-relevant allele frequencies)
+
+MalCli <- read.csv("Malariaall.csv", header=TRUE)
+TBCli <- read.csv("TBall.csv", header=TRUE)
+HBVCli <- read.csv("HBVall.csv", header=TRUE)
+HBVM <- read.csv("HBVmall.csv", header=TRUE)
+HBVV <- read.csv("HBVvall.csv", header=TRUE)
+MV <- read.csv("MalariaVall.csv", header=TRUE)
+TBM <- read.csv("TBmall.csv", header=TRUE)
+
+###Malaria - Clinical
+##Rename Family ID
+
+MalCli <- MalCli %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Baining (Paupa New Guinea)" = PNG.Baining,
+    "Coastal (Paupa New Guinea" = PNG.Coastal,
+    "Highlands (Paupa New Guinea)" = PNG.Highlands,
+    "Nasioi (Paupa New Guinea)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+)
+
+##Assigning risk scores to each allele
+
+MalSusScore <- data.frame("Susceptibility Score" = c(1,1,1,0,1,1,0,0,1,0,0,1,1,1,0,0,0,0,0,1))
+
+##Combining risk score with allele frequency table
+
+MalAllele <- cbind(MalCli, MalSusScore)
+
+##Renaming risk score column + moving first
+
+MalAllele <- MalAllele %>%
+  rename(
+    "Susceptibility Score"=Susceptibility.Score
+  )
+MalAllele <- MalAllele %>%
+  relocate("Susceptibility Score", .before = "Alor")
+
+##Creating risk subset
+
+MalRisk <- MalAllele %>%
+  filter(`Susceptibility Score`==1)
+
+##Summarising risk scores and total alleles
+
+MalAllele <- MalAllele %>% janitor::adorn_totals("row")
+MalRisk <- MalRisk %>% janitor::adorn_totals("row")
+
+##Isolating the total scores
+
+MalRisk <- MalRisk %>%
+  filter(SNP=="Total")
+MalAllele <- MalAllele %>%
+  filter(SNP=="Total")
+
+#Renaming the total score rows + combining into one dataframe
+
+row.names(MalRisk) <- c("Risk")
+row.names(MalAllele) <- c("Total allele")
+MalRisk <- rbind(MalAllele, MalRisk)
+
+##Removing alleles
+
+MalRisk$SNP=NULL
+
+##Calculating risk score
+
+MalRisk <- MalRisk %>% 
+  add_row(.[2,-1] / .[1,-1])
+
+##Removing redundant columns + renaming
+MalRisk$SNP=NULL
+row.names(MalRisk) <- c("Total Allele", "Risk", "Risk score")
+MalRisk <- as.data.frame(t(MalRisk))
+MalRisk$`Total Allele`=NULL
+MalRisk$Risk=NULL
+MalRisk <- tibble::rownames_to_column(MalRisk, "Population")
+
+##Saving dataframe as csv
+
+write.csv(MalRisk, "MalRisk.csv")
+
+### TB - clinical
+##Rename Family ID
+
+TBCli <- TBCli %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Baining (Paupa New Guinea)" = PNG.Baining,
+    "Coastal (Paupa New Guinea" = PNG.Coastal,
+    "Highlands (Paupa New Guinea)" = PNG.Highlands,
+    "Nasioi (Paupa New Guinea)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+)
+
+##Assigning risk scores to each allele
+
+TBSusScore <- data.frame("Susceptibility Score" = c(0,1,0,1,1,0,1,1,1,0,0,1,1,1,0,0,0,0,1,0,1,1))
+
+##Combining risk score with allele frequency table
+
+TBAllele <- cbind(TBCli, TBSusScore)
+
+##Renaming risk score column + moving first
+#####################
+TBAllele <- TBAllele %>%
+  rename(
+    "Susceptibility Score"=Susceptibility.Score
+  )
+
+TBAllele <- TBAllele %>%
+  relocate("Susceptibility Score", .before = "Alor")
+
+TBRisk <- TBAllele %>%
+  filter(`Susceptibility Score`==1)
+
+TBAllele <- TBAllele %>% janitor::adorn_totals("row")
+
+TBRisk <- TBRisk %>% janitor::adorn_totals("row")
+
+TBRisk <- TBRisk %>%
+  filter(SNP=="Total")
+
+TBAllele <- TBAllele %>%
+  filter(SNP=="Total")
+
+row.names(TBRisk) <- c("Risk")
+row.names(TBAllele) <- c("Total allele")
+
+TBRisk <- rbind(TBAllele, TBRisk)
+
+TBRisk$SNP=NULL
+
+TBRisk <- TBRisk %>% 
+  add_row(.[2,-1] / .[1,-1])
+
+TBRisk$SNP=NULL
+row.names(TBRisk) <- c("Total Allele", "Risk", "Risk score")
+TBRisk <- as.data.frame(t(TBRisk))
+TBRisk$`Total Allele`=NULL
+TBRisk$Risk=NULL
+TBRisk <- tibble::rownames_to_column(TBRisk, "Population")
+
+write.csv(TBRisk, "TBRisk.csv")
+
+HBVCli <- HBVCli %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Baining (Paupa New Guinea)" = PNG.Baining,
+    "Coastal (Paupa New Guinea" = PNG.Coastal,
+    "Highlands (Paupa New Guinea)" = PNG.Highlands,
+    "Nasioi (Paupa New Guinea)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+HBVSusScore <- data.frame("Susceptibility Score" = c(1,1,1,0,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,1,1,0))
+
+HBVAllele <- cbind(HBVCli, HBVSusScore)
+
+HBVAllele <- HBVAllele %>%
+  rename(
+    "Susceptibility Score"=Susceptibility.Score
+  )
+
+HBVAllele <- HBVAllele %>%
+  relocate("Susceptibility Score", .before = "Alor")
+
+HBVRisk <- HBVAllele %>%
+  filter(`Susceptibility Score`==1)
+
+HBVAllele <- HBVAllele %>% janitor::adorn_totals("row")
+
+HBVRisk <- HBVRisk %>% janitor::adorn_totals("row")
+
+HBVRisk <- HBVRisk %>%
+  filter(SNP=="Total")
+
+HBVAllele <- HBVAllele %>%
+  filter(SNP=="Total")
+
+row.names(HBVRisk) <- c("Risk")
+row.names(HBVAllele) <- c("Total allele")
+
+HBVRisk <- rbind(HBVAllele, HBVRisk)
+
+HBVRisk$SNP=NULL
+
+HBVRisk <- HBVRisk %>% 
+  add_row(.[2,-1] / .[1,-1])
+
+HBVRisk$SNP=NULL
+row.names(HBVRisk) <- c("Total Allele", "Risk", "Risk score")
+HBVRisk <- as.data.frame(t(HBVRisk))
+HBVRisk$`Total Allele`=NULL
+HBVRisk$Risk=NULL
+HBVRisk <- tibble::rownames_to_column(HBVRisk, "Population")
+
+write.csv(HBVRisk, "HBVRisk.csv")
+
+HBVM <- HBVM %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Baining (Paupa New Guinea)" = PNG.Baining,
+    "Coastal (Paupa New Guinea" = PNG.Coastal,
+    "Highlands (Paupa New Guinea)" = PNG.Highlands,
+    "Nasioi (Paupa New Guinea)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+HBVMSusScore <- data.frame("Susceptibility Score" = c(0,1,1,1,0,0,1,0,1,1))
+
+HBVMAllele <- cbind(HBVM, HBVMSusScore)
+
+HBVMAllele <- HBVMAllele %>%
+  rename(
+    "Susceptibility Score"=Susceptibility.Score
+  )
+
+HBVMAllele <- HBVMAllele %>%
+  relocate("Susceptibility Score", .before = "Alor")
+
+HBVMRisk <- HBVMAllele %>%
+  filter(`Susceptibility Score`==1)
+
+HBVMAllele <- HBVMAllele %>% janitor::adorn_totals("row")
+
+HBVMRisk <- HBVMRisk %>% janitor::adorn_totals("row")
+
+HBVMRisk <- HBVMRisk %>%
+  filter(SNP=="Total")
+
+HBVMAllele <- HBVMAllele %>%
+  filter(SNP=="Total")
+
+row.names(HBVMRisk) <- c("Risk")
+row.names(HBVMAllele) <- c("Total allele")
+
+HBVMRisk <- rbind(HBVMAllele, HBVMRisk)
+
+HBVMRisk$SNP=NULL
+
+HBVMRisk <- HBVMRisk %>% 
+  add_row(.[2,-1] / .[1,-1])
+
+HBVRisk$SNP=NULL
+row.names(HBVMRisk) <- c("Total Allele", "Risk", "Risk score")
+HBVMRisk <- as.data.frame(t(HBVMRisk))
+HBVMRisk$`Total Allele`=NULL
+HBVMRisk$Risk=NULL
+HBVMRisk <- tibble::rownames_to_column(HBVMRisk, "Population")
+
+write.csv(HBVMRisk, "HBVMRisk.csv")
+
+HBVV <- HBVV %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Baining (Paupa New Guinea)" = PNG.Baining,
+    "Coastal (Paupa New Guinea" = PNG.Coastal,
+    "Highlands (Paupa New Guinea)" = PNG.Highlands,
+    "Nasioi (Paupa New Guinea)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+HBVVSusScore <- data.frame("Susceptibility Score" = c(1,1,1,1,1,1,0,1,1,1,0,0,1,1,0,1,1,0,0,0,1,0,1,1,1,1,1,1,1,1,0,0,0,1,0,0,1,1,0,0,0))
+
+HBVVAllele <- cbind(HBVV, HBVVSusScore)
+
+HBVVAllele <- HBVVAllele %>%
+  rename(
+    "Susceptibility Score"=Susceptibility.Score
+  )
+
+HBVVAllele <- HBVVAllele %>%
+  relocate("Susceptibility Score", .before = "Alor")
+
+HBVVRisk <- HBVVAllele %>%
+  filter(`Susceptibility Score`==1)
+
+HBVVAllele <- HBVVAllele %>% janitor::adorn_totals("row")
+
+HBVVRisk <- HBVVRisk %>% janitor::adorn_totals("row")
+
+HBVVRisk <- HBVVRisk %>%
+  filter(SNP=="Total")
+
+HBVVAllele <- HBVVAllele %>%
+  filter(SNP=="Total")
+
+row.names(HBVVRisk) <- c("Risk")
+row.names(HBVVAllele) <- c("Total allele")
+
+HBVVRisk <- rbind(HBVVAllele, HBVVRisk)
+
+HBVVRisk$SNP=NULL
+
+HBVVRisk <- HBVVRisk %>% 
+  add_row(.[2,-1] / .[1,-1])
+
+HBVVRisk$SNP=NULL
+row.names(HBVVRisk) <- c("Total Allele", "Risk", "Risk score")
+HBVVRisk <- as.data.frame(t(HBVVRisk))
+HBVVRisk$`Total Allele`=NULL
+HBVVRisk$Risk=NULL
+HBVVRisk <- tibble::rownames_to_column(HBVVRisk, "Population")
+
+write.csv(HBVVRisk, "HBVVRisk.csv")
+
+MV <- MV %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Baining (Paupa New Guinea)" = PNG.Baining,
+    "Coastal (Paupa New Guinea" = PNG.Coastal,
+    "Highlands (Paupa New Guinea)" = PNG.Highlands,
+    "Nasioi (Paupa New Guinea)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+MVSusScore <- data.frame("Susceptibility Score" = c(1,1,1,0,0,0,0))
+
+MVAllele <- cbind(MV, MVSusScore)
+
+MVAllele <- MVAllele %>%
+  rename(
+    "Susceptibility Score"=Susceptibility.Score
+  )
+
+MVAllele <- MVAllele %>%
+  relocate("Susceptibility Score", .before = "Alor")
+
+MVRisk <- MVAllele %>%
+  filter(`Susceptibility Score`==1)
+
+MVAllele <- MVAllele %>% janitor::adorn_totals("row")
+
+MVRisk <- MVRisk %>% janitor::adorn_totals("row")
+
+MVRisk <- MVRisk %>%
+  filter(SNP=="Total")
+
+MVAllele <- MVAllele %>%
+  filter(SNP=="Total")
+
+row.names(MVRisk) <- c("Risk")
+row.names(MVAllele) <- c("Total allele")
+
+MalVacRisk <- rbind(MVAllele, MVRisk)
+
+MalVacRisk$SNP=NULL
+
+MalVacRisk <- MalVacRisk %>% 
+  add_row(.[2,-1] / .[1,-1])
+
+MalVacRisk$SNP=NULL
+row.names(MalVacRisk) <- c("Total Allele", "Risk", "Risk score")
+MalVacRisk <- as.data.frame(t(MalVacRisk))
+MalVacRisk$`Total Allele`=NULL
+MalVacRisk$Risk=NULL
+MalVacRisk <- tibble::rownames_to_column(MalVacRisk, "Population")
+
+write.csv(MalVacRisk, "MalVacRisk.csv")
+
+TBM <- TBM %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Baining (Paupa New Guinea)" = PNG.Baining,
+    "Coastal (Paupa New Guinea" = PNG.Coastal,
+    "Highlands (Paupa New Guinea)" = PNG.Highlands,
+    "Nasioi (Paupa New Guinea)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+TBMSusScore <- data.frame("Susceptibility Score" = c(0,1,1,1,1,0,1))
+
+TBMAllele <- cbind(TBM, TBMSusScore)
+
+TBMAllele <- TBMAllele %>%
+  rename(
+    "Susceptibility Score"=Susceptibility.Score
+  )
+
+TBMAllele <- TBMAllele %>%
+  relocate("Susceptibility Score", .before = "Alor")
+
+TBMRisk <- TBMAllele %>%
+  filter(`Susceptibility Score`==1)
+
+TBMAllele <- TBMAllele %>% janitor::adorn_totals("row")
+
+TBMRisk <- TBMRisk %>% janitor::adorn_totals("row")
+
+TBMRisk <- TBMRisk %>%
+  filter(SNP=="Total")
+
+TBMAllele <- TBMAllele %>%
+  filter(SNP=="Total")
+
+row.names(TBMRisk) <- c("Risk")
+row.names(TBMAllele) <- c("Total allele")
+
+TBMRisk <- rbind(TBMAllele, TBMRisk)
+
+TBMRisk$SNP=NULL
+
+TBMRisk <- TBMRisk %>% 
+  add_row(.[2,-1] / .[1,-1])
+
+TBMRisk$SNP=NULL
+row.names(TBMRisk) <- c("Total Allele", "Risk", "Risk score")
+TBMRisk <- as.data.frame(t(TBMRisk))
+TBMRisk$`Total Allele`=NULL
+TBMRisk$Risk=NULL
+TBMRisk <- tibble::rownames_to_column(TBMRisk, "Population")
+
+write.csv(TBMRisk, "TBMRisk.csv")
+
+setwd()
+
+HBV <- read.csv("HBVRisk.csv", header=TRUE)
+HBVV <- read.csv("HBVVRisk.csv", header=TRUE)
+HBVM <- read.csv("HBVMRisk.csv", header=TRUE)
+Mal <- read.csv("MalRisk.csv", header=TRUE)
+MalV <- read.csv("MalVacRisk.csv", header=TRUE)
+TB <- read.csv("TBRisk.csv", header=TRUE)
+TBM <- read.csv("TBMRisk.csv", header=TRUE)
+
+HBVM$X=NULL
+TBM$X=NULL
+HBVM <- HBVM[-c(1),]
+HBVV <- HBVV[-c(1),]
+TBM <- TBM[-c(1),]
+MalV <- MalV[-c(1),]
+
+PopLabel <- HBV
+PopLabel$Risk.score=NULL
+HBV$Population=NULL
+HBVM$Population=NULL
+HBVV$Population=NULL
+Mal$Population=NULL
+MalV$Population=NULL
+TB$Population=NULL
+TBM$Population=NULL
+
+HBV <- HBV %>%
+  rename(
+    "HBV" = Risk.score
+  )
+
+HBVM <- HBVM %>%
+  rename(
+    "HBV Medication" = Risk.score
+  )
+
+HBVV <- HBVV %>%
+  rename(
+    "HBV Vaccine" = Risk.score
+  )
+
+Mal <- Mal %>%
+  rename(
+    "Malaria" = Risk.score
+  )
+
+MalV <- MalV %>%
+  rename(
+    "Malaria Vaccine" = Risk.score
+  )
+
+TB <- TB %>%
+  rename(
+    "TB" = Risk.score
+  )
+
+TBM <- TBM %>%
+  rename(
+    "TB Medication" = Risk.score
+  )
+
+Riskgrid <- cbind (PopLabel, HBV, HBVM, HBVV, Mal, MalV, TB, TBM)
+
+write.csv(Riskgrid, "Risk Grid.csv")
+
+IndoRiskGrid <- Riskgrid[-c(3, 5, 6, 7, 8, 12, 13, 15, 16, 22, 23, 24, 25, 30, 36, 39:40),]
+
+IndoRiskGrid %>%
+  gt() %>%
+  data_color(columns = 2:8, 
+             colors = col_numeric(palette = c("white","darkred"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:8,
+             align = "center") %>%
+  fmt_number(columns = 2:8,
+             decimals = 3) %>%
+  gtsave("Risk Grid Final.pdf", zoom=0.75)

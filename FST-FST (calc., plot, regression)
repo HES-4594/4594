@@ -1,0 +1,106 @@
+#############################################
+### FST-FST calc., plots, and regressions ###
+#############################################
+
+#Set working directory 
+setwd()
+
+#Read genepop file (generated using PGDSpider)
+chr6 <- read.GENEPOP("chr6.txt", popname = "PopRef.txt")
+HLA <- read.GENEPOP("HLA.txt", popname = "PopRef.txt")
+
+#Calculating population-specific FST values
+FST_CHR6_POP <- pop_specificFST(chr6)
+FST_HLA_POP <- pop_specificFST(HLA)
+
+Splitting out HLA FST + renaming
+FSTHLA <- as.data.frame(FST_HLA_POP$FST)
+FSTHLA <- FSTHLA %>%
+  rename(
+    "HLA"=`FST_HLA_POP$FST`
+  )
+
+#Merging FST (Chr6) and FST (HLA) into one dataframe + renaming
+Pop_FST <- cbind(FST_CHR6_POP, FSTHLA)
+Pop_FST <- Pop_FST %>%
+  rename(
+    "Chr6"=FST
+  )
+
+#Removing unneccesary data
+Pop_FST$SE=NULL
+
+#Renaming population flags 
+Pop_FST <- Pop_FST %>%
+  rename(
+    "Alor"=AlorAF,
+    "Bali"=BaliAF,
+    "Bangladeshi"=BEB,
+    "Dai"=CDX,
+    "European"=CEU,
+    "Han"=CHB,
+    "Southern Han"=CHS,
+    "Fl. Bama"=FloBamAF,
+    "Fl. Bena"=FloBenAF,
+    "Fl. Rampasasa"=FloRamAF,
+    "Gujarati"=GIH,
+    "Telugu"=ITU,
+    "Java"=JavaAF,
+    "Japanese"=JPT,
+    "Vietnam (KHV)"=KHV,
+    "Lembata"=LembatAF,
+    "Malay"=MalayAF,
+    "Mentawai"=MentawAF,
+    "Nias"=NiasAF,
+    "Pantar"=PantarAF,
+    "Phil. Kankanaey"=PHIgorTR,
+    "Phil. Negritos"=PHNegr,
+    "Phil. Non-Kankanaey"=PHOther,
+    "Punjabi"=PJL,
+    "PNG Baining"=PNGBaiAF,
+    "PNG Coastal"=PNGCAF,
+    "PNG Highland"=PNGHAF,
+    "PNG Naisoi"=PNGNasAF,
+    "Tamil"=STU,
+    "Sumba (Ana)"=SumAnaAF,
+    "Sumatra"=SumatrAF,
+    "Sumba (Rin)"=SumRinAF,
+    "Sumba (Wun)"=SumWunAF,
+    "Taiwan"=TaiwanAF,
+    "Timor (Kam)"=TimKamAF,
+    "Timor (ULa)"=TimULaAF,
+    "Timor (Uma)"=TimUmaAF,
+    "Yoruba"=YRI
+  )
+
+#Removing non-ISEA data
+Chr6HLAFST <- Chr6HLAFST[-c(4:8, 13:14, 16:17, 23:26, 31, 36, 39:40),]
+
+#Ensuring data format is numeric
+Pop_FST$Chr6 <- as.numeric(Pop_FST$Chr6)
+Pop_FST$HLA <- as.numeric(Pop_FST$HLA)
+
+#Creating FST-FST plot
+ggplot(data=Pop_FST)+
+  aes(y=Chr6, x=HLA, color=FID)+
+  geom_point(size=3)+
+  xlab("FST (HLA)")+
+  ylab("FST (Chromosome 6)")+
+  labs(col="Family ID")+
+  geom_abline()+
+  geom_smooth(aes(group=1), method = "lm")+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai", "Han", "Southern Han", "Gujarati", "Telugu", "Vietnam (KHV)", "Punjabi", "Tamil", "Taiwan", "Malay", "Vietnam", "Yoruba", "Phil. Kankanaey", "Phil. Negritos", "Phil. Non-Kankanaey", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Timor (Kam)", "Timor (ULa)", "Timor (Uma)", "Alor", "Pantar", "Lembata", "Sulawesi", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey","darkorange3", "grey", "grey", "grey", "grey", "grey", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black"))+
+  scale_x_continuous(limits=c(-0.15,0.5))+
+  scale_y_continuous(limits=c(-0.15,0.5))+
+  geom_text_repel(aes(label = FID), 
+                  box.padding = 1.7,
+                  show.legend = FALSE,
+                  max.overlaps = 40)+
+  theme(legend.position = "NONE")
+  
+#Running generalised linear regression (as non-normal dist. data)  
+FST <- glm(FST~HLAFST, Chr6HLAFST, family="gaussian")
+
+#Creating table of GLM regression output
+tab_model(FST, pred.labels=c("Intercept", "FST (HLA genes)"), dv.labels = c("FST (Chromosome 6)"), string.pred = "Coeffcient", string.ci = "Conf. Int (95%)", string.p = "P-Value")

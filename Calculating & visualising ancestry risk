@@ -1,0 +1,163 @@
+#######################
+#### Ancestry Risk ####
+#######################
+
+#Set working directory
+setwd()
+
+#Read datasets 
+RiskGrid <- read.csv("Risk Grid.csv") #generated as part of the risk score section
+AverageHeritage <- read.csv("AverageHeritage.csv") #generated from the Admixture analysis
+
+#Splitting out Papuan ancestry + renaming
+AveragePapua <- as.data.frame(AverageHeritage$AvgPapuan)
+AveragePapua <- AveragePapua %>%
+  rename(
+    "AvgPapuan" = `AverageHeritage$AvgPapuan`
+  )
+  
+#Merging dataframes
+PapuaRisk <- cbind(RiskGrid, AveragePapua)
+
+#Reversing table + rename some population groups 
+PapuaRisk <- as.data.frame(t(PapuaRisk))
+PapuaRisk <- PapuaRisk %>%
+  row_to_names(row_number = 1)
+
+PapuaRisk <- PapuaRisk %>%
+  rename(
+    "PNG Baining"=`Baining (Paupa New Guinea)`,
+    "PNG Coastal"=`Coastal (Paupa New Guinea`,
+    "PNG Highland"=`Highlands (Paupa New Guinea)`,
+    "PNG Nasioi"=`Nasioi (Paupa New Guinea)`
+  )
+  
+#Removing non-Indonesian populations
+PapuaRisk$Bangladeshi=NULL
+PapuaRisk$`Dai (China)`=NULL
+PapuaRisk$European=NULL
+PapuaRisk$`Han (China)`=NULL
+PapuaRisk$`Southern Han (China)`=NULL
+PapuaRisk$`Gujarati (India)`=NULL
+PapuaRisk$`Telugu (India)`=NULL
+PapuaRisk$Japanese=NULL
+PapuaRisk$`KHV (Vietnam)`=NULL
+PapuaRisk$`Negritos (Philippines)`=NULL
+PapuaRisk$`Non-Kankanaey (Philippines)`=NULL
+PapuaRisk$`Kankanaey (Philippines)`=NULL
+PapuaRisk$`Punjabi (Pakistan)`=NULL
+PapuaRisk$`Tamil (Sri Lanka)`=NULL
+PapuaRisk$Taiwan=NULL
+PapuaRisk$`Timor (Uma)`=NULL
+PapuaRisk$Vietnam=NULL
+PapuaRisk$`Yuruba (Nigeria)`=NULL
+
+#Renaming column + ensuring numbers as treated as 'numeric'
+PapuaRisk <- as.data.frame(t(PapuaRisk))
+PapuaRisk <- tibble::rownames_to_column(PapuaRisk, "Population")
+PapuaRisk$AvgPapuan <- as.numeric(PapuaRisk$AvgPapuan)
+PapuaRisk$HBV <- as.numeric(PapuaRisk$HBV)
+PapuaRisk$HBV.Med <- as.numeric(PapuaRisk$HBV.Med)
+PapuaRisk$HBV.Vac <- as.numeric(PapuaRisk$HBV.Vac)
+PapuaRisk$Malaria <- as.numeric(PapuaRisk$Malaria)
+PapuaRisk$Malaria.Vac <- as.numeric(PapuaRisk$Malaria.Vac)
+PapuaRisk$TB <- as.numeric(PapuaRisk$TB)
+PapuaRisk$TB.med <- as.numeric(PapuaRisk$TB.med)
+
+#Plotting relationship HBV risk - Papuan heritage
+HBVPplot <- ggplot(data=PapuaRisk, aes(x=as.numeric(AvgPapuan), y=as.numeric(HBV), color=Population))+
+  geom_point(size=3)+
+  ylab("Disease risk score")+
+  xlab("Average Papuan Heritage")+
+  ggtitle("A. Disease Risk")+
+  scale_x_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1),
+                     labels = c("0%", "25%", "50%", "75%", "100%"))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Nasioi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Plotting relationship HBV medication risk - Papuan heritage
+HBVMPplot <- ggplot(data=PapuaRisk)+
+  aes(x=AvgPapuan, y=HBV.Med, color=Population)+
+  geom_point(size=3)+
+  ylab("Medication risk score")+
+  xlab("Average Papuan Heritage")+
+  ggtitle("B. Medication Risk")+
+  scale_x_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1),
+                     labels = c("0%", "25%", "50%", "75%", "100%"))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Nasioi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Plotting relationship HBV vaccine risk - Papuan heritage
+HBVVPplot <- ggplot(data=PapuaRisk)+
+  aes(x=AvgPapuan, y=HBV.Vac, color=Population)+
+  geom_point(size=3)+
+  ylab("Vaccine risk score")+
+  xlab("Average Papuan Heritage")+
+  ggtitle("C. Vaccine Risk")+
+  scale_x_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1),
+                     labels = c("0%", "25%", "50%", "75%", "100%"))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Nasioi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Co-locating graphs + giving common title 
+HBVP <- ggarrange(HBVPplot, HBVMPplot, HBVVPplot, nrow=2, ncol=2, common.legend = TRUE, legend = "right", title="Hepatitis B")
+annotate_figure(HBVP, top = text_grob("Hepatitis B (Papuan heritage)", 
+                                      color = "black", face = "bold", size = 16))
+
+#Plotting relationship Malaria risk - Papuan heritage
+MalPapplot <- ggplot(data=PapuaRisk)+
+  aes(x=AvgPapuan, y=Malaria, color=Population)+
+  geom_point(size=3)+
+  ylab("Clinical risk score")+
+  xlab("Average Papuan Heritage")+
+  ggtitle("A. Disease Risk")+
+  scale_x_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1),
+                     labels = c("0%", "25%", "50%", "75%", "100%"))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Nasioi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Plotting relationship Malaria vaccine risk - Papuan heritage
+MalPapVacplot <- ggplot(data=PapuaRisk)+
+  aes(x=AvgPapuan, y=Malaria.Vac, color=Population)+
+  geom_point(size=3)+
+  ylab("Vaccine risk score")+
+  xlab("Average Papuan Heritage")+
+  ggtitle("B. Vaccine Risk")+
+  scale_x_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1),
+                     labels = c("0%", "25%", "50%", "75%", "100%"))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Nasioi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Co-locating graphs + giving common title
+MPplot <- ggarrange(MalPapplot, MalPapVacplot, common.legend = TRUE, legend="bottom")
+annotate_figure(MPplot, top = text_grob("Malaria (Papuan heritage)", 
+                                      color = "black", face = "bold", size = 16))
+
+#Plotting relationship TB risk - Papuan heritage
+TBPplot <- ggplot(data=PapuaRisk)+
+  aes(x=AvgPapuan, y=TB, color=Population)+
+  geom_point(size=3)+
+  ylab("Risk score")+
+  xlab("Average Papuan Heritage")+
+  ggtitle("A. Disease Risk")+
+  scale_x_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1),
+                     labels = c("0%", "25%", "50%", "75%", "100%"))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Nasioi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Plotting relationship TB medication risk - Papuan heritage
+TBMPplot <- ggplot(data=PapuaRisk)+
+  aes(x=AvgPapuan, y=TB.med, color=Population)+
+  geom_point(size=3)+
+  ylab("Medication risk score")+
+  xlab("Average Papuan Heritage")+
+  ggtitle("B. Medication Risk")+
+  scale_x_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1),
+                     labels = c("0%", "25%", "50%", "75%", "100%"))+
+  scale_color_manual(breaks=c("Malay", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Nasioi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("darkorange3", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black", "cyan3"))
+
+#Co-locating graphs + giving common title
+TBPP <- ggarrange(TBPplot, TBMPplot, common.legend = TRUE, legend="bottom")
+annotate_figure(TBPP, top = text_grob("TB (Papuan heritage)", 
+                                      color = "black", face = "bold", size = 16))

@@ -1,0 +1,203 @@
+######################################
+# Principal Component Analysis - PCA #
+######################################
+#Set working directory
+setwd()
+## PCA - HUDHLA only
+# Clear workspace
+rm(list = ls())
+
+# Run PLINK QC
+system("plink --bfile HUDHLAonly --remove TimUmaPopLab.txt --autosome --geno 0.1 --mind 0.1 --maf 0.05 --nonfounders --allow-no-sex --recode --out HUDHLAonly_TOP")
+
+## Genetic distances between individuals
+system("plink --allow-no-sex --nonfounders --file HUDHLAonly_TOP --distance-matrix --out dataForPCA-HLAonly")
+
+## Load data
+dist_populations<-read.table("dataForPCA-HLAonly.mdist",header=F)
+### Extract Population names
+fam <- data.frame(famids=read.table("dataForPCA-HLAonly.mdist.id")[,1])
+
+fam$famids[fam$famids=="AlorAF"] <- "Alor"
+fam$famids[fam$famids=="BaliAF"] <- "Bali"
+fam$famids[fam$famids=="BEB"] <- "Bangladeshi"
+fam$famids[fam$famids=="CDX"] <- "Dai"
+fam$famids[fam$famids=="CEU"] <- "European"
+fam$famids[fam$famids=="CHB"] <- "Han"
+fam$famids[fam$famids=="CHS"] <- "Southern Han"
+fam$famids[fam$famids=="FloBamAF"] <- "Fl. Bama"
+fam$famids[fam$famids=="FloBenAF"] <- "Fl. Bena"
+fam$famids[fam$famids=="FloRamAF"] <- "Fl. Rampasasa"
+fam$famids[fam$famids=="GIH"] <- "Gujarati"
+fam$famids[fam$famids=="ITU"] <- "Telugu"
+fam$famids[fam$famids=="JavaAF"] <- "Java"
+fam$famids[fam$famids=="JPT"] <- "Japanese"
+fam$famids[fam$famids=="KHV"] <- "Vietnam (KHV)"
+fam$famids[fam$famids=="LembatAF"] <- "Lembata"
+fam$famids[fam$famids=="MalayAF"] <- "Malay"
+fam$famids[fam$famids=="MentawAF"] <- "Mentawai"
+fam$famids[fam$famids=="NiasAF"] <- "Nias"
+fam$famids[fam$famids=="PantarAF"] <- "Pantar"
+fam$famids[fam$famids=="PHIgorTR"] <- "Phil. Kankanaey"
+fam$famids[fam$famids=="PHOther"] <- "Phil. Non-Kankanaey"
+fam$famids[fam$famids=="PHNegr"] <- "Phil. Negritos"
+fam$famids[fam$famids=="PJL"] <- "Punjabi"
+fam$famids[fam$famids=="PNGBaiAF"] <- "PNG Baining"
+fam$famids[fam$famids=="PNGCAF"] <- "PNG Coastal"
+fam$famids[fam$famids=="PNGHAF"] <- "PNG Highland"
+fam$famids[fam$famids=="PNGNasAF"] <- "PNG Naisoi"
+fam$famids[fam$famids=="STU"] <- "Tamil"
+fam$famids[fam$famids=="SumAnaAF"] <- "Sumba (Ana)"
+fam$famids[fam$famids=="SumatrAF"] <- "Sumatra"
+fam$famids[fam$famids=="SumRinAF"] <- "Sumba (Rin)"
+fam$famids[fam$famids=="SumWunAF"] <- "Sumba (Wun)"
+fam$famids[fam$famids=="TaiwanAF"] <- "Taiwan"
+fam$famids[fam$famids=="TimKamAF"] <- "Timor (Kam)"
+fam$famids[fam$famids=="TimULaAF"] <- "Timor (ULa)"
+fam$famids[fam$famids=="YRI"] <- "Yoruba"
+
+### Extract individual names 
+famInd <- data.frame(IID=read.table("dataForPCA-HLAonly.mdist.id")[,2])
+
+## Perform PCA using the cmdscale function 
+mds_populations <- cmdscale(dist_populations,eig=T,5)
+
+## Extract the eigen vectors
+eigenvec_populations <- cbind(fam,famInd,mds_populations$points)
+
+## Proportion of variation captured by each eigen vector
+eigen_percent <- round(((mds_populations$eig)/sum(mds_populations$eig))*100,2)
+
+# PCA plot - ellipse
+PCAE_HLA_plot <- ggplot(data = eigenvec_populations, aes(x = `1`, y = `2`,color = famids), show.legend=TRUE) +
+  geom_hline(yintercept = 0, linetype="dotted") + 
+  geom_vline(xintercept = 0, linetype="dotted") +
+  ggtitle("B")+
+  stat_ellipse(linetype=1, size=1.5)+
+  labs(color="Family ID",
+       caption="Blue = West Indonesia; Green = East Indonesia; Red = New Guinea & New Britain",
+       x = paste0("Principal component 1 (",eigen_percent[1]," %)"),
+       y = paste0("Principal component 2 (",eigen_percent[2]," %)")) + 
+  theme_light()+
+  theme(legend.position = "none",
+        plot.caption = element_text(face="bold", size=10))+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai", "Han", "Southern Han", "Gujarati", "Telugu", "Vietnam (KHV)", "Punjabi", "Tamil", "Taiwan", "Malay", "Vietnam", "Yoruba", "Phil. Kankanaey", "Phil. Negritos", "Phil. Non-Kankanaey", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Timor (Kam)", "Timor (ULa)", "Timor (Uma)", "Alor", "Pantar", "Lembata", "Sulawesi", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "darkblue", "grey", "grey", "grey", "grey", "grey", "darkred", "darkred", "darkred", "darkred", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "darkblue", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "darkblue", "darkblue", "darkblue", "darkblue", "darkblue"))
+
+  
+PCA_HLA_plot <- ggplot(data = eigenvec_populations) +
+  geom_point(mapping = aes(x = `1`, y = `2`,color = famids), show.legend = TRUE ) + 
+  geom_hline(yintercept = 0, linetype="dotted") + 
+  geom_vline(xintercept = 0, linetype="dotted") +
+  ggtitle("A")+
+  labs(color="Family ID",
+       x = paste0("Principal component 1 (",eigen_percent[1]," %)"),
+       y = paste0("Principal component 2 (",eigen_percent[2]," %)"),) + 
+  theme_light()+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai", "Han", "Southern Han", "Gujarati", "Telugu", "Vietnam (KHV)", "Punjabi", "Tamil", "Taiwan", "Malay", "Vietnam", "Yoruba", "Phil. Kankanaey", "Phil. Negritos", "Phil. Non-Kankanaey", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Timor (Kam)", "Timor (ULa)", "Alor", "Pantar", "Lembata", "Sulawesi", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black"))
+
+#Arrange plots on the same chart
+PCA_HLA <- ggarrange(PCA_HLA_plot, PCAE_HLA_plot, ncol = 2, nrow = 1, common.legend = TRUE, legend = "bottom")
+annotate_figure(PCA_HLA, top = text_grob("Principle Component Analysis, HLA genes", 
+                                             color = "black", face = "bold", size = 15))
+## PCA - HUD Chr6
+
+setwd()
+# Clear workspace
+rm(list = ls())
+
+# Run PLINK QC
+system("plink --bfile Ch6_new --remove TimUmaPopLab.txt --autosome --geno 0.1 --mind 0.1 --maf 0.05 --nonfounders --allow-no-sex --recode --out chr6_TOP")
+
+## Genetic distances between individuals
+system("plink --allow-no-sex --nonfounders --file chr6_TOP --distance-matrix --out dataForPCA-chr6")
+
+## Load data
+dist_populations<-read.table("dataForPCA-chr6.mdist",header=F)
+### Extract Population names
+fam <- data.frame(famids=read.table("dataForPCA-chr6.mdist.id")[,1])
+
+fam$famids[fam$famids=="AlorAF"] <- "Alor"
+fam$famids[fam$famids=="BaliAF"] <- "Bali"
+fam$famids[fam$famids=="BEB"] <- "Bangladeshi"
+fam$famids[fam$famids=="CDX"] <- "Dai"
+fam$famids[fam$famids=="CEU"] <- "European"
+fam$famids[fam$famids=="CHB"] <- "Han"
+fam$famids[fam$famids=="CHS"] <- "Southern Han"
+fam$famids[fam$famids=="FloBamAF"] <- "Fl. Bama"
+fam$famids[fam$famids=="FloBenAF"] <- "Fl. Bena"
+fam$famids[fam$famids=="FloRamAF"] <- "Fl. Rampasasa"
+fam$famids[fam$famids=="GIH"] <- "Gujarati"
+fam$famids[fam$famids=="ITU"] <- "Telugu"
+fam$famids[fam$famids=="JavaAF"] <- "Java"
+fam$famids[fam$famids=="JPT"] <- "Japanese"
+fam$famids[fam$famids=="KHV"] <- "Vietnam (KHV)"
+fam$famids[fam$famids=="LembatAF"] <- "Lembata"
+fam$famids[fam$famids=="MalayAF"] <- "Malay"
+fam$famids[fam$famids=="MentawAF"] <- "Mentawai"
+fam$famids[fam$famids=="NiasAF"] <- "Nias"
+fam$famids[fam$famids=="PantarAF"] <- "Pantar"
+fam$famids[fam$famids=="PHIgorTR"] <- "Phil. Kankanaey"
+fam$famids[fam$famids=="PHOther"] <- "Phil. Non-Kankanaey"
+fam$famids[fam$famids=="PHNegr"] <- "Phil. Negritos"
+fam$famids[fam$famids=="PJL"] <- "Punjabi"
+fam$famids[fam$famids=="PNGBaiAF"] <- "PNG Baining"
+fam$famids[fam$famids=="PNGCAF"] <- "PNG Coastal"
+fam$famids[fam$famids=="PNGHAF"] <- "PNG Highland"
+fam$famids[fam$famids=="PNGNasAF"] <- "PNG Naisoi"
+fam$famids[fam$famids=="STU"] <- "Tamil"
+fam$famids[fam$famids=="SumAnaAF"] <- "Sumba (Ana)"
+fam$famids[fam$famids=="SumatrAF"] <- "Sumatra"
+fam$famids[fam$famids=="SumRinAF"] <- "Sumba (Rin)"
+fam$famids[fam$famids=="SumWunAF"] <- "Sumba (Wun)"
+fam$famids[fam$famids=="TaiwanAF"] <- "Taiwan"
+fam$famids[fam$famids=="TimKamAF"] <- "Timor (Kam)"
+fam$famids[fam$famids=="TimULaAF"] <- "Timor (ULa)"
+fam$famids[fam$famids=="YRI"] <- "Yoruba"
+
+### Extract individual names 
+famInd <- data.frame(IID=read.table("dataForPCA-chr6.mdist.id")[,2])
+
+## Perform PCA using the cmdscale function 
+mds_populations <- cmdscale(dist_populations,eig=T,5)
+
+## Extract the eigen vectors
+eigenvec_populations <- cbind(fam,famInd, mds_populations$points)
+
+## Proportion of variation captured by each eigen vector
+eigen_percent <- round(((mds_populations$eig)/sum(mds_populations$eig))*100,2)
+
+# PCA plot
+PCA_Chr6_plot <- ggplot(data = eigenvec_populations) +
+  geom_point(mapping = aes(x = `1`, y = `2`,color = famids), show.legend = TRUE ) + 
+  geom_hline(yintercept = 0, linetype="dotted") + 
+  geom_vline(xintercept = 0, linetype="dotted") +
+  ggtitle("A")+
+  labs(color="Family ID",
+       x = paste0("Principal component 1 (",eigen_percent[1]," %)"),
+       y = paste0("Principal component 2 (",eigen_percent[2]," %)")) + 
+  theme_minimal()+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai", "Han", "Southern Han", "Gujarati", "Telugu", "Vietnam (KHV)", "Punjabi", "Tamil", "Taiwan", "Malay", "Vietnam", "Yoruba", "Phil. Kankanaey", "Phil. Negritos", "Phil. Non-Kankanaey", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Timor (Kam)", "Timor (ULa)", "Timor (Uma)", "Alor", "Pantar", "Lembata", "Sulawesi", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black"))
+
+
+PCAE_Chr6_plot <- ggplot(data = eigenvec_populations, aes(x = `1`, y = `2`,color = famids), show.legend = TRUE ) +
+  geom_hline(yintercept = 0, linetype="dotted") + 
+  geom_vline(xintercept = 0, linetype="dotted") +
+  ggtitle("B")+
+  stat_ellipse(linetype=1, size=1.5)+
+  labs(caption="Blue = West Indonesia; Green = East Indonesia; Red = New Guinea & New Britain",
+       x = paste0("Principal component 1 (",eigen_percent[1]," %)"),
+       y = paste0("Principal component 2 (",eigen_percent[2]," %)"),
+       color="Family ID") + 
+  theme_light()+
+  theme(legend.position = "none",
+        plot.caption = element_text(face="bold", size=10))+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai", "Han", "Southern Han", "Gujarati", "Telugu", "Vietnam (KHV)", "Punjabi", "Tamil", "Taiwan", "Malay", "Vietnam", "Yoruba", "Phil. Kankanaey", "Phil. Negritos", "Phil. Non-Kankanaey", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Timor (Kam)", "Timor (ULa)", "Timor (Uma)", "Alor", "Pantar", "Lembata", "Sulawesi", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "darkblue", "grey", "grey", "grey", "grey", "grey", "darkred", "darkred", "darkred", "darkred", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "darkblue", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4", "darkblue", "darkblue", "darkblue", "darkblue", "darkblue"))
+
+#Arrange plots on the same chart
+PCA_Chr6 <- ggarrange(PCA_Chr6_plot, PCAE_Chr6_plot, ncol = 2, nrow = 1, common.legend = TRUE, legend = "bottom")
+annotate_figure(PCA_Chr6, top = text_grob("Principle Component Analysis, Chromosome 6", 
+                                         color = "black", face = "bold", size = 15))

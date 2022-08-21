@@ -1,0 +1,62 @@
+###############
+## Admixture ##
+###############
+
+#Set working directory
+setwd()
+ 
+#Read relevant Q file (acquired from ADMIXTURE 
+data <- readQ("D:/Structure output/affyG_120416_1KG25_TARTU.SEA_geno0.05.indeppair50-10-01.6.Q", indlabfromfile = T)
+
+#Read population reference (based off .fam file from plink)
+PopLab <- read.delim("D:/Structure output/PopRefFULL.txt", header = T, stringsAsFactors = F)
+PopLab <- PopLab %>%
+  rename(
+    "Family ID" = FID
+)
+
+#Remove file name from Y axis
+fn1 <- function(x) attr(x,"k")
+spnames <- paste0("K=",sapply(data,fn1))
+
+#Plot Admixture graph
+plotQ(data,grplab=PopLab,ordergrp=T, sortind="label", selgrp="Family ID",splabsize=8,grplabangle=45,grplabpos=0.6,grplabheight=1,grplabjust=1,panelratio=c(2,2),height=8,outputfilename="test",returndata=T, exportpath = getwd(), splab=spnames[1])
+
+#Combine admixture data with population labels
+data1 <- cbind(data, PopLab)
+
+#Move pop. ref. to first column
+data1 <- data1 %>%
+  relocate("Family ID", .before=V1)
+
+#Rename admixture elements
+data1 <- data1 %>%
+  rename(
+    "South Asian" = V1,
+    "European" = V2,
+    "African" = V3,
+    "East Asian" = V4,
+    "Austronesian" = V5,
+    "Papuan" =V6
+  )
+
+#Averaging heritage per population
+AVG_Papuan <- data1 %>%
+  group_by(`Family ID`) %>%
+  summarise(AvgPapuan = mean(Papuan)) 
+
+AVG_Austronesian <- data1 %>%
+  group_by(`Family ID`) %>%
+  summarise(AvgAustronesian = mean(Austronesian))
+
+AVG_EastAsia <- data1 %>%
+  group_by(`Family ID`) %>%
+  summarise(AvgEastAsian = mean(`East Asian`))
+
+AVG_Austronesian$`Family ID`=NULL
+AVG_EastAsia$`Family ID`=NULL
+
+AVG_heritage <- cbind(AVG_Papuan, AVG_Austronesian, AVG_EastAsia)
+
+#Writing .csv file (to be used in ancestry-risk experiments
+write.csv(AVG_heritage, "AverageHeritage.csv")

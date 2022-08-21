@@ -1,0 +1,28 @@
+###################################
+### Imputation confidence plots ###
+###################################
+
+#Read the relevant .info files 
+
+Chr6 <- read.table("LOCATION/chr6.info", header=T)
+HLA <- read.table("LOCATION/HUDHLAonly.info", header=T)
+
+#Create random sample for Chr6
+
+rand_Chr6 <- Chr6[sample(nrow(Chr6), size=50000),]
+
+#Make values numeric 
+
+rand_Chr6$MAF <- as.numeric(rand_Chr6$MAF)
+rand_Chr6$Rsq <- as.numeric(rand_Chr6$Rsq)
+
+HLA$MAF <- as.numeric(HLA$MAF)
+HLA$Rsq <- as.numeric(HLA$Rsq)
+
+#Create plots
+
+ggplot(data=rand_test, aes(x=MAF, y=Rsq, group=MAF))+
+  geom_point(alpha=0.5)
+
+ggplot(data=HLA, aes(x=MAF, y=Rsq, group=MAF))+
+  geom_point(alpha=0.5)

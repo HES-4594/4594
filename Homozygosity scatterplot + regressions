@@ -1,0 +1,178 @@
+###############################
+## Homozygosity scatterplots ##
+###############################
+
+#Set working directory 
+setwd()
+
+#Read datasets
+
+Chr6_HET <- read.table("CHR6-HET.het", header=TRUE)
+HLA_HET <- read.table("HLA-HET.het", header=TRUE)
+
+#Calculate average observed homozyg.
+
+Chr6AVGOHOM <- Chr6_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgOHOM = mean(O.HOM.))
+
+HLAAVGOHOM <- HLA_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgOHOM = mean(O.HOM.))
+
+#Calculate average expected homozyg.
+
+Chr6AVGEHOM <- Chr6_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgEHOM = mean(E.HOM.))
+
+HLAAVGEHOM <- HLA_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgEHOM = mean(E.HOM.))
+
+#Remove double FID column
+
+Chr6AVGEHOM$FID=NULL
+HLAAVGEHOM$FID=NULL
+
+#Combine average calcuations
+
+CHR6_AVG <- cbind(Chr6AVGOHOM, Chr6AVGEHOM)
+HLA_AVG <- cbind(HLAAVGOHOM, HLAAVGEHOM)
+
+#Calculate percentage change
+
+CHR6_AVG <- CHR6_AVG %>%
+  mutate(PercentageChange = ((CHR6_AVG$AvgOHOM - CHR6_AVG$AvgEHOM) / CHR6_AVG$AvgEHOM)*100)
+
+HLA_AVG <- HLA_AVG %>%
+  mutate(PercentageChange = ((HLA_AVG$AvgOHOM - HLA_AVG$AvgEHOM) / HLA_AVG$AvgEHOM)*100)
+
+#Rename labels
+
+CHR6_AVG$FID[CHR6_AVG$FID=="AlorAF"] <- "Alor"
+CHR6_AVG$FID[CHR6_AVG$FID=="BaliAF"] <- "Bali"
+CHR6_AVG$FID[CHR6_AVG$FID=="BEB"] <- "Bangladeshi"
+CHR6_AVG$FID[CHR6_AVG$FID=="CDX"] <- "Dai (China)"
+CHR6_AVG$FID[CHR6_AVG$FID=="CEU"] <- "European"
+CHR6_AVG$FID[CHR6_AVG$FID=="CHB"] <- "Han (China)"
+CHR6_AVG$FID[CHR6_AVG$FID=="CHS"] <- "Southern Han (China)"
+CHR6_AVG$FID[CHR6_AVG$FID=="FloBamAF"] <- "Flores Bama"
+CHR6_AVG$FID[CHR6_AVG$FID=="FloBenAF"] <- "Flores Bena"
+CHR6_AVG$FID[CHR6_AVG$FID=="FloRamAF"] <- "Flores Rampasasa"
+CHR6_AVG$FID[CHR6_AVG$FID=="GIH"] <- "Gujarati (India)"
+CHR6_AVG$FID[CHR6_AVG$FID=="ITU"] <- "Telugu (India)"
+CHR6_AVG$FID[CHR6_AVG$FID=="JavaAF"] <- "Java"
+CHR6_AVG$FID[CHR6_AVG$FID=="JPT"] <- "Japanese"
+CHR6_AVG$FID[CHR6_AVG$FID=="KHV"] <- "Vietnam (KHV)"
+CHR6_AVG$FID[CHR6_AVG$FID=="LembatAF"] <- "Lembata"
+CHR6_AVG$FID[CHR6_AVG$FID=="MalayAF"] <- "Malay"
+CHR6_AVG$FID[CHR6_AVG$FID=="MentawAF"] <- "Mentawai"
+CHR6_AVG$FID[CHR6_AVG$FID=="NiasAF"] <- "Nias"
+CHR6_AVG$FID[CHR6_AVG$FID=="PantarAF"] <- "Pantar"
+CHR6_AVG$FID[CHR6_AVG$FID=="PHIgorTR"] <- "Phil. Kankanaey"
+CHR6_AVG$FID[CHR6_AVG$FID=="PHOther"] <- "Phil. Non-Kankanaey"
+CHR6_AVG$FID[CHR6_AVG$FID=="PHNegr"] <- "Phil. Negritos"
+CHR6_AVG$FID[CHR6_AVG$FID=="PJL"] <- "Punjabi (Pakistan)"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGBaiAF"] <- "PNG Baining"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGCAF"] <- "PNG Coastal"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGHAF"] <- "PNG Highlands"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGNasAF"] <- "PNG Nasioi"
+CHR6_AVG$FID[CHR6_AVG$FID=="STU"] <- "Tamil (Sri Lanka)"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumAnaAF"] <- "Sumba (Ana)"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumatrAF"] <- "Sumatra"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumRinAF"] <- "Sumba (Rin)"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumWunAF"] <- "Sumba (Wun)"
+CHR6_AVG$FID[CHR6_AVG$FID=="TaiwanAF"] <- "Taiwan"
+CHR6_AVG$FID[CHR6_AVG$FID=="TimKamAF"] <- "Timor (Kam)"
+CHR6_AVG$FID[CHR6_AVG$FID=="TimULaAF"] <- "Timor (ULa)"
+CHR6_AVG$FID[CHR6_AVG$FID=="TimUmaAF"] <- "Timor (Uma)"
+CHR6_AVG$FID[CHR6_AVG$FID=="YRI"] <- "Yoruba (Nigeria)"
+
+HLA_AVG$FID[HLA_AVG$FID=="AlorAF"] <- "Alor"
+HLA_AVG$FID[HLA_AVG$FID=="BaliAF"] <- "Bali"
+HLA_AVG$FID[HLA_AVG$FID=="BEB"] <- "Bangladeshi"
+HLA_AVG$FID[HLA_AVG$FID=="CDX"] <- "Dai (China)"
+HLA_AVG$FID[HLA_AVG$FID=="CEU"] <- "European"
+HLA_AVG$FID[HLA_AVG$FID=="CHB"] <- "Han (China)"
+HLA_AVG$FID[HLA_AVG$FID=="CHS"] <- "Southern Han (China)"
+HLA_AVG$FID[HLA_AVG$FID=="FloBamAF"] <- "Flores Bama"
+HLA_AVG$FID[HLA_AVG$FID=="FloBenAF"] <- "Flores Bena"
+HLA_AVG$FID[HLA_AVG$FID=="FloRamAF"] <- "Flores Rampasasa"
+HLA_AVG$FID[HLA_AVG$FID=="GIH"] <- "Gujarati (India)"
+HLA_AVG$FID[HLA_AVG$FID=="ITU"] <- "Telugu (India)"
+HLA_AVG$FID[HLA_AVG$FID=="JavaAF"] <- "Java"
+HLA_AVG$FID[HLA_AVG$FID=="JPT"] <- "Japanese"
+HLA_AVG$FID[HLA_AVG$FID=="KHV"] <- "Vietnam (KHV)"
+HLA_AVG$FID[HLA_AVG$FID=="LembatAF"] <- "Lembata"
+HLA_AVG$FID[HLA_AVG$FID=="MalayAF"] <- "Malay"
+HLA_AVG$FID[HLA_AVG$FID=="MentawAF"] <- "Mentawai"
+HLA_AVG$FID[HLA_AVG$FID=="NiasAF"] <- "Nias"
+HLA_AVG$FID[HLA_AVG$FID=="PantarAF"] <- "Pantar"
+HLA_AVG$FID[HLA_AVG$FID=="PHIgorTR"] <- "Kankanaey (Philippines)"
+HLA_AVG$FID[HLA_AVG$FID=="PHOther"] <- "Non-Kankanaey (Philippines)"
+HLA_AVG$FID[HLA_AVG$FID=="PHNegr"] <- "Negritos (Philippines)"
+HLA_AVG$FID[HLA_AVG$FID=="PJL"] <- "Punjabi (Pakistan)"
+HLA_AVG$FID[HLA_AVG$FID=="PNGBaiAF"] <- "Papua New Guinea Baining"
+HLA_AVG$FID[HLA_AVG$FID=="PNGCAF"] <- "Papua New Guinea Coastal"
+HLA_AVG$FID[HLA_AVG$FID=="PNGHAF"] <- "Papua New Guinea Highlands"
+HLA_AVG$FID[HLA_AVG$FID=="PNGNasAF"] <- "Papua New Guinea Nasioi"
+HLA_AVG$FID[HLA_AVG$FID=="STU"] <- "Tamil (Sri Lanka)"
+HLA_AVG$FID[HLA_AVG$FID=="SumAnaAF"] <- "Sumba (Ana)"
+HLA_AVG$FID[HLA_AVG$FID=="SumatrAF"] <- "Sumatra"
+HLA_AVG$FID[HLA_AVG$FID=="SumRinAF"] <- "Sumba (Rin)"
+HLA_AVG$FID[HLA_AVG$FID=="SumWunAF"] <- "Sumba (Wun)"
+HLA_AVG$FID[HLA_AVG$FID=="TaiwanAF"] <- "Taiwan"
+HLA_AVG$FID[HLA_AVG$FID=="TimKamAF"] <- "Timor (Kam)"
+HLA_AVG$FID[HLA_AVG$FID=="TimULaAF"] <- "Timor (ULa)"
+HLA_AVG$FID[HLA_AVG$FID=="TimUmaAF"] <- "Timor (Uma)"
+HLA_AVG$FID[HLA_AVG$FID=="YRI"] <- "Yoruba (Nigeria)"
+
+HLAHOM <- as.data.frame(HLA_AVG$PercentageChange)
+HLAHOM <- HLAHOM %>%
+  rename(
+    "HLA"=`HLA_AVG$PercentageChange`
+  )
+ObHom <- cbind(CHR6_AVG, HLAHOM)
+ObHom <- ObHom %>%
+  rename(
+    "Chr6"=PercentageChange
+  )
+
+#Remove non-ISEA data
+ObHom <- ObHom[-c(1:17,37),]
+
+#Create scatterplot 
+ggplot(data=ObHom)+
+  aes(y=Chr6, x=HLA, color=FID)+
+  geom_point(size=5)+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai (China)", "Han (China)", "Southern Han (China)", "Gujarati (India)", "Telugu (India)", "Vietnam (KHV)", "Punjabi (Pakistan)", "Tamil (Sri Lanka)", "Taiwan", "Malay", "Vietnam", "Yoruba (Nigeria)", "Kankanaey (Philippines)", "Negritos (Philippines)", "Non-Kankanaey (Philippines)", "Papua New Guinea Baining", "Papua New Guinea Coastal", "Papua New Guinea Highlands", "Papua New Guinea Nasioi", "Timor (Kam)", "Timor (ULa)", "Timor (Uma)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey","darkorange", "grey", "grey", "grey", "grey", "grey", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black"))+
+  scale_x_continuous(breaks= c(-3, -2, -1, 0, 1, 2, 3),
+                     labels = c("-3%", "-2%", "-1%", "0%", "1%", "2%", "3%"),
+                     limits = c(-4,4))+
+  scale_y_continuous(breaks= c(-3, -2, -1, 0, 1, 2, 3),
+                     labels = c("-3%", "-2%", "-1%", "0%", "1%", "2%", "3%"),
+                     limits = c(-4,4))+
+  ylab("Chromosome 6")+
+  geom_abline()+
+  labs(color="Family ID")+
+  geom_smooth(method="lm", color="red")+
+  geom_text_repel(data = . %>% 
+                    mutate(label = ifelse(Region %in% c("West Indonesia", "East Indonesia", "New Guinea and New Britain"),
+                                          FID, "")),
+                  aes(label = label), 
+                  box.padding = 1.7,
+                  show.legend = FALSE,
+                  max.overlaps = 40)+
+  theme(legend.position = "NONE")
+
+#Generalised linear regression model
+HOM <- glm(Chr6~HLA, ObHom, family="gaussian")
+
+#Print GLM table 
+tab_model(HOM, pred.labels = c("Intercept", "HLA homozygosity"), dv.labels = "Chromosome 6 homozygosity", string.pred = "Coeffcient", string.ci = "Conf. Int (95%)", string.p = "P-Value")

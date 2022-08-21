@@ -1,0 +1,2512 @@
+#########################################
+###Disease and pharmacogenetic tables ###
+#########################################
+
+##Create HLA frequency table
+setwd()
+#Calculate MAF + stratify by population  
+#HLA
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PopulationLabels.txt --nonfounders ",
+             "--freq --within PopulationLabels.txt ",
+             "--out HLASnpFrequencies"))
+             
+##HLA frequency table by population
+#Alor 
+Alor <- read.table("PopulationLabels.txt", header=TRUE)
+Alor <- filter(Alor, FID=="AlorAF")
+write.table(Alor, file = "AlorPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep AlorPopLab.txt --nonfounders ",
+             "--freq --within AlorPopLab.txt ",
+             "--out HLAAlorSnpFrequencies"))
+
+#Bali 
+Bali <- read.table("PopulationLabels.txt", header=TRUE)
+Bali <- filter(Bali, FID=="BaliAF")
+write.table(Bali, file = "BaliPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep BaliPopLab.txt --nonfounders ",
+             "--freq --within BaliPopLab.txt ",
+             "--out HLABaliSnpFrequencies"))
+
+#BEB 
+BEB <- read.table("PopulationLabels.txt", header=TRUE)
+BEB <- filter(BEB, FID=="BEB")
+write.table(BEB, file = "BEBPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep BEBPopLab.txt --nonfounders ",
+             "--freq --within BEBPopLab.txt ",
+             "--out HLABEBSnpFrequencies"))
+
+#Borneo 
+Borneo <- read.table("PopulationLabels.txt", header=TRUE)
+Borneo <- filter(Borneo, FID=="Borneo")
+write.table(Borneo, file = "BorneoPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep BorneoPopLab.txt --nonfounders ",
+             "--freq --within BorneoPopLab.txt ",
+             "--out HLABEBSnpFrequencies"))
+
+#CDX 
+CDX <- read.table("PopulationLabels.txt", header=TRUE)
+CDX <- filter(CDX, FID=="CDX")
+write.table(CDX, file = "CDXPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep CDXPopLab.txt --nonfounders ",
+             "--freq --within CDXPopLab.txt ",
+             "--out HLACDXSnpFrequencies"))
+
+#CEU 
+CEU <- read.table("PopulationLabels.txt", header=TRUE)
+CEU <- filter(CEU, FID=="CEU")
+write.table(CEU, file = "CEUPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep CEUPopLab.txt --nonfounders ",
+             "--freq --within CEUPopLab.txt ",
+             "--out HLACEUSnpFrequencies"))
+
+#CHB 
+CHB <- read.table("PopulationLabels.txt", header=TRUE)
+CHB <- filter(CHB, FID=="CHB")
+write.table(CHB, file = "CHBPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep CHBPopLab.txt --nonfounders ",
+             "--freq --within CHBPopLab.txt ",
+             "--out HLACHBSnpFrequencies"))
+
+#CHS 
+CHS <- read.table("PopulationLabels.txt", header=TRUE)
+CHS <- filter(CHS, FID=="CHS")
+write.table(CHS, file = "CHSPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep CHSPopLab.txt --nonfounders ",
+             "--freq --within CHSPopLab.txt ",
+             "--out HLACHSSnpFrequencies"))
+
+#Borneo 
+Borneo <- read.table("PopulationLabels.txt", header=TRUE)
+Borneo <- filter(Borneo, FID=="Borneo")
+write.table(Borneo, file = "BorneoPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep BorneoPopLab.txt --nonfounders ",
+             "--freq --within BorneoPopLab.txt ",
+             "--out HLABorneoSnpFrequencies"))
+
+#FloBamAF 
+FloBamAF <- read.table("PopulationLabels.txt", header=TRUE)
+FloBamAF <- filter(FloBamAF, FID=="FloBamAF")
+write.table(FloBamAF, file = "FloBamAFPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep FloBamAFPopLab.txt --nonfounders ",
+             "--freq --within FloBamAFPopLab.txt ",
+             "--out HLAFloBamAFSnpFrequencies"))
+
+#FloBenAF
+FloBenAF <- read.table("PopulationLabels.txt", header=TRUE)
+FloBenAF <- filter(FloBenAF, FID=="FloBenAF")
+write.table(FloBenAF, file = "FloBenAFPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep FloBenAFPopLab.txt --nonfounders ",
+             "--freq --within FloBenAFPopLab.txt ",
+             "--out HLAFloBenAFSnpFrequencies"))
+
+#FloRamAF
+FloRamAF <- read.table("PopulationLabels.txt", header=TRUE)
+FloRamAF <- filter(FloRamAF, FID=="FloRamAF")
+write.table(FloRamAF, file = "FloRamAFPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep FloRamAFPopLab.txt --nonfounders ",
+             "--freq --within FloRamAFPopLab.txt ",
+             "--out HLAFloRamAFSnpFrequencies"))
+
+#GIH
+GIH <- read.table("PopulationLabels.txt", header=TRUE)
+GIH <- filter(GIH, FID=="GIH")
+write.table(GIH, file = "GIHPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep GIHPopLab.txt --nonfounders ",
+             "--freq --within GIHPopLab.txt ",
+             "--out HLAGIHSnpFrequencies"))
+
+#ITU
+ITU <- read.table("PopulationLabels.txt", header=TRUE)
+ITU <- filter(ITU, FID=="ITU")
+write.table(ITU, file = "ITUPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep ITUPopLab.txt --nonfounders ",
+             "--freq --within ITUPopLab.txt ",
+             "--out HLAITUSnpFrequencies"))
+
+#JavaAF
+JavaAF <- read.table("PopulationLabels.txt", header=TRUE)
+JavaAF <- filter(JavaAF, FID=="JavaAF")
+write.table(JavaAF, file = "JavaAFPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep JavaAFPopLab.txt --nonfounders ",
+             "--freq --within JavaAFPopLab.txt ",
+             "--out HLAJavaAFSnpFrequencies"))
+
+#JPT
+JPT <- read.table("PopulationLabels.txt", header=TRUE)
+JPT <- filter(JPT, FID=="JPT")
+write.table(JPT, file = "JPTPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep JPTPopLab.txt --nonfounders ",
+             "--freq --within JPTPopLab.txt ",
+             "--out HLAJPTSnpFrequencies"))
+
+#KHV
+KHV <- read.table("PopulationLabels.txt", header=TRUE)
+KHV <- filter(KHV, FID=="KHV")
+write.table(KHV, file = "KHVPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep KHVPopLab.txt --nonfounders ",
+             "--freq --within KHVPopLab.txt ",
+             "--out HLAKHVSnpFrequencies"))
+
+#LembatAF 
+Lembat <- read.table("PopulationLabels.txt", header=TRUE)
+Lembat <- filter(Lembat, FID=="LembatAF")
+write.table(Lembat, file = "LembatPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep LembatPopLab.txt --nonfounders ",
+             "--freq --within LembatPopLab.txt ",
+             "--out HLALembatSnpFrequencies"))
+
+#Malay 
+Malay <- read.table("PopulationLabels.txt", header=TRUE)
+Malay <- filter(Malay, FID=="MalayAF")
+write.table(Malay, file = "MalayPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep MalayPopLab.txt --nonfounders ",
+             "--freq --within MalayPopLab.txt ",
+             "--out HLAMalaySnpFrequencies"))
+
+#Mentaw 
+Mentaw <- read.table("PopulationLabels.txt", header=TRUE)
+Mentaw <- filter(Mentaw, FID=="MentawAF")
+write.table(Mentaw, file = "MentawPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep MentawPopLab.txt --nonfounders ",
+             "--freq --within MentawPopLab.txt ",
+             "--out HLAMentawSnpFrequencies"))
+
+#Nias 
+Nias <- read.table("PopulationLabels.txt", header=TRUE)
+Nias <- filter(Nias, FID=="NiasAF")
+write.table(Nias, file = "NiasPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep NiasPopLab.txt --nonfounders ",
+             "--freq --within NiasPopLab.txt ",
+             "--out HLANiasSnpFrequencies"))
+
+#Pantar 
+Pantar <- read.table("PopulationLabels.txt", header=TRUE)
+Pantar <- filter(Pantar, FID=="AlorAF")
+write.table(Pantar, file = "PantarPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PantarPopLab.txt --nonfounders ",
+             "--freq --within PantarPopLab.txt ",
+             "--out HLAPantarSnpFrequencies"))
+
+#PHNegr 
+PHNegr <- read.table("PopulationLabels.txt", header=TRUE)
+PHNegr <- filter(PHNegr, FID=="PHNegr")
+write.table(PHNegr, file = "PHNegrPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PHNegrPopLab.txt --nonfounders ",
+             "--freq --within PHNegrPopLab.txt ",
+             "--out HLAPHNegrSnpFrequencies"))
+
+#PHIgorTR 
+PHIgorTR <- read.table("PopulationLabels.txt", header=TRUE)
+PHIgorTR <- filter(PHIgorTR, FID=="PHIgorTR")
+write.table(PHIgorTR, file = "PHIgorTRPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PHIgorTRPopLab.txt --nonfounders ",
+             "--freq --within PHIgorTRPopLab.txt ",
+             "--out HLAPHIgorTRSnpFrequencies"))
+
+#PHOther 
+PHOther <- read.table("PopulationLabels.txt", header=TRUE)
+PHOther <- filter(PHOther, FID=="PHOther")
+write.table(PHOther, file = "PHOtherPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PHOtherPopLab.txt --nonfounders ",
+             "--freq --within PHOtherPopLab.txt ",
+             "--out HLAPHOtherSnpFrequencies"))
+
+#PJL 
+PJL <- read.table("PopulationLabels.txt", header=TRUE)
+PJL <- filter(PJL, FID=="PJL")
+write.table(PJL, file = "PJLPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PJLPopLab.txt --nonfounders ",
+             "--freq --within PJLPopLab.txt ",
+             "--out HLAPJLSnpFrequencies"))
+
+#PNGBaiAF 
+PNGBaiAF <- read.table("PopulationLabels.txt", header=TRUE)
+PNGBaiAF <- filter(PNGBaiAF, FID=="PNGBaiAF")
+write.table(PNGBaiAF, file = "PNGBaiPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PNGBaiPopLab.txt --nonfounders ",
+             "--freq --within PNGBaiPopLab.txt ",
+             "--out HLAPNGBaiSnpFrequencies"))
+
+#PNGCAF 
+PNGCAF <- read.table("PopulationLabels.txt", header=TRUE)
+PNGCAF <- filter(PNGCAF, FID=="PNGCAF")
+write.table(PNGCAF, file = "PNGCAFPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PNGCAFPopLab.txt --nonfounders ",
+             "--freq --within PNGCAFPopLab.txt ",
+             "--out HLAPNGCAFSnpFrequencies"))
+
+#PNGHAF 
+PNGHAF <- read.table("PopulationLabels.txt", header=TRUE)
+PNGHAF <- filter(PNGHAF, FID=="PNGHAF")
+write.table(PNGHAF, file = "PNGHAFPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PNGHAFPopLab.txt --nonfounders ",
+             "--freq --within PNGHAFPopLab.txt ",
+             "--out HLAPNGHAFSnpFrequencies"))
+
+#PNGNasAF
+PNGNasAF <- read.table("PopulationLabels.txt", header=TRUE)
+PNGNasAF <- filter(PNGNasAF, FID=="PNGNasAF")
+write.table(PNGNasAF, file = "PNGNasPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep PNGNasPopLab.txt --nonfounders ",
+             "--freq --within PNGNasPopLab.txt ",
+             "--out HLAPNGNasSnpFrequencies"))
+
+#STU 
+STU <- read.table("PopulationLabels.txt", header=TRUE)
+STU <- filter(STU, FID=="STU")
+write.table(STU, file = "STUPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep STUPopLab.txt --nonfounders ",
+             "--freq --within STUPopLab.txt ",
+             "--out HLASTUSnpFrequencies"))
+
+#Sulawesi 
+Sulawesi <- read.table("PopulationLabels.txt", header=TRUE)
+Sulawesi <- filter(Sulawesi, FID=="Sulawesi")
+write.table(Sulawesi, file = "SulawesiPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep SulawesiPopLab.txt --nonfounders ",
+             "--freq --within SulawesiPopLab.txt ",
+             "--out HLASulawesiSnpFrequencies"))
+
+#Sumatra
+Sumatra <- read.table("PopulationLabels.txt", header=TRUE)
+Sumatra <- filter(Sumatra, FID=="SumatrAF")
+write.table(Sumatra, file = "SumatraPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep SumatraPopLab.txt --nonfounders ",
+             "--freq --within SumatraPopLab.txt ",
+             "--out HLASumatraSnpFrequencies"))
+
+#SumAna 
+SumAna <- read.table("PopulationLabels.txt", header=TRUE)
+SumAna <- filter(SumAna, FID=="SumAnaAF")
+write.table(SumAna, file = "SumAnaPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep SumAnaPopLab.txt --nonfounders ",
+             "--freq --within SumAnaPopLab.txt ",
+             "--out HLASumAnaSnpFrequencies"))
+
+#SumRin 
+SumRin <- read.table("PopulationLabels.txt", header=TRUE)
+SumRin <- filter(SumRin, FID=="SumRinAF")
+write.table(SumRin, file = "SumRinPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep SumRinPopLab.txt --nonfounders ",
+             "--freq --within SumRinPopLab.txt ",
+             "--out HLASumRinSnpFrequencies"))
+
+#SumWun 
+SumWun <- read.table("PopulationLabels.txt", header=TRUE)
+SumWun <- filter(SumWun, FID=="SumWunAF")
+write.table(SumWun, file = "SumWunPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep SumWunPopLab.txt --nonfounders ",
+             "--freq --within SumWunPopLab.txt ",
+             "--out HLASumWunSnpFrequencies"))
+
+#Taiwan 
+Taiwan <- read.table("PopulationLabels.txt", header=TRUE)
+Taiwan <- filter(Taiwan, FID=="TaiwanAF")
+write.table(Taiwan, file = "TaiwanPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep TaiwanPopLab.txt --nonfounders ",
+             "--freq --within TaiwanPopLab.txt ",
+             "--out HLATaiwanSnpFrequencies"))
+
+#TimKamAF 
+TimKam <- read.table("PopulationLabels.txt", header=TRUE)
+TimKam <- filter(TimKam, FID=="TimKamAF")
+write.table(TimKam, file = "TimKamPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep TimKamPopLab.txt --nonfounders ",
+             "--freq --within TimKamPopLab.txt ",
+             "--out HLATimKamSnpFrequencies"))
+
+#TimULaAF 
+TimULaAF <- read.table("PopulationLabels.txt", header=TRUE)
+TimULaAF <- filter(TimULaAF, FID=="TimULaAF")
+write.table(TimULaAF, file = "TimULaPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep TimULaPopLab.txt --nonfounders ",
+             "--freq --within TimULaPopLab.txt ",
+             "--out HLATimULaSnpFrequencies"))
+
+#Vietnam 
+Vietnam <- read.table("PopulationLabels.txt", header=TRUE)
+Vietnam <- filter(Vietnam, FID=="Vietnam")
+write.table(Vietnam, file = "VietnamPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep VietnamPopLab.txt --nonfounders ",
+             "--freq --within VietnamPopLab.txt ",
+             "--out HLAVietnamSnpFrequencies"))
+
+#YRI 
+YRI <- read.table("PopulationLabels.txt", header=TRUE)
+YRI <- filter(YRI, FID=="YRI")
+write.table(YRI, file = "YRIPopLab.txt", quote=FALSE, row.names = FALSE)
+system(str_c("plink --bfile HUDHLAonly --autosome ",
+             "--keep YRIPopLab.txt --nonfounders ",
+             "--freq --within YRIPopLab.txt ",
+             "--out HLAYRISnpFrequencies"))
+
+##Descriptive tables##
+#Set working directory
+setwd()
+#Read data with HLA associations
+TB <- read.csv("TB.csv", header=TRUE)
+TB_med <- read.csv("TB_med.csv", header=TRUE)
+Malaria <- read.csv("Malaria.csv", header=TRUE)
+Malaria_vac <- read.csv("Malaria_vac.csv", header=TRUE)
+HBV <- read.csv("HBV.csv", header=TRUE)
+HBV_med <- read.csv("HBV_med.csv", header=TRUE)
+HBV_vac <- read.csv("HBV_vac.csv", header=TRUE)
+
+#Read HLA frequency files
+HLAfreq <- read.table("LOCATION/HLASnpFrequencies.frq.strat", header=TRUE)
+HLAfreqAlor <- read.table("LOCATION/HLAAlorSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqBali <- read.table("LOCATION/HLABaliSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqBEB <- read.table("LOCATION/HLABEBSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqBorneo <- read.table("LOCATION/HLABorneoSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqCDX <- read.table("LOCATION/HLACDXSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqCEU <- read.table("LOCATION/HLACEUSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqCHB <- read.table("LOCATION/HLACHBSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqCHS <- read.table("LOCATION/HLACHSSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqFloBamAF <- read.table("LOCATION/HLAFloBamAFSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqFloBenAF <- read.table("LOCATION/HLAFloBenAFSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqFloRamAF <- read.table("LOCATION/HLAFloRamAFSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqGIH <- read.table("LOCATION/HLAGIHSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqITU <- read.table("LOCATION/HLAITUSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqJavaAF <- read.table("LOCATION/HLAJavaAFSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqJPT <- read.table("LOCATION/HLAJPTSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqKHV <- read.table("LOCATION/HLAKHVSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqLembat <- read.table("LOCATION/HLALembatSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqMalay <- read.table("LOCATION/HLAMalaySnpFrequencies.frq.strat", header=TRUE)
+HLAfreqMentaw <- read.table("LOCATION/HLAMentawSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqNias <- read.table("LOCATION/HLANiasSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPantar <- read.table("LOCATION/HLAPantarSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPHNegr <- read.table("LOCATION/HLAPHNegrSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPHIgorTR <- read.table("LOCATION/HLAPHIgorTRSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPHOther <- read.table("LOCATION/HLAPHOtherSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPJL <- read.table("LOCATION/HLAPJLSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPNGBai <- read.table("LOCATION/HLAPNGBaiSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPNGCAF <- read.table("LOCATION/HLAPNGCAFSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPNGHAF <- read.table("LOCATION/HLAPNGHAFSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqPNGNas <- read.table("LOCATION/HLAPNGNasSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqSTU <- read.table("LOCATION/HLASTUSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqSulawesi <- read.table("LOCATION/HLASulawesiSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqSumAna <- read.table("LOCATION/HLASumAnaSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqSumatra <- read.table("LOCATION/HLASumatraSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqSumRin <- read.table("LOCATION/HLASumRinSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqSumWun <- read.table("LOCATION/HLASumWunSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqTaiwan <- read.table("LOCATION/HLATaiwanSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqTimKam <- read.table("LOCATION/HLATimKamSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqTimULa <- read.table("LOCATION/HLATimULaSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqVietnam <- read.table("LOCATION/HLAVietnamSnpFrequencies.frq.strat", header=TRUE)
+HLAfreqYRI <- read.table("LOCATION/HLAYRISnpFrequencies.frq.strat", header=TRUE)
+
+##Identify HLA frequencies relevant to each disease/pharmacogenetic implications by populations
+#HBV
+HBVfreq <- setDT(HLAfreq)[SNP %chin% HBV$HLA.gene]
+
+#Alor 
+
+HBVfreqAlor <- setDT(HLAfreqAlor)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqAlor, file="HBVAlor.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqAlor <- setDT(HLAfreqAlor)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqAlor, file="HBVmAlor.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqAlor <- setDT(HLAfreqAlor)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqAlor, file="HBVvAlor.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqAlor <-setDT(HLAfreqAlor)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqAlor, file="MalariaAlor.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqAlor <-MalariaVfreqAlor <- setDT(HLAfreqAlor)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqAlor, file="MalariaVAlor.txt", quote=FALSE, row.names = FALSE)
+TBfreqAlor <- setDT(HLAfreqAlor)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqAlor, file="TBAlor.txt", quote=FALSE, row.names = FALSE)
+TBmfreqAlor <-setDT(HLAfreqAlor)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqAlor, file="TBmAlor.txt", quote=FALSE, row.names = FALSE)  
+
+#Bali 
+HBVfreqBali <- setDT(HLAfreqBali)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqBali, file="HBVBali.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqBali <- setDT(HLAfreqBali)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqBali, file="HBVmBali.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqBali <- setDT(HLAfreqBali)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqBali, file="HBVvBali.txt", quote=FALSE, row.names = FALSE)
+MalariafreqBali <-setDT(HLAfreqBali)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqBali, file="MalariaBali.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqBali <-MalariaVfreqBali <- setDT(HLAfreqBali)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqBali, file="MalariaVBali.txt", quote=FALSE, row.names = FALSE)
+TBfreqBali <- setDT(HLAfreqBali)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqBali, file="TBBali.txt", quote=FALSE, row.names = FALSE)
+TBmfreqBali <-setDT(HLAfreqBali)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqBali, file="TBmBali.txt", quote=FALSE, row.names = FALSE)
+
+#BEB 
+HBVfreqBEB <- setDT(HLAfreqBEB)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqBEB, file="HBVBEB.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqBEB <- setDT(HLAfreqBEB)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqBEB, file="HBVmBEB.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqBEB <- setDT(HLAfreqBEB)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqBEB, file="HBVvBEB.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqBEB <-setDT(HLAfreqBEB)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqBEB, file="MalariaBEB.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqBEB <-MalariaVfreqBEB <- setDT(HLAfreqBEB)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqBEB, file="MalariaVBEB.txt", quote=FALSE, row.names = FALSE)
+TBfreqBEB <- setDT(HLAfreqBEB)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqBEB, file="TBBEB.txt", quote=FALSE, row.names = FALSE)
+TBmfreqBEB <-setDT(HLAfreqBEB)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqBEB, file="TBmBEB.txt", quote=FALSE, row.names = FALSE)
+
+#Borneo 
+HBVfreqBorneo <- setDT(HLAfreqBorneo)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqBorneo, file="HBVBorneo.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqBorneo <- setDT(HLAfreqBorneo)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqBorneo, file="HBVmBorneo.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqBorneo <- setDT(HLAfreqBorneo)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqBorneo, file="HBVvBorneo.txt", quote=FALSE, row.names = FALSE)
+MalariafreqBorneo <-setDT(HLAfreqBorneo)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqBorneo, file="MalariaBorneo.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqBorneo <-MalariaVfreqBorneo <- setDT(HLAfreqBorneo)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqBorneo, file="MalariaVBorneo.txt", quote=FALSE, row.names = FALSE)
+TBfreqBorneo <- setDT(HLAfreqBorneo)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqBorneo, file="TBBorneo.txt", quote=FALSE, row.names = FALSE)
+TBmfreqBorneo <-setDT(HLAfreqBorneo)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqBorneo, file="TBmBorneo.txt", quote=FALSE, row.names = FALSE)
+
+#CDX 
+HBVfreqCDX <- setDT(HLAfreqCDX)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqCDX, file="HBVCDX.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqCDX <- setDT(HLAfreqCDX)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqCDX, file="HBVmCDX.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqCDX <- setDT(HLAfreqCDX)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqCDX, file="HBVvCDX.txt", quote=FALSE, row.names = FALSE)
+MalariafreqCDX <-setDT(HLAfreqCDX)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqCDX, file="MalariaCDX.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqCDX <-MalariaVfreqCDX <- setDT(HLAfreqCDX)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqCDX, file="MalariaVCDX.txt", quote=FALSE, row.names = FALSE)
+TBfreqCDX <- setDT(HLAfreqCDX)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqCDX, file="TBCDX.txt", quote=FALSE, row.names = FALSE)
+TBmfreqCDX <-setDT(HLAfreqCDX)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqCDX, file="TBmCDX.txt", quote=FALSE, row.names = FALSE)
+
+#CEU 
+HBVfreqCEU <- setDT(HLAfreqCEU)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqCEU, file="HBVCEU.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqCEU <- setDT(HLAfreqCEU)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqCEU, file="HBVmCEU.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqCEU <- setDT(HLAfreqCEU)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqCEU, file="HBVvCEU.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqCEU <-setDT(HLAfreqCEU)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqCEU, file="MalariaCEU.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqCEU <-MalariaVfreqCEU <- setDT(HLAfreqCEU)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqCEU, file="MalariaVCEU.txt", quote=FALSE, row.names = FALSE)
+TBfreqCEU <- setDT(HLAfreqCEU)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqCEU, file="TBCEU.txt", quote=FALSE, row.names = FALSE)
+TBmfreqCEU <-setDT(HLAfreqCEU)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqCEU, file="TBmCEU.txt", quote=FALSE, row.names = FALSE)
+
+#CHB 
+HBVfreqCHB <- setDT(HLAfreqCHB)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqCHB, file="HBVCHB.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqCHB <- setDT(HLAfreqCHB)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqCHB, file="HBVmCHB.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqCHB <- setDT(HLAfreqCHB)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqCHB, file="HBVvCHB.txt", quote=FALSE, row.names = FALSE)
+MalariafreqCHB <-setDT(HLAfreqCHB)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqCHB, file="MalariaCHB.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqCHB <-MalariaVfreqCHB <- setDT(HLAfreqCHB)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqCHB, file="MalariaVCHB.txt", quote=FALSE, row.names = FALSE)
+TBfreqCHB <- setDT(HLAfreqCHB)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqCHB, file="TBCHB.txt", quote=FALSE, row.names = FALSE)
+TBmfreqCHB <-setDT(HLAfreqCHB)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqCHB, file="TBmCHB.txt", quote=FALSE, row.names = FALSE)
+
+#CHS 
+HBVfreqCHS <- setDT(HLAfreqCHS)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqCHS, file="HBVCHS.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqCHS <- setDT(HLAfreqCHS)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqCHS, file="HBVmCHS.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqCHS <- setDT(HLAfreqCHS)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqCHS, file="HBVvCHS.txt", quote=FALSE, row.names = FALSE)
+MalariafreqCHS <-setDT(HLAfreqCHS)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqCHS, file="MalariaCHS.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqCHS <-MalariaVfreqCHS <- setDT(HLAfreqCHS)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqCHS, file="MalariaVCHS.txt", quote=FALSE, row.names = FALSE)
+TBfreqCHS <- setDT(HLAfreqCHS)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqCHS, file="TBCHS.txt", quote=FALSE, row.names = FALSE)
+TBmfreqCHS <-setDT(HLAfreqCHS)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqCHS, file="TBmCHS.txt", quote=FALSE, row.names = FALSE)
+
+#FloBamAF 
+HBVfreqFloBamAF <- setDT(HLAfreqFloBamAF)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqFloBamAF, file="HBVFloBamAF.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqFloBamAF <- setDT(HLAfreqFloBamAF)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqFloBamAF, file="HBVmFloBamAF.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqFloBamAF <- setDT(HLAfreqFloBamAF)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqFloBamAF, file="HBVvFloBamAF.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqFloBamAF <-setDT(HLAfreqFloBamAF)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqFloBamAF, file="MalariaFloBamAF.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqFloBamAF <-MalariaVfreqFloBamAF <- setDT(HLAfreqFloBamAF)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqFloBamAF, file="MalariaVFloBamAF.txt", quote=FALSE, row.names = FALSE)
+TBfreqFloBamAF <- setDT(HLAfreqFloBamAF)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqFloBamAF, file="TBFloBamAF.txt", quote=FALSE, row.names = FALSE)
+TBmfreqFloBamAF <-setDT(HLAfreqFloBamAF)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqFloBamAF, file="TBmFloBamAF.txt", quote=FALSE, row.names = FALSE)
+
+#FloBenAF 
+HBVfreqFloBenAF <- setDT(HLAfreqFloBenAF)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqFloBenAF, file="HBVFloBenAF.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqFloBenAF <- setDT(HLAfreqFloBenAF)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqFloBenAF, file="HBVmFloBenAF.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqFloBenAF <- setDT(HLAfreqFloBenAF)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqFloBenAF, file="HBVvFloBenAF.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqFloBenAF <-setDT(HLAfreqFloBenAF)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqFloBenAF, file="MalariaFloBenAF.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqFloBenAF <-MalariaVfreqFloBenAF <- setDT(HLAfreqFloBenAF)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqFloBenAF, file="MalariaVFloBenAF.txt", quote=FALSE, row.names = FALSE)
+TBfreqFloBenAF <- setDT(HLAfreqFloBenAF)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqFloBenAF, file="TBFloBenAF.txt", quote=FALSE, row.names = FALSE)
+TBmfreqFloBenAF <-setDT(HLAfreqFloBenAF)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqFloBenAF, file="TBmFloBenAF.txt", quote=FALSE, row.names = FALSE)
+
+#FloRamAF 
+HBVfreqFloRamAF <- setDT(HLAfreqFloRamAF)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqFloRamAF, file="HBVFloRamAF.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqFloRamAF <- setDT(HLAfreqFloRamAF)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqFloRamAF, file="HBVmFloRamAF.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqFloRamAF <- setDT(HLAfreqFloRamAF)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqFloRamAF, file="HBVvFloRamAF.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqFloRamAF <-setDT(HLAfreqFloRamAF)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqFloRamAF, file="MalariaFloRamAF.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqFloRamAF <-MalariaVfreqFloRamAF <- setDT(HLAfreqFloRamAF)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqFloRamAF, file="MalariaVFloRamAF.txt", quote=FALSE, row.names = FALSE)
+TBfreqFloRamAF <- setDT(HLAfreqFloRamAF)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqFloRamAF, file="TBFloRamAF.txt", quote=FALSE, row.names = FALSE)
+TBmfreqFloRamAF <-setDT(HLAfreqFloRamAF)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqFloRamAF, file="TBmFloRamAF.txt", quote=FALSE, row.names = FALSE)
+
+#GIH 
+HBVfreqGIH <- setDT(HLAfreqGIH)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqGIH, file="HBVGIH.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqGIH <- setDT(HLAfreqGIH)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqGIH, file="HBVmGIH.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqGIH <- setDT(HLAfreqGIH)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqGIH, file="HBVvGIH.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqGIH <-setDT(HLAfreqGIH)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqGIH, file="MalariaGIH.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqGIH <-MalariaVfreqGIH <- setDT(HLAfreqGIH)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqGIH, file="MalariaVGIH.txt", quote=FALSE, row.names = FALSE)
+TBfreqGIH <- setDT(HLAfreqGIH)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqGIH, file="TBGIH.txt", quote=FALSE, row.names = FALSE)
+TBmfreqGIH <-setDT(HLAfreqGIH)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqGIH, file="TBmGIH.txt", quote=FALSE, row.names = FALSE)
+
+#ITU 
+HBVfreqITU <- setDT(HLAfreqITU)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqITU, file="HBVITU.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqITU <- setDT(HLAfreqITU)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqITU, file="HBVmITU.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqITU <- setDT(HLAfreqITU)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqITU, file="HBVvITU.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqITU <-setDT(HLAfreqITU)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqITU, file="MalariaITU.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqITU <-MalariaVfreqITU <- setDT(HLAfreqITU)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqITU, file="MalariaVITU.txt", quote=FALSE, row.names = FALSE)
+TBfreqITU <- setDT(HLAfreqITU)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqITU, file="TBITU.txt", quote=FALSE, row.names = FALSE)
+TBmfreqITU <-setDT(HLAfreqITU)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqITU, file="TBmITU.txt", quote=FALSE, row.names = FALSE)
+
+#JavaAF 
+HBVfreqJavaAF <- setDT(HLAfreqJavaAF)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqJavaAF, file="HBVJavaAF.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqJavaAF <- setDT(HLAfreqJavaAF)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqJavaAF, file="HBVmJavaAF.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqJavaAF <- setDT(HLAfreqJavaAF)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqJavaAF, file="HBVvJavaAF.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqJavaAF <-setDT(HLAfreqJavaAF)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqJavaAF, file="MalariaJavaAF.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqJavaAF <-MalariaVfreqJavaAF <- setDT(HLAfreqJavaAF)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqJavaAF, file="MalariaVJavaAF.txt", quote=FALSE, row.names = FALSE)
+TBfreqJavaAF <- setDT(HLAfreqJavaAF)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqJavaAF, file="TBJavaAF.txt", quote=FALSE, row.names = FALSE)
+TBmfreqJavaAF <-setDT(HLAfreqJavaAF)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqJavaAF, file="TBmJavaAF.txt", quote=FALSE, row.names = FALSE)
+
+#JPT 
+HBVfreqJPT <- setDT(HLAfreqJPT)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqJPT, file="HBVJPT.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqJPT <- setDT(HLAfreqJPT)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqJPT, file="HBVmJPT.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqJPT <- setDT(HLAfreqJPT)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqJPT, file="HBVvJPT.txt", quote=FALSE, row.names = FALSE)
+MalariafreqJPT <-setDT(HLAfreqJPT)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqJPT, file="MalariaJPT.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqJPT <-MalariaVfreqJPT <- setDT(HLAfreqJPT)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqJPT, file="MalariaVJPT.txt", quote=FALSE, row.names = FALSE)
+TBfreqJPT <- setDT(HLAfreqJPT)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqJPT, file="TBJPT.txt", quote=FALSE, row.names = FALSE)
+TBmfreqJPT <-setDT(HLAfreqJPT)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqJPT, file="TBmJPT.txt", quote=FALSE, row.names = FALSE)
+
+#KHV 
+HBVfreqKHV <- setDT(HLAfreqKHV)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqKHV, file="HBVKHV.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqKHV <- setDT(HLAfreqKHV)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqKHV, file="HBVmKHV.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqKHV <- setDT(HLAfreqKHV)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqKHV, file="HBVvKHV.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqKHV <-setDT(HLAfreqKHV)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqKHV, file="MalariaKHV.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqKHV <-MalariaVfreqKHV <- setDT(HLAfreqKHV)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqKHV, file="MalariaVKHV.txt", quote=FALSE, row.names = FALSE)
+TBfreqKHV <- setDT(HLAfreqKHV)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqKHV, file="TBKHV.txt", quote=FALSE, row.names = FALSE)
+TBmfreqKHV <-setDT(HLAfreqKHV)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqKHV, file="TBmKHV.txt", quote=FALSE, row.names = FALSE)
+
+#Malay 
+HBVfreqMalay <- setDT(HLAfreqMalay)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqMalay, file="HBVMalay.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqMalay <- setDT(HLAfreqMalay)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqMalay, file="HBVmMalay.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqMalay <- setDT(HLAfreqMalay)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqMalay, file="HBVvMalay.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqMalay <-setDT(HLAfreqMalay)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqMalay, file="MalariaMalay.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqMalay <-MalariaVfreqMalay <- setDT(HLAfreqMalay)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqMalay, file="MalariaVMalay.txt", quote=FALSE, row.names = FALSE)
+TBfreqMalay <- setDT(HLAfreqMalay)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqMalay, file="TBMalay.txt", quote=FALSE, row.names = FALSE)
+TBmfreqMalay <-setDT(HLAfreqMalay)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqMalay, file="TBmMalay.txt", quote=FALSE, row.names = FALSE)
+
+#Lembat 
+HBVfreqLembat <- setDT(HLAfreqLembat)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqLembat, file="HBVLembat.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqLembat <- setDT(HLAfreqLembat)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqLembat, file="HBVmLembat.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqLembat <- setDT(HLAfreqLembat)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqLembat, file="HBVvLembat.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqLembat <-setDT(HLAfreqLembat)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqLembat, file="MalariaLembat.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqLembat <-MalariaVfreqLembat <- setDT(HLAfreqLembat)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqLembat, file="MalariaVLembat.txt", quote=FALSE, row.names = FALSE)
+TBfreqLembat <- setDT(HLAfreqLembat)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqLembat, file="TBLembat.txt", quote=FALSE, row.names = FALSE)
+TBmfreqLembat <-setDT(HLAfreqLembat)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqLembat, file="TBmLembat.txt", quote=FALSE, row.names = FALSE)
+
+#Mentaw 
+HBVfreqMentaw <- setDT(HLAfreqMentaw)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqMentaw, file="HBVMentaw.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqMentaw <- setDT(HLAfreqMentaw)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqMentaw, file="HBVmMentaw.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqMentaw <- setDT(HLAfreqMentaw)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqMentaw, file="HBVvMentaw.txt", quote=FALSE, row.names = FALSE)
+MalariafreqMentaw <-setDT(HLAfreqMentaw)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqMentaw, file="MalariaMentaw.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqMentaw <-MalariaVfreqMentaw <- setDT(HLAfreqMentaw)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqMentaw, file="MalariaVMentaw.txt", quote=FALSE, row.names = FALSE)
+TBfreqMentaw <- setDT(HLAfreqMentaw)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqMentaw, file="TBMentaw.txt", quote=FALSE, row.names = FALSE)
+TBmfreqMentaw <-setDT(HLAfreqMentaw)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqMentaw, file="TBmMentaw.txt", quote=FALSE, row.names = FALSE)
+
+#Nias 
+HBVfreqNias <- setDT(HLAfreqNias)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqNias, file="HBVNias.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqNias <- setDT(HLAfreqNias)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqNias, file="HBVmNias.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqNias <- setDT(HLAfreqNias)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqNias, file="HBVvNias.txt", quote=FALSE, row.names = FALSE)
+MalariafreqNias <-setDT(HLAfreqNias)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqNias, file="MalariaNias.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqNias <-MalariaVfreqNias <- setDT(HLAfreqNias)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqNias, file="MalariaVNias.txt", quote=FALSE, row.names = FALSE)
+TBfreqNias <- setDT(HLAfreqNias)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqNias, file="TBNias.txt", quote=FALSE, row.names = FALSE)
+TBmfreqNias <-setDT(HLAfreqNias)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqNias, file="TBmNias.txt", quote=FALSE, row.names = FALSE)
+
+#Pantar 
+HBVfreqPantar <- setDT(HLAfreqPantar)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPantar, file="HBVPantar.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPantar <- setDT(HLAfreqPantar)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPantar, file="HBVmPantar.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPantar <- setDT(HLAfreqPantar)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqPantar, file="HBVvPantar.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqPantar <-setDT(HLAfreqPantar)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPantar, file="MalariaPantar.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPantar <-MalariaVfreqPantar <- setDT(HLAfreqPantar)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPantar, file="MalariaVPantar.txt", quote=FALSE, row.names = FALSE)
+TBfreqPantar <- setDT(HLAfreqPantar)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPantar, file="TBPantar.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPantar <-setDT(HLAfreqPantar)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPantar, file="TBmPantar.txt", quote=FALSE, row.names = FALSE)
+
+#PHNegr 
+HBVfreqPHNegr <- setDT(HLAfreqPHNegr)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPHNegr, file="HBVPHNegr.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPHNegr <- setDT(HLAfreqPHNegr)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPHNegr, file="HBVmPHNegr.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPHNegr <- setDT(HLAfreqPHNegr)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqPHNegr, file="HBVvPHNegr.txt", quote=FALSE, row.names = FALSE)
+MalariafreqPHNegr <-setDT(HLAfreqPHNegr)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPHNegr, file="MalariaPHNegr.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPHNegr <-MalariaVfreqPHNegr <- setDT(HLAfreqPHNegr)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPHNegr, file="MalariaVPHNegr.txt", quote=FALSE, row.names = FALSE)
+TBfreqPHNegr <- setDT(HLAfreqPHNegr)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPHNegr, file="TBPHNegr.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPHNegr <-setDT(HLAfreqPHNegr)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPHNegr, file="TBmPHNegr.txt", quote=FALSE, row.names = FALSE)
+
+#PHIgorTR
+HBVfreqPHIgorTR <- setDT(HLAfreqPHIgorTR)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPHIgorTR, file="HBVPHIgorTR.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPHIgorTR <- setDT(HLAfreqPHIgorTR)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPHIgorTR, file="HBVmPHIgorTR.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPHIgorTR <- setDT(HLAfreqPHIgorTR)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqPHIgorTR, file="HBVvPHIgorTR.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqPHIgorTR <-setDT(HLAfreqPHIgorTR)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPHIgorTR, file="MalariaPHIgorTR.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPHIgorTR <-MalariaVfreqPHIgorTR <- setDT(HLAfreqPHIgorTR)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPHIgorTR, file="MalariaVPHIgorTR.txt", quote=FALSE, row.names = FALSE)
+TBfreqPHIgorTR <- setDT(HLAfreqPHIgorTR)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPHIgorTR, file="TBPHIgorTR.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPHIgorTR <-setDT(HLAfreqPHIgorTR)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPHIgorTR, file="TBmPHIgorTR.txt", quote=FALSE, row.names = FALSE)
+
+#PHOther 
+HBVfreqPHOther <- setDT(HLAfreqPHOther)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPHOther, file="HBVPHOther.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPHOther <- setDT(HLAfreqPHOther)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPHOther, file="HBVmPHOther.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPHOther <- setDT(HLAfreqPHOther)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqPHOther, file="HBVvPHOther.txt", quote=FALSE, row.names = FALSE)
+MalariafreqPHOther <-setDT(HLAfreqPHOther)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPHOther, file="MalariaPHOther.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPHOther <-MalariaVfreqPHOther <- setDT(HLAfreqPHOther)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPHOther, file="MalariaVPHOther.txt", quote=FALSE, row.names = FALSE)
+TBfreqPHOther <- setDT(HLAfreqPHOther)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPHOther, file="TBPHOther.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPHOther <-setDT(HLAfreqPHOther)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPHOther, file="TBmPHOther.txt", quote=FALSE, row.names = FALSE)
+
+#PJL 
+HBVfreqPJL <- setDT(HLAfreqPJL)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPJL, file="HBVPJL.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPJL <- setDT(HLAfreqPJL)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPJL, file="HBVmPJL.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPJL <- setDT(HLAfreqPJL)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqPJL, file="HBVvPJL.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqPJL <-setDT(HLAfreqPJL)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPJL, file="MalariaPJL.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPJL <-MalariaVfreqPJL <- setDT(HLAfreqPJL)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPJL, file="MalariaVPJL.txt", quote=FALSE, row.names = FALSE)
+TBfreqPJL <- setDT(HLAfreqPJL)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPJL, file="TBPJL.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPJL <-setDT(HLAfreqPJL)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPJL, file="TBmPJL.txt", quote=FALSE, row.names = FALSE)
+
+#PNGBai
+HBVfreqPNGBai <- setDT(HLAfreqPNGBai)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPNGBai, file="HBVPNGBai.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPNGBai <- setDT(HLAfreqPNGBai)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPNGBai, file="HBVmPNGBai.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPNGBai <- setDT(HLAfreqPNGBai)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqPNGBai, file="HBVvPNGBai.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqPNGBai <-setDT(HLAfreqPNGBai)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPNGBai, file="MalariaPNGBai.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPNGBai <-MalariaVfreqPNGBai <- setDT(HLAfreqPNGBai)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPNGBai, file="MalariaVPNGBai.txt", quote=FALSE, row.names = FALSE)
+TBfreqPNGBai <- setDT(HLAfreqPNGBai)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPNGBai, file="TBPNGBai.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPNGBai <-setDT(HLAfreqPNGBai)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPNGBai, file="TBmPNGBai.txt", quote=FALSE, row.names = FALSE)
+
+#PNGCAF 
+HBVfreqPNGCAF <- setDT(HLAfreqPNGCAF)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPNGCAF, file="HBVPNGCAF.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPNGCAF <- setDT(HLAfreqPNGCAF)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPNGCAF, file="HBVmPNGCAF.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPNGCAF <- setDT(HLAfreqPNGCAF)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqPNGCAF, file="HBVvPNGCAF.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqPNGCAF <-setDT(HLAfreqPNGCAF)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPNGCAF, file="MalariaPNGCAF.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPNGCAF <-MalariaVfreqPNGCAF <- setDT(HLAfreqPNGCAF)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPNGCAF, file="MalariaVPNGCAF.txt", quote=FALSE, row.names = FALSE)
+TBfreqPNGCAF <- setDT(HLAfreqPNGCAF)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPNGCAF, file="TBPNGCAF.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPNGCAF <-setDT(HLAfreqPNGCAF)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPNGCAF, file="TBmPNGCAF.txt", quote=FALSE, row.names = FALSE)
+
+#PNGHAF 
+HBVfreqPNGHAF <- setDT(HLAfreqPNGHAF)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPNGHAF, file="HBVPNGHAF.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPNGHAF <- setDT(HLAfreqPNGHAF)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPNGHAF, file="HBVmPNGHAF.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPNGHAF <- setDT(HLAfreqPNGHAF)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqPNGHAF, file="HBVvPNGHAF.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqPNGHAF <-setDT(HLAfreqPNGHAF)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPNGHAF, file="MalariaPNGHAF.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPNGHAF <-MalariaVfreqPNGHAF <- setDT(HLAfreqPNGHAF)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPNGHAF, file="MalariaVPNGHAF.txt", quote=FALSE, row.names = FALSE)
+TBfreqPNGHAF <- setDT(HLAfreqPNGHAF)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPNGHAF, file="TBPNGHAF.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPNGHAF <-setDT(HLAfreqPNGHAF)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPNGHAF, file="TBmPNGHAF.txt", quote=FALSE, row.names = FALSE)
+
+#PNGNas 
+HBVfreqPNGNas <- setDT(HLAfreqPNGNas)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqPNGNas, file="HBVPNGNas.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqPNGNas <- setDT(HLAfreqPNGNas)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqPNGNas, file="HBVmPNGNas.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqPNGNas <- setDT(HLAfreqPNGNas)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqPNGNas, file="HBVvPNGNas.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqPNGNas <-setDT(HLAfreqPNGNas)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqPNGNas, file="MalariaPNGNas.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqPNGNas <-MalariaVfreqPNGNas <- setDT(HLAfreqPNGNas)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqPNGNas, file="MalariaVPNGNas.txt", quote=FALSE, row.names = FALSE)
+TBfreqPNGNas <- setDT(HLAfreqPNGNas)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqPNGNas, file="TBPNGNas.txt", quote=FALSE, row.names = FALSE)
+TBmfreqPNGNas <-setDT(HLAfreqPNGNas)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqPNGNas, file="TBmPNGNas.txt", quote=FALSE, row.names = FALSE)
+
+#STU 
+HBVfreqSTU <- setDT(HLAfreqSTU)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqSTU, file="HBVSTU.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqSTU <- setDT(HLAfreqSTU)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqSTU, file="HBVmSTU.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqSTU <- setDT(HLAfreqSTU)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqSTU, file="HBVvSTU.txt", quote=FALSE, row.names = FALSE)
+MalariafreqSTU <-setDT(HLAfreqSTU)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqSTU, file="MalariaSTU.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqSTU <-MalariaVfreqSTU <- setDT(HLAfreqSTU)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqSTU, file="MalariaVSTU.txt", quote=FALSE, row.names = FALSE)
+TBfreqSTU <- setDT(HLAfreqSTU)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqSTU, file="TBSTU.txt", quote=FALSE, row.names = FALSE)
+TBmfreqSTU <-setDT(HLAfreqSTU)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqSTU, file="TBmSTU.txt", quote=FALSE, row.names = FALSE)
+
+#Sulawesi 
+HBVfreqSulawesi <- setDT(HLAfreqSulawesi)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqSulawesi, file="HBVSulawesi.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqSulawesi <- setDT(HLAfreqSulawesi)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqSulawesi, file="HBVmSulawesi.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqSulawesi <- setDT(HLAfreqSulawesi)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqSulawesi, file="HBVvSulawesi.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqSulawesi <-setDT(HLAfreqSulawesi)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqSulawesi, file="MalariaSulawesi.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqSulawesi <-MalariaVfreqSulawesi <- setDT(HLAfreqSulawesi)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqSulawesi, file="MalariaVSulawesi.txt", quote=FALSE, row.names = FALSE)
+TBfreqSulawesi <- setDT(HLAfreqSulawesi)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqSulawesi, file="TBSulawesi.txt", quote=FALSE, row.names = FALSE)
+TBmfreqSulawesi <-setDT(HLAfreqSulawesi)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqSulawesi, file="TBmSulawesi.txt", quote=FALSE, row.names = FALSE)
+
+#SumAna 
+HBVfreqSumAna <- setDT(HLAfreqSumAna)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqSumAna, file="HBVSumAna.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqSumAna <- setDT(HLAfreqSumAna)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqSumAna, file="HBVmSumAna.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqSumAna <- setDT(HLAfreqSumAna)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqSumAna, file="HBVvSumAna.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqSumAna <-setDT(HLAfreqSumAna)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqSumAna, file="MalariaSumAna.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqSumAna <-MalariaVfreqSumAna <- setDT(HLAfreqSumAna)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqSumAna, file="MalariaVSumAna.txt", quote=FALSE, row.names = FALSE)
+TBfreqSumAna <- setDT(HLAfreqSumAna)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqSumAna, file="TBSumAna.txt", quote=FALSE, row.names = FALSE)
+TBmfreqSumAna <-setDT(HLAfreqSumAna)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqSumAna, file="TBmSumAna.txt", quote=FALSE, row.names = FALSE)
+
+#Sumatra 
+HBVfreqSumatra <- setDT(HLAfreqSumatra)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqSumatra, file="HBVSumatra.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqSumatra <- setDT(HLAfreqSumatra)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqSumatra, file="HBVmSumatra.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqSumatra <- setDT(HLAfreqSumatra)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqSumatra, file="HBVvSumatra.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqSumatra <-setDT(HLAfreqSumatra)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqSumatra, file="MalariaSumatra.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqSumatra <-MalariaVfreqSumatra <- setDT(HLAfreqSumatra)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqSumatra, file="MalariaVSumatra.txt", quote=FALSE, row.names = FALSE)
+TBfreqSumatra <- setDT(HLAfreqSumatra)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqSumatra, file="TBSumatra.txt", quote=FALSE, row.names = FALSE)
+TBmfreqSumatra <-setDT(HLAfreqSumatra)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqSumatra, file="TBmSumatra.txt", quote=FALSE, row.names = FALSE)
+
+#SumRin 
+HBVfreqSumRin <- setDT(HLAfreqSumRin)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqSumRin, file="HBVSumRin.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqSumRin <- setDT(HLAfreqSumRin)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqSumRin, file="HBVmSumRin.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqSumRin <- setDT(HLAfreqSumRin)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqSumRin, file="HBVvSumRin.txt", quote=FALSE, row.names = FALSE)
+MalariafreqSumRin <-setDT(HLAfreqSumRin)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqSumRin, file="MalariaSumRin.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqSumRin <-MalariaVfreqSumRin <- setDT(HLAfreqSumRin)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqSumRin, file="MalariaVSumRin.txt", quote=FALSE, row.names = FALSE)
+TBfreqSumRin <- setDT(HLAfreqSumRin)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqSumRin, file="TBSumRin.txt", quote=FALSE, row.names = FALSE)
+TBmfreqSumRin <-setDT(HLAfreqSumRin)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqSumRin, file="TBmSumRin.txt", quote=FALSE, row.names = FALSE)
+
+#SumWun 
+HBVfreqSumWun <- setDT(HLAfreqSumWun)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqSumWun, file="HBVSumWun.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqSumWun <- setDT(HLAfreqSumWun)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqSumWun, file="HBVmSumWun.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqSumWun <- setDT(HLAfreqSumWun)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqSumWun, file="HBVvSumWun.txt", quote=FALSE, row.names = FALSE)
+MalariafreqSumWun <-setDT(HLAfreqSumWun)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqSumWun, file="MalariaSumWun.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqSumWun <-MalariaVfreqSumWun <- setDT(HLAfreqSumWun)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqSumWun, file="MalariaVSumWun.txt", quote=FALSE, row.names = FALSE)
+TBfreqSumWun <- setDT(HLAfreqSumWun)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqSumWun, file="TBSumWun.txt", quote=FALSE, row.names = FALSE)
+TBmfreqSumWun <-setDT(HLAfreqSumWun)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqSumWun, file="TBmSumWun.txt", quote=FALSE, row.names = FALSE)
+
+#Taiwan 
+HBVfreqTaiwan <- setDT(HLAfreqTaiwan)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqTaiwan, file="HBVTaiwan.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqTaiwan <- setDT(HLAfreqTaiwan)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqTaiwan, file="HBVmTaiwan.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqTaiwan <- setDT(HLAfreqTaiwan)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqTaiwan, file="HBVvTaiwan.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqTaiwan <-setDT(HLAfreqTaiwan)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqTaiwan, file="MalariaTaiwan.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqTaiwan <-MalariaVfreqTaiwan <- setDT(HLAfreqTaiwan)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqTaiwan, file="MalariaVTaiwan.txt", quote=FALSE, row.names = FALSE)
+TBfreqTaiwan <- setDT(HLAfreqTaiwan)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqTaiwan, file="TBTaiwan.txt", quote=FALSE, row.names = FALSE)
+TBmfreqTaiwan <-setDT(HLAfreqTaiwan)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqTaiwan, file="TBmTaiwan.txt", quote=FALSE, row.names = FALSE)
+
+#TimKam 
+HBVfreqTimKam <- setDT(HLAfreqTimKam)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqTimKam, file="HBVTimKam.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqTimKam <- setDT(HLAfreqTimKam)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqTimKam, file="HBVmTimKam.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqTimKam <- setDT(HLAfreqTimKam)[SNP %chin% HBV_vac$Gene]
+write.table(HBVvfreqTimKam, file="HBVvTimKam.txt", quote=FALSE, row.names = FALSE)
+MalariafreqTimKam <-setDT(HLAfreqTimKam)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqTimKam, file="MalariaTimKam.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqTimKam <-MalariaVfreqTimKam <- setDT(HLAfreqTimKam)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqTimKam, file="MalariaVTimKam.txt", quote=FALSE, row.names = FALSE)
+TBfreqTimKam <- setDT(HLAfreqTimKam)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqTimKam, file="TBTimKam.txt", quote=FALSE, row.names = FALSE)
+TBmfreqTimKam <-setDT(HLAfreqTimKam)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqTimKam, file="TBmTimKam.txt", quote=FALSE, row.names = FALSE)
+
+#TimULa 
+HBVfreqTimULa <- setDT(HLAfreqTimULa)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqTimULa, file="HBVTimULa.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqTimULa <- setDT(HLAfreqTimULa)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqTimULa, file="HBVmTimULa.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqTimULa <- setDT(HLAfreqTimULa)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqTimULa, file="HBVvTimULa.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqTimULa <-setDT(HLAfreqTimULa)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqTimULa, file="MalariaTimULa.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqTimULa <-MalariaVfreqTimULa <- setDT(HLAfreqTimULa)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqTimULa, file="MalariaVTimULa.txt", quote=FALSE, row.names = FALSE)
+TBfreqTimULa <- setDT(HLAfreqTimULa)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqTimULa, file="TBTimULa.txt", quote=FALSE, row.names = FALSE)
+TBmfreqTimULa <-setDT(HLAfreqTimULa)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqTimULa, file="TBmTimULa.txt", quote=FALSE, row.names = FALSE)
+
+#Vietnam 
+HBVfreqVietnam <- setDT(HLAfreqVietnam)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqVietnam, file="HBVVietnam.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqVietnam <- setDT(HLAfreqVietnam)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqVietnam, file="HBVmVietnam.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqVietnam <- setDT(HLAfreqVietnam)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqVietnam, file="HBVvVietnam.txt", quote=FALSE, row.names = FALSE) 
+MalariafreqVietnam <-setDT(HLAfreqVietnam)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqVietnam, file="MalariaVietnam.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqVietnam <-MalariaVfreqVietnam <- setDT(HLAfreqVietnam)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqVietnam, file="MalariaVVietnam.txt", quote=FALSE, row.names = FALSE)
+TBfreqVietnam <- setDT(HLAfreqVietnam)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqVietnam, file="TBVietnam.txt", quote=FALSE, row.names = FALSE)
+TBmfreqVietnam <-setDT(HLAfreqVietnam)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqVietnam, file="TBmVietnam.txt", quote=FALSE, row.names = FALSE)
+
+#YRI 
+HBVfreqYRI <- setDT(HLAfreqYRI)[SNP %chin% HBV$HLA.gene]
+write.table(HBVfreqYRI, file="HBVYRI.txt", quote=FALSE, row.names = FALSE)
+HBVmfreqYRI <- setDT(HLAfreqYRI)[SNP %chin% HBV_med$Gene]
+write.table(HBVmfreqYRI, file="HBVmYRI.txt", quote=FALSE, row.names = FALSE)
+HBVvfreqYRI <- setDT(HLAfreqYRI)[SNP %chin% HBV_vac$Gene] 
+write.table(HBVvfreqYRI, file="HBVvYRI.txt", quote=FALSE, row.names = FALSE)
+MalariafreqYRI <-setDT(HLAfreqYRI)[SNP %chin% Malaria$HLA.gene]
+write.table(MalariafreqYRI, file="MalariaYRI.txt", quote=FALSE, row.names = FALSE)
+MalariaVfreqYRI <-MalariaVfreqYRI <- setDT(HLAfreqYRI)[SNP %chin% Malaria_vac$Gene]
+write.table(MalariaVfreqYRI, file="MalariaVYRI.txt", quote=FALSE, row.names = FALSE)
+TBfreqYRI <- setDT(HLAfreqYRI)[SNP %chin% TB$HLA.gene]
+write.table(TBfreqYRI, file="TBYRI.txt", quote=FALSE, row.names = FALSE)
+TBmfreqYRI <-setDT(HLAfreqYRI)[SNP %chin% TB_med$Gene]
+write.table(TBmfreqYRI, file="TBmYRI.txt", quote=FALSE, row.names = FALSE)
+
+###Combine datasets
+##HBV
+#HBV-disease
+HBVref <- HBVfreqAlor[, c("SNP")]
+HBVfreqAlor <- HBVfreqAlor[, c("MAF")]
+HBVfreqAlor <- HBVfreqAlor %>% 
+  rename("Alor"="MAF")
+HBVfreqBali <- HBVfreqBali[, c("MAF")]
+HBVfreqBali <- HBVfreqBali %>% 
+  rename("Bali"="MAF")
+HBVfreqBEB <- HBVfreqBEB[, c("MAF")]
+HBVfreqBEB <- HBVfreqBEB %>% 
+  rename("Bangladeshi"="MAF")
+HBVfreqBorneo <- HBVfreqBorneo[, c("MAF")]
+HBVfreqBorneo <- HBVfreqBorneo %>% 
+  rename("Borneo"="MAF")
+HBVfreqCDX <- HBVfreqCDX[, c("MAF")]
+HBVfreqCDX <- HBVfreqCDX %>% 
+  rename("Dai (China)"="MAF")
+HBVfreqCEU <- HBVfreqCEU[, c("MAF")]
+HBVfreqCEU <- HBVfreqCEU %>% 
+  rename("European"="MAF")
+HBVfreqCHB <- HBVfreqCHB[, c("MAF")]
+HBVfreqCHB <- HBVfreqCHB %>% 
+  rename("Han (China)"="MAF")
+HBVfreqCHS <- HBVfreqCHS[, c("MAF")]
+HBVfreqCHS <- HBVfreqCHS %>% 
+  rename("Southern Han (China)"="MAF")
+HBVfreqFloBamAF <- HBVfreqFloBamAF[, c("MAF")]
+HBVfreqFloBamAF <- HBVfreqFloBamAF %>% 
+  rename("Flores (Bama)"="MAF")
+HBVfreqFloBenAF <- HBVfreqFloBenAF[, c("MAF")]
+HBVfreqFloBenAF <- HBVfreqFloBenAF %>% 
+  rename("Flores (Bena)"="MAF")
+HBVfreqFloRamAF <- HBVfreqFloRamAF[, c("MAF")]
+HBVfreqFloRamAF <- HBVfreqFloRamAF %>% 
+  rename("Flores (Rampasasa)"="MAF")
+HBVfreqGIH <- HBVfreqGIH[, c("MAF")]
+HBVfreqGIH <- HBVfreqGIH %>% 
+  rename("Gujarati (India)"="MAF")
+HBVfreqITU <- HBVfreqITU[, c("MAF")]
+HBVfreqITU <- HBVfreqITU %>% 
+  rename("Telugu (India)"="MAF")
+HBVfreqJavaAF <- HBVfreqJavaAF[, c("MAF")]
+HBVfreqJavaAF <- HBVfreqJavaAF %>% 
+  rename("Java"="MAF")
+HBVfreqJPT <- HBVfreqJPT[, c("MAF")]
+HBVfreqJPT <- HBVfreqJPT %>% 
+  rename("Japanese"="MAF")
+HBVfreqKHV <- HBVfreqKHV[, c("MAF")]
+HBVfreqKHV <- HBVfreqKHV %>% 
+  rename("KHV (Vietnam)"="MAF")
+HBVfreqLembat <- HBVfreqLembat[, c("MAF")]
+HBVfreqLembat <- HBVfreqLembat %>% 
+  rename("Lembata"="MAF")
+HBVfreqMalay <- HBVfreqMalay[, c("MAF")]
+HBVfreqMalay <- HBVfreqMalay %>% 
+  rename("Malay"="MAF")
+HBVfreqMentaw <- HBVfreqMentaw[, c("MAF")]
+HBVfreqMentaw <- HBVfreqMentaw %>% 
+  rename("Mentawai"="MAF")
+HBVfreqNias <- HBVfreqNias[, c("MAF")]
+HBVfreqNias <- HBVfreqNias %>% 
+  rename("Nias"="MAF")
+HBVfreqPantar <- HBVfreqPantar[, c("MAF")]
+HBVfreqPantar <- HBVfreqPantar %>% 
+  rename("Pantar"="MAF")
+HBVfreqPHNegr <- HBVfreqPHNegr[, c("MAF")]
+HBVfreqPHNegr <- HBVfreqPHNegr %>% 
+  rename("Negritos (Philippines)"="MAF")
+HBVfreqPHOther <- HBVfreqPHOther[, c("MAF")]
+HBVfreqPHOther <- HBVfreqPHOther %>% 
+  rename("Non-Kankanaey (Philippines)"="MAF")
+HBVfreqPHIgorTR <- HBVfreqPHIgorTR[, c("MAF")]
+HBVfreqPHIgorTR <- HBVfreqPHIgorTR %>% 
+  rename("Kankanaey (Philippines"="MAF")
+HBVfreqPJL <- HBVfreqPJL[, c("MAF")]
+HBVfreqPJL <- HBVfreqPJL %>% 
+  rename("Punjabi (Pakistan)"="MAF")
+HBVfreqPNGBai <- HBVfreqPNGBai[, c("MAF")]
+HBVfreqPNGBai <- HBVfreqPNGBai %>% 
+  rename("PNG Baining"="MAF")
+HBVfreqPNGCAF <- HBVfreqPNGCAF[, c("MAF")]
+HBVfreqPNGCAF <- HBVfreqPNGCAF %>% 
+  rename("PNG Coastal"="MAF")
+HBVfreqPNGHAF <- HBVfreqPNGHAF[, c("MAF")]
+HBVfreqPNGHAF <- HBVfreqPNGHAF %>% 
+  rename("PNG Highlands"="MAF")
+HBVfreqPNGNas <- HBVfreqPNGNas[, c("MAF")]
+HBVfreqPNGNas <- HBVfreqPNGNas %>% 
+  rename("PNG Nasioi"="MAF")
+HBVfreqSTU <- HBVfreqSTU[, c("MAF")]
+HBVfreqSTU <- HBVfreqSTU %>% 
+  rename("Tamil (Sri Lanka)"="MAF")
+HBVfreqSulawesi <- HBVfreqSulawesi[, c("MAF")]
+HBVfreqSulawesi <- HBVfreqSulawesi %>% 
+  rename("Sulawesi"="MAF")
+HBVfreqSumAna <- HBVfreqSumAna[, c("MAF")]
+HBVfreqSumAna <- HBVfreqSumAna %>% 
+  rename("Sumba (Ana)"="MAF")
+HBVfreqSumatra <- HBVfreqSumatra[, c("MAF")]
+HBVfreqSumatra <- HBVfreqSumatra %>% 
+  rename("Sumatra"="MAF")
+HBVfreqSumRin <- HBVfreqSumRin[, c("MAF")]
+HBVfreqSumRin <- HBVfreqSumRin %>% 
+  rename("Sumba (Rin)"="MAF")
+HBVfreqSumWun <- HBVfreqSumWun[, c("MAF")]
+HBVfreqSumWun <- HBVfreqSumWun %>% 
+  rename("Sumba (Wun)"="MAF")
+HBVfreqTaiwan <- HBVfreqTaiwan[, c("MAF")]
+HBVfreqTaiwan <- HBVfreqTaiwan %>% 
+  rename("Taiwan"="MAF")
+HBVfreqTimKam <- HBVfreqTimKam[, c("MAF")]
+HBVfreqTimKam <- HBVfreqTimKam %>% 
+  rename("Timor (Kam)"="MAF")
+HBVfreqTimULa <- HBVfreqTimULa[, c("MAF")]
+HBVfreqTimULa <- HBVfreqTimULa %>% 
+  rename("Timor (ULa)"="MAF")
+HBVfreqVietnam <- HBVfreqVietnam[, c("MAF")]
+HBVfreqVietnam <- HBVfreqVietnam %>% 
+  rename("Vietnam"="MAF")
+HBVfreqYRI <- HBVfreqYRI[, c("MAF")]
+HBVfreqYRI <- HBVfreqYRI %>% 
+  rename("Yuruba (Nigeria)"="MAF")
+
+HBVall <- cbind(HBVref, HBVfreqAlor, HBVfreqBali, HBVfreqBEB, HBVfreqBorneo, HBVfreqCDX, HBVfreqCEU, HBVfreqCHB, HBVfreqCHS, HBVfreqFloBamAF, HBVfreqFloBenAF, HBVfreqFloRamAF, HBVfreqGIH, HBVfreqITU, HBVfreqJavaAF, HBVfreqJPT, HBVfreqKHV, HBVfreqLembat, HBVfreqMalay, HBVfreqMentaw, HBVfreqNias, HBVfreqPantar, HBVfreqPHNegr, HBVfreqPHOther, HBVfreqPHIgorTR, HBVfreqPJL, HBVfreqPNGBai, HBVfreqPNGCAF, HBVfreqPNGHAF, HBVfreqPNGNas, HBVfreqSTU, HBVfreqSulawesi, HBVfreqSumAna, HBVfreqSumatra, HBVfreqSumRin, HBVfreqSumWun, HBVfreqTaiwan, HBVfreqTimKam, HBVfreqTimULa, HBVfreqVietnam, HBVfreqYRI)
+write.csv(HBVall, "HBVall.csv", row.names = FALSE)
+
+#HBV-medication
+HBVmref <- HBVmfreqAlor[, c("SNP")]
+HBVmfreqAlor <- HBVmfreqAlor[, c("MAF")]
+HBVmfreqAlor <- HBVmfreqAlor %>% 
+  rename("Alor"="MAF")
+HBVmfreqBali <- HBVmfreqBali[, c("MAF")]
+HBVmfreqBali <- HBVmfreqBali %>% 
+  rename("Bali"="MAF")
+HBVmfreqBEB <- HBVmfreqBEB[, c("MAF")]
+HBVmfreqBEB <- HBVmfreqBEB %>% 
+  rename("Bangladeshi"="MAF")
+HBVmfreqBorneo <- HBVmfreqBorneo[, c("MAF")]
+HBVmfreqBorneo <- HBVmfreqBorneo %>% 
+  rename("Borneo"="MAF")
+HBVmfreqCDX <- HBVmfreqCDX[, c("MAF")]
+HBVmfreqCDX <- HBVmfreqCDX %>% 
+  rename("Dai (China)"="MAF")
+HBVmfreqCEU <- HBVmfreqCEU[, c("MAF")]
+HBVmfreqCEU <- HBVmfreqCEU %>% 
+  rename("European"="MAF")
+HBVmfreqCHB <- HBVmfreqCHB[, c("MAF")]
+HBVmfreqCHB <- HBVmfreqCHB %>% 
+  rename("Han (China)"="MAF")
+HBVmfreqCHS <- HBVmfreqCHS[, c("MAF")]
+HBVmfreqCHS <- HBVmfreqCHS %>% 
+  rename("Southern Han (China)"="MAF")
+HBVmfreqFloBamAF <- HBVmfreqFloBamAF[, c("MAF")]
+HBVmfreqFloBamAF <- HBVmfreqFloBamAF %>% 
+  rename("Flores (Bama)"="MAF")
+HBVmfreqFloBenAF <- HBVmfreqFloBenAF[, c("MAF")]
+HBVmfreqFloBenAF <- HBVmfreqFloBenAF %>% 
+  rename("Flores (Bena)"="MAF")
+HBVmfreqFloRamAF <- HBVmfreqFloRamAF[, c("MAF")]
+HBVmfreqFloRamAF <- HBVmfreqFloRamAF %>% 
+  rename("Flores (Rampasasa)"="MAF")
+HBVmfreqGIH <- HBVmfreqGIH[, c("MAF")]
+HBVmfreqGIH <- HBVmfreqGIH %>% 
+  rename("Gujarati (India)"="MAF")
+HBVmfreqITU <- HBVmfreqITU[, c("MAF")]
+HBVmfreqITU <- HBVmfreqITU %>% 
+  rename("Telugu (India)"="MAF")
+HBVmfreqJavaAF <- HBVmfreqJavaAF[, c("MAF")]
+HBVmfreqJavaAF <- HBVmfreqJavaAF %>% 
+  rename("Java"="MAF")
+HBVmfreqJPT <- HBVmfreqJPT[, c("MAF")]
+HBVmfreqJPT <- HBVmfreqJPT %>% 
+  rename("Japanese"="MAF")
+HBVmfreqKHV <- HBVmfreqKHV[, c("MAF")]
+HBVmfreqKHV <- HBVmfreqKHV %>% 
+  rename("KHV (Vietnam)"="MAF")
+HBVmfreqLembat <- HBVmfreqLembat[, c("MAF")]
+HBVmfreqLembat <- HBVmfreqLembat %>% 
+  rename("Lembata"="MAF")
+HBVmfreqMalay <- HBVmfreqMalay[, c("MAF")]
+HBVmfreqMalay <- HBVmfreqMalay %>% 
+  rename("Malay"="MAF")
+HBVmfreqMentaw <- HBVmfreqMentaw[, c("MAF")]
+HBVmfreqMentaw <- HBVmfreqMentaw %>% 
+  rename("Mentawai"="MAF")
+HBVmfreqNias <- HBVmfreqNias[, c("MAF")]
+HBVmfreqNias <- HBVmfreqNias %>% 
+  rename("Nias"="MAF")
+HBVmfreqPantar <- HBVmfreqPantar[, c("MAF")]
+HBVmfreqPantar <- HBVmfreqPantar %>% 
+  rename("Pantar"="MAF")
+HBVmfreqPHNegr <- HBVmfreqPHNegr[, c("MAF")]
+HBVmfreqPHNegr <- HBVmfreqPHNegr %>% 
+  rename("Negritos (Philippines)"="MAF")
+HBVmfreqPHOther <- HBVmfreqPHOther[, c("MAF")]
+HBVmfreqPHOther <- HBVmfreqPHOther %>% 
+  rename("Non-Kankanaey (Philippines)"="MAF")
+HBVmfreqPHIgorTR <- HBVmfreqPHIgorTR[, c("MAF")]
+HBVmfreqPHIgorTR <- HBVmfreqPHIgorTR %>% 
+  rename("Kankanaey (Philippines"="MAF")
+HBVmfreqPJL <- HBVmfreqPJL[, c("MAF")]
+HBVmfreqPJL <- HBVmfreqPJL %>% 
+  rename("Punjabi (Pakistan)"="MAF")
+HBVmfreqPNGBai <- HBVmfreqPNGBai[, c("MAF")]
+HBVmfreqPNGBai <- HBVmfreqPNGBai %>% 
+  rename("PNG Baining"="MAF")
+HBVmfreqPNGCAF <- HBVmfreqPNGCAF[, c("MAF")]
+HBVmfreqPNGCAF <- HBVmfreqPNGCAF %>% 
+  rename("PNG Coastal"="MAF")
+HBVmfreqPNGHAF <- HBVmfreqPNGHAF[, c("MAF")]
+HBVmfreqPNGHAF <- HBVmfreqPNGHAF %>% 
+  rename("PNG Highlands"="MAF")
+HBVmfreqPNGNas <- HBVmfreqPNGNas[, c("MAF")]
+HBVmfreqPNGNas <- HBVmfreqPNGNas %>% 
+  rename("PNG Nasioi"="MAF")
+HBVmfreqSTU <- HBVmfreqSTU[, c("MAF")]
+HBVmfreqSTU <- HBVmfreqSTU %>% 
+  rename("Tamil (Sri Lanka)"="MAF")
+HBVmfreqSulawesi <- HBVmfreqSulawesi[, c("MAF")]
+HBVmfreqSulawesi <- HBVmfreqSulawesi %>% 
+  rename("Sulawesi"="MAF")
+HBVmfreqSumAna <- HBVmfreqSumAna[, c("MAF")]
+HBVmfreqSumAna <- HBVmfreqSumAna %>% 
+  rename("Sumba (Ana)"="MAF")
+HBVmfreqSumatra <- HBVmfreqSumatra[, c("MAF")]
+HBVmfreqSumatra <- HBVmfreqSumatra %>% 
+  rename("Sumatra"="MAF")
+HBVmfreqSumRin <- HBVmfreqSumRin[, c("MAF")]
+HBVmfreqSumRin <- HBVmfreqSumRin %>% 
+  rename("Sumba (Rin)"="MAF")
+HBVmfreqSumWun <- HBVmfreqSumWun[, c("MAF")]
+HBVmfreqSumWun <- HBVmfreqSumWun %>% 
+  rename("Sumba (Wun)"="MAF")
+HBVmfreqTaiwan <- HBVmfreqTaiwan[, c("MAF")]
+HBVmfreqTaiwan <- HBVmfreqTaiwan %>% 
+  rename("Taiwan"="MAF")
+HBVmfreqTimKam <- HBVmfreqTimKam[, c("MAF")]
+HBVmfreqTimKam <- HBVmfreqTimKam %>% 
+  rename("Timor (Kam)"="MAF")
+HBVmfreqTimULa <- HBVmfreqTimULa[, c("MAF")]
+HBVmfreqTimULa <- HBVmfreqTimULa %>% 
+  rename("Timor (ULa)"="MAF")
+HBVmfreqVietnam <- HBVmfreqVietnam[, c("MAF")]
+HBVmfreqVietnam <- HBVmfreqVietnam %>% 
+  rename("Vietnam"="MAF")
+HBVmfreqYRI <- HBVmfreqYRI[, c("MAF")]
+HBVmfreqYRI <- HBVmfreqYRI %>% 
+  rename("Yuruba (Nigeria)"="MAF")
+
+HBVmall <- cbind(HBVmref, HBVmfreqAlor, HBVmfreqBali, HBVmfreqBEB, HBVmfreqBorneo, HBVmfreqCDX, HBVmfreqCEU, HBVmfreqCHB, HBVmfreqCHS, HBVmfreqFloBamAF, HBVmfreqFloBenAF, HBVmfreqFloRamAF, HBVmfreqGIH, HBVmfreqITU, HBVmfreqJavaAF, HBVmfreqJPT, HBVmfreqKHV, HBVmfreqLembat, HBVmfreqMalay, HBVmfreqMentaw, HBVmfreqNias, HBVmfreqPantar, HBVmfreqPHNegr, HBVmfreqPHOther, HBVmfreqPHIgorTR, HBVmfreqPJL, HBVmfreqPNGBai, HBVmfreqPNGCAF, HBVmfreqPNGHAF, HBVmfreqPNGNas, HBVmfreqSTU, HBVmfreqSulawesi, HBVmfreqSumAna, HBVmfreqSumatra, HBVmfreqSumRin, HBVmfreqSumWun, HBVmfreqTaiwan, HBVmfreqTimKam, HBVmfreqTimULa, HBVmfreqVietnam, HBVmfreqYRI)
+write.csv(HBVmall, "HBVmall.csv", row.names = FALSE)
+
+#HBV-vaccine
+HBVvref <- HBVvfreqAlor[, c("SNP")]
+HBVvfreqAlor <- HBVvfreqAlor[, c("MAF")]
+HBVvfreqAlor <- HBVvfreqAlor %>% 
+  rename("Alor"="MAF")
+HBVvfreqBali <- HBVvfreqBali[, c("MAF")]
+HBVvfreqBali <- HBVvfreqBali %>% 
+  rename("Bali"="MAF")
+HBVvfreqBEB <- HBVvfreqBEB[, c("MAF")]
+HBVvfreqBEB <- HBVvfreqBEB %>% 
+  rename("Bangladeshi"="MAF")
+HBVvfreqBorneo <- HBVvfreqBorneo[, c("MAF")]
+HBVvfreqBorneo <- HBVvfreqBorneo %>% 
+  rename("Borneo"="MAF")
+HBVvfreqCDX <- HBVvfreqCDX[, c("MAF")]
+HBVvfreqCDX <- HBVvfreqCDX %>% 
+  rename("Dai (China)"="MAF")
+HBVvfreqCEU <- HBVvfreqCEU[, c("MAF")]
+HBVvfreqCEU <- HBVvfreqCEU %>% 
+  rename("European"="MAF")
+HBVvfreqCHB <- HBVvfreqCHB[, c("MAF")]
+HBVvfreqCHB <- HBVvfreqCHB %>% 
+  rename("Han (China)"="MAF")
+HBVvfreqCHS <- HBVvfreqCHS[, c("MAF")]
+HBVvfreqCHS <- HBVvfreqCHS %>% 
+  rename("Southern Han (China)"="MAF")
+HBVvfreqFloBamAF <- HBVvfreqFloBamAF[, c("MAF")]
+HBVvfreqFloBamAF <- HBVvfreqFloBamAF %>% 
+  rename("Flores (Bama)"="MAF")
+HBVvfreqFloBenAF <- HBVvfreqFloBenAF[, c("MAF")]
+HBVvfreqFloBenAF <- HBVvfreqFloBenAF %>% 
+  rename("Flores (Bena)"="MAF")
+HBVvfreqFloRamAF <- HBVvfreqFloRamAF[, c("MAF")]
+HBVvfreqFloRamAF <- HBVvfreqFloRamAF %>% 
+  rename("Flores (Rampasasa)"="MAF")
+HBVvfreqGIH <- HBVvfreqGIH[, c("MAF")]
+HBVvfreqGIH <- HBVvfreqGIH %>% 
+  rename("Gujarati (India)"="MAF")
+HBVvfreqITU <- HBVvfreqITU[, c("MAF")]
+HBVvfreqITU <- HBVvfreqITU %>% 
+  rename("Telugu (India)"="MAF")
+HBVvfreqJavaAF <- HBVvfreqJavaAF[, c("MAF")]
+HBVvfreqJavaAF <- HBVvfreqJavaAF %>% 
+  rename("Java"="MAF")
+HBVvfreqJPT <- HBVvfreqJPT[, c("MAF")]
+HBVvfreqJPT <- HBVvfreqJPT %>% 
+  rename("Japanese"="MAF")
+HBVvfreqKHV <- HBVvfreqKHV[, c("MAF")]
+HBVvfreqKHV <- HBVvfreqKHV %>% 
+  rename("KHV (Vietnam)"="MAF")
+HBVvfreqLembat <- HBVvfreqLembat[, c("MAF")]
+HBVvfreqLembat <- HBVvfreqLembat %>% 
+  rename("Lembata"="MAF")
+HBVvfreqMalay <- HBVvfreqMalay[, c("MAF")]
+HBVvfreqMalay <- HBVvfreqMalay %>% 
+  rename("Malay"="MAF")
+HBVvfreqMentaw <- HBVvfreqMentaw[, c("MAF")]
+HBVvfreqMentaw <- HBVvfreqMentaw %>% 
+  rename("Mentawai"="MAF")
+HBVvfreqNias <- HBVvfreqNias[, c("MAF")]
+HBVvfreqNias <- HBVvfreqNias %>% 
+  rename("Nias"="MAF")
+HBVvfreqPantar <- HBVvfreqPantar[, c("MAF")]
+HBVvfreqPantar <- HBVvfreqPantar %>% 
+  rename("Pantar"="MAF")
+HBVvfreqPHNegr <- HBVvfreqPHNegr[, c("MAF")]
+HBVvfreqPHNegr <- HBVvfreqPHNegr %>% 
+  rename("Negritos (Philippines)"="MAF")
+HBVvfreqPHOther <- HBVvfreqPHOther[, c("MAF")]
+HBVvfreqPHOther <- HBVvfreqPHOther %>% 
+  rename("Non-Kankanaey (Philippines)"="MAF")
+HBVvfreqPHIgorTR <- HBVvfreqPHIgorTR[, c("MAF")]
+HBVvfreqPHIgorTR <- HBVvfreqPHIgorTR %>% 
+  rename("Kankanaey (Philippines"="MAF")
+HBVvfreqPJL <- HBVvfreqPJL[, c("MAF")]
+HBVvfreqPJL <- HBVvfreqPJL %>% 
+  rename("Punjabi (Pakistan)"="MAF")
+HBVvfreqPNGBai <- HBVvfreqPNGBai[, c("MAF")]
+HBVvfreqPNGBai <- HBVvfreqPNGBai %>% 
+  rename("PNG Baining"="MAF")
+HBVvfreqPNGCAF <- HBVvfreqPNGCAF[, c("MAF")]
+HBVvfreqPNGCAF <- HBVvfreqPNGCAF %>% 
+  rename("PNG Coastal"="MAF")
+HBVvfreqPNGHAF <- HBVvfreqPNGHAF[, c("MAF")]
+HBVvfreqPNGHAF <- HBVvfreqPNGHAF %>% 
+  rename("PNG Highlands"="MAF")
+HBVvfreqPNGNas <- HBVvfreqPNGNas[, c("MAF")]
+HBVvfreqPNGNas <- HBVvfreqPNGNas %>% 
+  rename("PNG Nasioi"="MAF")
+HBVvfreqSTU <- HBVvfreqSTU[, c("MAF")]
+HBVvfreqSTU <- HBVvfreqSTU %>% 
+  rename("Tamil (Sri Lanka)"="MAF")
+HBVvfreqSulawesi <- HBVvfreqSulawesi[, c("MAF")]
+HBVvfreqSulawesi <- HBVvfreqSulawesi %>% 
+  rename("Sulawesi"="MAF")
+HBVvfreqSumAna <- HBVvfreqSumAna[, c("MAF")]
+HBVvfreqSumAna <- HBVvfreqSumAna %>% 
+  rename("Sumba (Ana)"="MAF")
+HBVvfreqSumatra <- HBVvfreqSumatra[, c("MAF")]
+HBVvfreqSumatra <- HBVvfreqSumatra %>% 
+  rename("Sumatra"="MAF")
+HBVvfreqSumRin <- HBVvfreqSumRin[, c("MAF")]
+HBVvfreqSumRin <- HBVvfreqSumRin %>% 
+  rename("Sumba (Rin)"="MAF")
+HBVvfreqSumWun <- HBVvfreqSumWun[, c("MAF")]
+HBVvfreqSumWun <- HBVvfreqSumWun %>% 
+  rename("Sumba (Wun)"="MAF")
+HBVvfreqTaiwan <- HBVvfreqTaiwan[, c("MAF")]
+HBVvfreqTaiwan <- HBVvfreqTaiwan %>% 
+  rename("Taiwan"="MAF")
+HBVvfreqTimKam <- HBVvfreqTimKam[, c("MAF")]
+HBVvfreqTimKam <- HBVvfreqTimKam %>% 
+  rename("Timor (Kam)"="MAF")
+HBVvfreqTimULa <- HBVvfreqTimULa[, c("MAF")]
+HBVvfreqTimULa <- HBVvfreqTimULa %>% 
+  rename("Timor (ULa)"="MAF")
+HBVvfreqVietnam <- HBVvfreqVietnam[, c("MAF")]
+HBVvfreqVietnam <- HBVvfreqVietnam %>% 
+  rename("Vietnam"="MAF")
+HBVvfreqYRI <- HBVvfreqYRI[, c("MAF")]
+HBVvfreqYRI <- HBVvfreqYRI %>% 
+  rename("Yuruba (Nigeria)"="MAF")
+
+HBVvall <- cbind(HBVvref, HBVvfreqAlor, HBVvfreqBali, HBVvfreqBEB, HBVvfreqBorneo, HBVvfreqCDX, HBVvfreqCEU, HBVvfreqCHB, HBVvfreqCHS, HBVvfreqFloBamAF, HBVvfreqFloBenAF, HBVvfreqFloRamAF, HBVvfreqGIH, HBVvfreqITU, HBVvfreqJavaAF, HBVvfreqJPT, HBVvfreqKHV, HBVvfreqLembat, HBVvfreqMalay, HBVvfreqMentaw, HBVvfreqNias, HBVvfreqPantar, HBVvfreqPHNegr, HBVvfreqPHOther, HBVvfreqPHIgorTR, HBVvfreqPJL, HBVvfreqPNGBai, HBVvfreqPNGCAF, HBVvfreqPNGHAF, HBVvfreqPNGNas, HBVvfreqSTU, HBVvfreqSulawesi, HBVvfreqSumAna, HBVvfreqSumatra, HBVvfreqSumRin, HBVvfreqSumWun, HBVvfreqTaiwan, HBVvfreqTimKam, HBVvfreqTimULa, HBVvfreqVietnam, HBVvfreqYRI)
+write.csv(HBVvall, "HBVvall.csv", row.names = FALSE)
+
+##Malaria
+#Malaria-disease 
+Malariaref <- MalariafreqAlor[, c("SNP")]
+MalariafreqAlor <- MalariafreqAlor[, c("MAF")]
+MalariafreqAlor <- MalariafreqAlor %>% 
+  rename("Alor"="MAF")
+MalariafreqBali <- MalariafreqBali[, c("MAF")]
+MalariafreqBali <- MalariafreqBali %>% 
+  rename("Bali"="MAF")
+MalariafreqBEB <- MalariafreqBEB[, c("MAF")]
+MalariafreqBEB <- MalariafreqBEB %>% 
+  rename("Bangladeshi"="MAF")
+MalariafreqBorneo <- MalariafreqBorneo[, c("MAF")]
+MalariafreqBorneo <- MalariafreqBorneo %>% 
+  rename("Borneo"="MAF")
+MalariafreqCDX <- MalariafreqCDX[, c("MAF")]
+MalariafreqCDX <- MalariafreqCDX %>% 
+  rename("Dai (China)"="MAF")
+MalariafreqCEU <- MalariafreqCEU[, c("MAF")]
+MalariafreqCEU <- MalariafreqCEU %>% 
+  rename("European"="MAF")
+MalariafreqCHB <- MalariafreqCHB[, c("MAF")]
+MalariafreqCHB <- MalariafreqCHB %>% 
+  rename("Han (China)"="MAF")
+MalariafreqCHS <- MalariafreqCHS[, c("MAF")]
+MalariafreqCHS <- MalariafreqCHS %>% 
+  rename("Southern Han (China)"="MAF")
+MalariafreqFloBamAF <- MalariafreqFloBamAF[, c("MAF")]
+MalariafreqFloBamAF <- MalariafreqFloBamAF %>% 
+  rename("Flores (Bama)"="MAF")
+MalariafreqFloBenAF <- MalariafreqFloBenAF[, c("MAF")]
+MalariafreqFloBenAF <- MalariafreqFloBenAF %>% 
+  rename("Flores (Bena)"="MAF")
+MalariafreqFloRamAF <- MalariafreqFloRamAF[, c("MAF")]
+MalariafreqFloRamAF <- MalariafreqFloRamAF %>% 
+  rename("Flores (Rampasasa)"="MAF")
+MalariafreqGIH <- MalariafreqGIH[, c("MAF")]
+MalariafreqGIH <- MalariafreqGIH %>% 
+  rename("Gujarati (India)"="MAF")
+MalariafreqITU <- MalariafreqITU[, c("MAF")]
+MalariafreqITU <- MalariafreqITU %>% 
+  rename("Telugu (India)"="MAF")
+MalariafreqJavaAF <- MalariafreqJavaAF[, c("MAF")]
+MalariafreqJavaAF <- MalariafreqJavaAF %>% 
+  rename("Java"="MAF")
+MalariafreqJPT <- MalariafreqJPT[, c("MAF")]
+MalariafreqJPT <- MalariafreqJPT %>% 
+  rename("Japanese"="MAF")
+MalariafreqKHV <- MalariafreqKHV[, c("MAF")]
+MalariafreqKHV <- MalariafreqKHV %>% 
+  rename("KHV (Vietnam)"="MAF")
+MalariafreqLembat <- MalariafreqLembat[, c("MAF")]
+MalariafreqLembat <- MalariafreqLembat %>% 
+  rename("Lembata"="MAF")
+MalariafreqMalay <- MalariafreqMalay[, c("MAF")]
+MalariafreqMalay <- MalariafreqMalay %>% 
+  rename("Malay"="MAF")
+MalariafreqMentaw <- MalariafreqMentaw[, c("MAF")]
+MalariafreqMentaw <- MalariafreqMentaw %>% 
+  rename("Mentawai"="MAF")
+MalariafreqNias <- MalariafreqNias[, c("MAF")]
+MalariafreqNias <- MalariafreqNias %>% 
+  rename("Nias"="MAF")
+MalariafreqPantar <- MalariafreqPantar[, c("MAF")]
+MalariafreqPantar <- MalariafreqPantar %>% 
+  rename("Pantar"="MAF")
+MalariafreqPHNegr <- MalariafreqPHNegr[, c("MAF")]
+MalariafreqPHNegr <- MalariafreqPHNegr %>% 
+  rename("Negritos (Philippines)"="MAF")
+MalariafreqPHOther <- MalariafreqPHOther[, c("MAF")]
+MalariafreqPHOther <- MalariafreqPHOther %>% 
+  rename("Non-Kankanaey (Philippines)"="MAF")
+MalariafreqPHIgorTR <- MalariafreqPHIgorTR[, c("MAF")]
+MalariafreqPHIgorTR <- MalariafreqPHIgorTR %>% 
+  rename("Kankanaey (Philippines"="MAF")
+MalariafreqPJL <- MalariafreqPJL[, c("MAF")]
+MalariafreqPJL <- MalariafreqPJL %>% 
+  rename("Punjabi (Pakistan)"="MAF")
+MalariafreqPNGBai <- MalariafreqPNGBai[, c("MAF")]
+MalariafreqPNGBai <- MalariafreqPNGBai %>% 
+  rename("PNG Baining"="MAF")
+MalariafreqPNGCAF <- MalariafreqPNGCAF[, c("MAF")]
+MalariafreqPNGCAF <- MalariafreqPNGCAF %>% 
+  rename("PNG Coastal"="MAF")
+MalariafreqPNGHAF <- MalariafreqPNGHAF[, c("MAF")]
+MalariafreqPNGHAF <- MalariafreqPNGHAF %>% 
+  rename("PNG Highlands"="MAF")
+MalariafreqPNGNas <- MalariafreqPNGNas[, c("MAF")]
+MalariafreqPNGNas <- MalariafreqPNGNas %>% 
+  rename("PNG Nasioi"="MAF")
+MalariafreqSTU <- MalariafreqSTU[, c("MAF")]
+MalariafreqSTU <- MalariafreqSTU %>% 
+  rename("Tamil (Sri Lanka)"="MAF")
+MalariafreqSulawesi <- MalariafreqSulawesi[, c("MAF")]
+MalariafreqSulawesi <- MalariafreqSulawesi %>% 
+  rename("Sulawesi"="MAF")
+MalariafreqSumAna <- MalariafreqSumAna[, c("MAF")]
+MalariafreqSumAna <- MalariafreqSumAna %>% 
+  rename("Sumba (Ana)"="MAF")
+MalariafreqSumatra <- MalariafreqSumatra[, c("MAF")]
+MalariafreqSumatra <- MalariafreqSumatra %>% 
+  rename("Sumatra"="MAF")
+MalariafreqSumRin <- MalariafreqSumRin[, c("MAF")]
+MalariafreqSumRin <- MalariafreqSumRin %>% 
+  rename("Sumba (Rin)"="MAF")
+MalariafreqSumWun <- MalariafreqSumWun[, c("MAF")]
+MalariafreqSumWun <- MalariafreqSumWun %>% 
+  rename("Sumba (Wun)"="MAF")
+MalariafreqTaiwan <- MalariafreqTaiwan[, c("MAF")]
+MalariafreqTaiwan <- MalariafreqTaiwan %>% 
+  rename("Taiwan"="MAF")
+MalariafreqTimKam <- MalariafreqTimKam[, c("MAF")]
+MalariafreqTimKam <- MalariafreqTimKam %>% 
+  rename("Timor (Kam)"="MAF")
+MalariafreqTimULa <- MalariafreqTimULa[, c("MAF")]
+MalariafreqTimULa <- MalariafreqTimULa %>% 
+  rename("Timor (ULa)"="MAF")
+MalariafreqVietnam <- MalariafreqVietnam[, c("MAF")]
+MalariafreqVietnam <- MalariafreqVietnam %>% 
+  rename("Vietnam"="MAF")
+MalariafreqYRI <- MalariafreqYRI[, c("MAF")]
+MalariafreqYRI <- MalariafreqYRI %>% 
+  rename("Yuruba (Nigeria)"="MAF")
+
+Malariaall <- cbind(Malariaref, MalariafreqAlor, MalariafreqBali, MalariafreqBEB, MalariafreqBorneo, MalariafreqCDX, MalariafreqCEU, MalariafreqCHB, MalariafreqCHS, MalariafreqFloBamAF, MalariafreqFloBenAF, MalariafreqFloRamAF, MalariafreqGIH, MalariafreqITU, MalariafreqJavaAF, MalariafreqJPT, MalariafreqKHV, MalariafreqLembat, MalariafreqMalay, MalariafreqMentaw, MalariafreqNias, MalariafreqPantar, MalariafreqPHNegr, MalariafreqPHOther, MalariafreqPHIgorTR, MalariafreqPJL, MalariafreqPNGBai, MalariafreqPNGCAF, MalariafreqPNGHAF, MalariafreqPNGNas, MalariafreqSTU, MalariafreqSulawesi, MalariafreqSumAna, MalariafreqSumatra, MalariafreqSumRin, MalariafreqSumWun, MalariafreqTaiwan, MalariafreqTimKam, MalariafreqTimULa, MalariafreqVietnam, MalariafreqYRI)
+write.csv(Malariaall, "Malariaall.csv", row.names = FALSE)
+
+#Malaria-vaccine
+MalariaVref <- MalariaVfreqAlor[, c("SNP")]
+MalariaVfreqAlor <- MalariaVfreqAlor[, c("MAF")]
+MalariaVfreqAlor <- MalariaVfreqAlor %>% 
+  rename("Alor"="MAF")
+MalariaVfreqBali <- MalariaVfreqBali[, c("MAF")]
+MalariaVfreqBali <- MalariaVfreqBali %>% 
+  rename("Bali"="MAF")
+MalariaVfreqBEB <- MalariaVfreqBEB[, c("MAF")]
+MalariaVfreqBEB <- MalariaVfreqBEB %>% 
+  rename("Bangladeshi"="MAF")
+MalariaVfreqBorneo <- MalariaVfreqBorneo[, c("MAF")]
+MalariaVfreqBorneo <- MalariaVfreqBorneo %>% 
+  rename("Borneo"="MAF")
+MalariaVfreqCDX <- MalariaVfreqCDX[, c("MAF")]
+MalariaVfreqCDX <- MalariaVfreqCDX %>% 
+  rename("Dai (China)"="MAF")
+MalariaVfreqCEU <- MalariaVfreqCEU[, c("MAF")]
+MalariaVfreqCEU <- MalariaVfreqCEU %>% 
+  rename("European"="MAF")
+MalariaVfreqCHB <- MalariaVfreqCHB[, c("MAF")]
+MalariaVfreqCHB <- MalariaVfreqCHB %>% 
+  rename("Han (China)"="MAF")
+MalariaVfreqCHS <- MalariaVfreqCHS[, c("MAF")]
+MalariaVfreqCHS <- MalariaVfreqCHS %>% 
+  rename("Southern Han (China)"="MAF")
+MalariaVfreqFloBamAF <- MalariaVfreqFloBamAF[, c("MAF")]
+MalariaVfreqFloBamAF <- MalariaVfreqFloBamAF %>% 
+  rename("Flores (Bama)"="MAF")
+MalariaVfreqFloBenAF <- MalariaVfreqFloBenAF[, c("MAF")]
+MalariaVfreqFloBenAF <- MalariaVfreqFloBenAF %>% 
+  rename("Flores (Bena)"="MAF")
+MalariaVfreqFloRamAF <- MalariaVfreqFloRamAF[, c("MAF")]
+MalariaVfreqFloRamAF <- MalariaVfreqFloRamAF %>% 
+  rename("Flores (Rampasasa)"="MAF")
+MalariaVfreqGIH <- MalariaVfreqGIH[, c("MAF")]
+MalariaVfreqGIH <- MalariaVfreqGIH %>% 
+  rename("Gujarati (India)"="MAF")
+MalariaVfreqITU <- MalariaVfreqITU[, c("MAF")]
+MalariaVfreqITU <- MalariaVfreqITU %>% 
+  rename("Telugu (India)"="MAF")
+MalariaVfreqJavaAF <- MalariaVfreqJavaAF[, c("MAF")]
+MalariaVfreqJavaAF <- MalariaVfreqJavaAF %>% 
+  rename("Java"="MAF")
+MalariaVfreqJPT <- MalariaVfreqJPT[, c("MAF")]
+MalariaVfreqJPT <- MalariaVfreqJPT %>% 
+  rename("Japanese"="MAF")
+MalariaVfreqKHV <- MalariaVfreqKHV[, c("MAF")]
+MalariaVfreqKHV <- MalariaVfreqKHV %>% 
+  rename("KHV (Vietnam)"="MAF")
+MalariaVfreqLembat <- MalariaVfreqLembat[, c("MAF")]
+MalariaVfreqLembat <- MalariaVfreqLembat %>% 
+  rename("Lembata"="MAF")
+MalariaVfreqMalay <- MalariaVfreqMalay[, c("MAF")]
+MalariaVfreqMalay <- MalariaVfreqMalay %>% 
+  rename("Malay"="MAF")
+MalariaVfreqMentaw <- MalariaVfreqMentaw[, c("MAF")]
+MalariaVfreqMentaw <- MalariaVfreqMentaw %>% 
+  rename("Mentawai"="MAF")
+MalariaVfreqNias <- MalariaVfreqNias[, c("MAF")]
+MalariaVfreqNias <- MalariaVfreqNias %>% 
+  rename("Nias"="MAF")
+MalariaVfreqPantar <- MalariaVfreqPantar[, c("MAF")]
+MalariaVfreqPantar <- MalariaVfreqPantar %>% 
+  rename("Pantar"="MAF")
+MalariaVfreqPHNegr <- MalariaVfreqPHNegr[, c("MAF")]
+MalariaVfreqPHNegr <- MalariaVfreqPHNegr %>% 
+  rename("Negritos (Philippines)"="MAF")
+MalariaVfreqPHOther <- MalariaVfreqPHOther[, c("MAF")]
+MalariaVfreqPHOther <- MalariaVfreqPHOther %>% 
+  rename("Non-Kankanaey (Philippines)"="MAF")
+MalariaVfreqPHIgorTR <- MalariaVfreqPHIgorTR[, c("MAF")]
+MalariaVfreqPHIgorTR <- MalariaVfreqPHIgorTR %>% 
+  rename("Kankanaey (Philippines"="MAF")
+MalariaVfreqPJL <- MalariaVfreqPJL[, c("MAF")]
+MalariaVfreqPJL <- MalariaVfreqPJL %>% 
+  rename("Punjabi (Pakistan)"="MAF")
+MalariaVfreqPNGBai <- MalariaVfreqPNGBai[, c("MAF")]
+MalariaVfreqPNGBai <- MalariaVfreqPNGBai %>% 
+  rename("PNG Baining"="MAF")
+MalariaVfreqPNGCAF <- MalariaVfreqPNGCAF[, c("MAF")]
+MalariaVfreqPNGCAF <- MalariaVfreqPNGCAF %>% 
+  rename("PNG Coastal"="MAF")
+MalariaVfreqPNGHAF <- MalariaVfreqPNGHAF[, c("MAF")]
+MalariaVfreqPNGHAF <- MalariaVfreqPNGHAF %>% 
+  rename("PNG Highlands"="MAF")
+MalariaVfreqPNGNas <- MalariaVfreqPNGNas[, c("MAF")]
+MalariaVfreqPNGNas <- MalariaVfreqPNGNas %>% 
+  rename("PNG Nasioi"="MAF")
+MalariaVfreqSTU <- MalariaVfreqSTU[, c("MAF")]
+MalariaVfreqSTU <- MalariaVfreqSTU %>% 
+  rename("Tamil (Sri Lanka)"="MAF")
+MalariaVfreqSulawesi <- MalariaVfreqSulawesi[, c("MAF")]
+MalariaVfreqSulawesi <- MalariaVfreqSulawesi %>% 
+  rename("Sulawesi"="MAF")
+MalariaVfreqSumAna <- MalariaVfreqSumAna[, c("MAF")]
+MalariaVfreqSumAna <- MalariaVfreqSumAna %>% 
+  rename("Sumba (Ana)"="MAF")
+MalariaVfreqSumatra <- MalariaVfreqSumatra[, c("MAF")]
+MalariaVfreqSumatra <- MalariaVfreqSumatra %>% 
+  rename("Sumatra"="MAF")
+MalariaVfreqSumRin <- MalariaVfreqSumRin[, c("MAF")]
+MalariaVfreqSumRin <- MalariaVfreqSumRin %>% 
+  rename("Sumba (Rin)"="MAF")
+MalariaVfreqSumWun <- MalariaVfreqSumWun[, c("MAF")]
+MalariaVfreqSumWun <- MalariaVfreqSumWun %>% 
+  rename("Sumba (Wun)"="MAF")
+MalariaVfreqTaiwan <- MalariaVfreqTaiwan[, c("MAF")]
+MalariaVfreqTaiwan <- MalariaVfreqTaiwan %>% 
+  rename("Taiwan"="MAF")
+MalariaVfreqTimKam <- MalariaVfreqTimKam[, c("MAF")]
+MalariaVfreqTimKam <- MalariaVfreqTimKam %>% 
+  rename("Timor (Kam)"="MAF")
+MalariaVfreqTimULa <- MalariaVfreqTimULa[, c("MAF")]
+MalariaVfreqTimULa <- MalariaVfreqTimULa %>% 
+  rename("Timor (ULa)"="MAF")
+MalariaVfreqVietnam <- MalariaVfreqVietnam[, c("MAF")]
+MalariaVfreqVietnam <- MalariaVfreqVietnam %>% 
+  rename("Vietnam"="MAF")
+MalariaVfreqYRI <- MalariaVfreqYRI[, c("MAF")]
+MalariaVfreqYRI <- MalariaVfreqYRI %>% 
+  rename("Yuruba (Nigeria)"="MAF")
+
+MalariaVall <- cbind(MalariaVref, MalariaVfreqAlor, MalariaVfreqBali, MalariaVfreqBEB, MalariaVfreqBorneo, MalariaVfreqCDX, MalariaVfreqCEU, MalariaVfreqCHB, MalariaVfreqCHS, MalariaVfreqFloBamAF, MalariaVfreqFloBenAF, MalariaVfreqFloRamAF, MalariaVfreqGIH, MalariaVfreqITU, MalariaVfreqJavaAF, MalariaVfreqJPT, MalariaVfreqKHV, MalariaVfreqLembat, MalariaVfreqMalay, MalariaVfreqMentaw, MalariaVfreqNias, MalariaVfreqPantar, MalariaVfreqPHNegr, MalariaVfreqPHOther, MalariaVfreqPHIgorTR, MalariaVfreqPJL, MalariaVfreqPNGBai, MalariaVfreqPNGCAF, MalariaVfreqPNGHAF, MalariaVfreqPNGNas, MalariaVfreqSTU, MalariaVfreqSulawesi, MalariaVfreqSumAna, MalariaVfreqSumatra, MalariaVfreqSumRin, MalariaVfreqSumWun, MalariaVfreqTaiwan, MalariaVfreqTimKam, MalariaVfreqTimULa, MalariaVfreqVietnam, MalariaVfreqYRI)
+write.csv(MalariaVall, "MalariaVall.csv", row.names = FALSE)
+
+##TB
+#TB-disease
+TBref <- TBfreqAlor[, c("SNP")]
+TBfreqAlor <- TBfreqAlor[, c("MAF")]
+TBfreqAlor <- TBfreqAlor %>% 
+  rename("Alor"="MAF")
+TBfreqBali <- TBfreqBali[, c("MAF")]
+TBfreqBali <- TBfreqBali %>% 
+  rename("Bali"="MAF")
+TBfreqBEB <- TBfreqBEB[, c("MAF")]
+TBfreqBEB <- TBfreqBEB %>% 
+  rename("Bangladeshi"="MAF")
+TBfreqBorneo <- TBfreqBorneo[, c("MAF")]
+TBfreqBorneo <- TBfreqBorneo %>% 
+  rename("Borneo"="MAF")
+TBfreqCDX <- TBfreqCDX[, c("MAF")]
+TBfreqCDX <- TBfreqCDX %>% 
+  rename("Dai (China)"="MAF")
+TBfreqCEU <- TBfreqCEU[, c("MAF")]
+TBfreqCEU <- TBfreqCEU %>% 
+  rename("European"="MAF")
+TBfreqCHB <- TBfreqCHB[, c("MAF")]
+TBfreqCHB <- TBfreqCHB %>% 
+  rename("Han (China)"="MAF")
+TBfreqCHS <- TBfreqCHS[, c("MAF")]
+TBfreqCHS <- TBfreqCHS %>% 
+  rename("Southern Han (China)"="MAF")
+TBfreqFloBamAF <- TBfreqFloBamAF[, c("MAF")]
+TBfreqFloBamAF <- TBfreqFloBamAF %>% 
+  rename("Flores (Bama)"="MAF")
+TBfreqFloBenAF <- TBfreqFloBenAF[, c("MAF")]
+TBfreqFloBenAF <- TBfreqFloBenAF %>% 
+  rename("Flores (Bena)"="MAF")
+TBfreqFloRamAF <- TBfreqFloRamAF[, c("MAF")]
+TBfreqFloRamAF <- TBfreqFloRamAF %>% 
+  rename("Flores (Rampasasa)"="MAF")
+TBfreqGIH <- TBfreqGIH[, c("MAF")]
+TBfreqGIH <- TBfreqGIH %>% 
+  rename("Gujarati (India)"="MAF")
+TBfreqITU <- TBfreqITU[, c("MAF")]
+TBfreqITU <- TBfreqITU %>% 
+  rename("Telugu (India)"="MAF")
+TBfreqJavaAF <- TBfreqJavaAF[, c("MAF")]
+TBfreqJavaAF <- TBfreqJavaAF %>% 
+  rename("Java"="MAF")
+TBfreqJPT <- TBfreqJPT[, c("MAF")]
+TBfreqJPT <- TBfreqJPT %>% 
+  rename("Japanese"="MAF")
+TBfreqKHV <- TBfreqKHV[, c("MAF")]
+TBfreqKHV <- TBfreqKHV %>% 
+  rename("KHV (Vietnam)"="MAF")
+TBfreqLembat <- TBfreqLembat[, c("MAF")]
+TBfreqLembat <- TBfreqLembat %>% 
+  rename("Lembata"="MAF")
+TBfreqMalay <- TBfreqMalay[, c("MAF")]
+TBfreqMalay <- TBfreqMalay %>% 
+  rename("Malay"="MAF")
+TBfreqMentaw <- TBfreqMentaw[, c("MAF")]
+TBfreqMentaw <- TBfreqMentaw %>% 
+  rename("Mentawai"="MAF")
+TBfreqNias <- TBfreqNias[, c("MAF")]
+TBfreqNias <- TBfreqNias %>% 
+  rename("Nias"="MAF")
+TBfreqPantar <- TBfreqPantar[, c("MAF")]
+TBfreqPantar <- TBfreqPantar %>% 
+  rename("Pantar"="MAF")
+TBfreqPHNegr <- TBfreqPHNegr[, c("MAF")]
+TBfreqPHNegr <- TBfreqPHNegr %>% 
+  rename("Negritos (Philippines)"="MAF")
+TBfreqPHOther <- TBfreqPHOther[, c("MAF")]
+TBfreqPHOther <- TBfreqPHOther %>% 
+  rename("Non-Kankanaey (Philippines)"="MAF")
+TBfreqPHIgorTR <- TBfreqPHIgorTR[, c("MAF")]
+TBfreqPHIgorTR <- TBfreqPHIgorTR %>% 
+  rename("Kankanaey (Philippines"="MAF")
+TBfreqPJL <- TBfreqPJL[, c("MAF")]
+TBfreqPJL <- TBfreqPJL %>% 
+  rename("Punjabi (Pakistan)"="MAF")
+TBfreqPNGBai <- TBfreqPNGBai[, c("MAF")]
+TBfreqPNGBai <- TBfreqPNGBai %>% 
+  rename("PNG Baining"="MAF")
+TBfreqPNGCAF <- TBfreqPNGCAF[, c("MAF")]
+TBfreqPNGCAF <- TBfreqPNGCAF %>% 
+  rename("PNG Coastal"="MAF")
+TBfreqPNGHAF <- TBfreqPNGHAF[, c("MAF")]
+TBfreqPNGHAF <- TBfreqPNGHAF %>% 
+  rename("PNG Highlands"="MAF")
+TBfreqPNGNas <- TBfreqPNGNas[, c("MAF")]
+TBfreqPNGNas <- TBfreqPNGNas %>% 
+  rename("PNG Nasioi"="MAF")
+TBfreqSTU <- TBfreqSTU[, c("MAF")]
+TBfreqSTU <- TBfreqSTU %>% 
+  rename("Tamil (Sri Lanka)"="MAF")
+TBfreqSulawesi <- TBfreqSulawesi[, c("MAF")]
+TBfreqSulawesi <- TBfreqSulawesi %>% 
+  rename("Sulawesi"="MAF")
+TBfreqSumAna <- TBfreqSumAna[, c("MAF")]
+TBfreqSumAna <- TBfreqSumAna %>% 
+  rename("Sumba (Ana)"="MAF")
+TBfreqSumatra <- TBfreqSumatra[, c("MAF")]
+TBfreqSumatra <- TBfreqSumatra %>% 
+  rename("Sumatra"="MAF")
+TBfreqSumRin <- TBfreqSumRin[, c("MAF")]
+TBfreqSumRin <- TBfreqSumRin %>% 
+  rename("Sumba (Rin)"="MAF")
+TBfreqSumWun <- TBfreqSumWun[, c("MAF")]
+TBfreqSumWun <- TBfreqSumWun %>% 
+  rename("Sumba (Wun)"="MAF")
+TBfreqTaiwan <- TBfreqTaiwan[, c("MAF")]
+TBfreqTaiwan <- TBfreqTaiwan %>% 
+  rename("Taiwan"="MAF")
+TBfreqTimKam <- TBfreqTimKam[, c("MAF")]
+TBfreqTimKam <- TBfreqTimKam %>% 
+  rename("Timor (Kam)"="MAF")
+TBfreqTimULa <- TBfreqTimULa[, c("MAF")]
+TBfreqTimULa <- TBfreqTimULa %>% 
+  rename("Timor (ULa)"="MAF")
+TBfreqVietnam <- TBfreqVietnam[, c("MAF")]
+TBfreqVietnam <- TBfreqVietnam %>% 
+  rename("Vietnam"="MAF")
+TBfreqYRI <- TBfreqYRI[, c("MAF")]
+TBfreqYRI <- TBfreqYRI %>% 
+  rename("Yuruba (Nigeria)"="MAF")
+
+TBall <- cbind(TBref, TBfreqAlor, TBfreqBali, TBfreqBEB, TBfreqBorneo, TBfreqCDX, TBfreqCEU, TBfreqCHB, TBfreqCHS, TBfreqFloBamAF, TBfreqFloBenAF, TBfreqFloRamAF, TBfreqGIH, TBfreqITU, TBfreqJavaAF, TBfreqJPT, TBfreqKHV, TBfreqLembat, TBfreqMalay, TBfreqMentaw, TBfreqNias, TBfreqPantar, TBfreqPHNegr, TBfreqPHOther, TBfreqPHIgorTR, TBfreqPJL, TBfreqPNGBai, TBfreqPNGCAF, TBfreqPNGHAF, TBfreqPNGNas, TBfreqSTU, TBfreqSulawesi, TBfreqSumAna, TBfreqSumatra, TBfreqSumRin, TBfreqSumWun, TBfreqTaiwan, TBfreqTimKam, TBfreqTimULa, TBfreqVietnam, TBfreqYRI)
+write.csv(TBall, "TBall.csv", row.names = FALSE)
+
+#TB-medicine
+TBmref <- TBmfreqAlor[, c("SNP")]
+TBmfreqAlor <- TBmfreqAlor[, c("MAF")]
+TBmfreqAlor <- TBmfreqAlor %>% 
+  rename("Alor"="MAF")
+TBmfreqBali <- TBmfreqBali[, c("MAF")]
+TBmfreqBali <- TBmfreqBali %>% 
+  rename("Bali"="MAF")
+TBmfreqBEB <- TBmfreqBEB[, c("MAF")]
+TBmfreqBEB <- TBmfreqBEB %>% 
+  rename("Bangladeshi"="MAF")
+TBmfreqBorneo <- TBmfreqBorneo[, c("MAF")]
+TBmfreqBorneo <- TBmfreqBorneo %>% 
+  rename("Borneo"="MAF")
+TBmfreqCDX <- TBmfreqCDX[, c("MAF")]
+TBmfreqCDX <- TBmfreqCDX %>% 
+  rename("Dai (China)"="MAF")
+TBmfreqCEU <- TBmfreqCEU[, c("MAF")]
+TBmfreqCEU <- TBmfreqCEU %>% 
+  rename("European"="MAF")
+TBmfreqCHB <- TBmfreqCHB[, c("MAF")]
+TBmfreqCHB <- TBmfreqCHB %>% 
+  rename("Han (China)"="MAF")
+TBmfreqCHS <- TBmfreqCHS[, c("MAF")]
+TBmfreqCHS <- TBmfreqCHS %>% 
+  rename("Southern Han (China)"="MAF")
+TBmfreqFloBamAF <- TBmfreqFloBamAF[, c("MAF")]
+TBmfreqFloBamAF <- TBmfreqFloBamAF %>% 
+  rename("Flores (Bama)"="MAF")
+TBmfreqFloBenAF <- TBmfreqFloBenAF[, c("MAF")]
+TBmfreqFloBenAF <- TBmfreqFloBenAF %>% 
+  rename("Flores (Bena)"="MAF")
+TBmfreqFloRamAF <- TBmfreqFloRamAF[, c("MAF")]
+TBmfreqFloRamAF <- TBmfreqFloRamAF %>% 
+  rename("Flores (Rampasasa)"="MAF")
+TBmfreqGIH <- TBmfreqGIH[, c("MAF")]
+TBmfreqGIH <- TBmfreqGIH %>% 
+  rename("Gujarati (India)"="MAF")
+TBmfreqITU <- TBmfreqITU[, c("MAF")]
+TBmfreqITU <- TBmfreqITU %>% 
+  rename("Telugu (India)"="MAF")
+TBmfreqJavaAF <- TBmfreqJavaAF[, c("MAF")]
+TBmfreqJavaAF <- TBmfreqJavaAF %>% 
+  rename("Java"="MAF")
+TBmfreqJPT <- TBmfreqJPT[, c("MAF")]
+TBmfreqJPT <- TBmfreqJPT %>% 
+  rename("Japanese"="MAF")
+TBmfreqKHV <- TBmfreqKHV[, c("MAF")]
+TBmfreqKHV <- TBmfreqKHV %>% 
+  rename("KHV (Vietnam)"="MAF")
+TBmfreqLembat <- TBmfreqLembat[, c("MAF")]
+TBmfreqLembat <- TBmfreqLembat %>% 
+  rename("Lembata"="MAF")
+TBmfreqMalay <- TBmfreqMalay[, c("MAF")]
+TBmfreqMalay <- TBmfreqMalay %>% 
+  rename("Malay"="MAF")
+TBmfreqMentaw <- TBmfreqMentaw[, c("MAF")]
+TBmfreqMentaw <- TBmfreqMentaw %>% 
+  rename("Mentawai"="MAF")
+TBmfreqNias <- TBmfreqNias[, c("MAF")]
+TBmfreqNias <- TBmfreqNias %>% 
+  rename("Nias"="MAF")
+TBmfreqPantar <- TBmfreqPantar[, c("MAF")]
+TBmfreqPantar <- TBmfreqPantar %>% 
+  rename("Pantar"="MAF")
+TBmfreqPHNegr <- TBmfreqPHNegr[, c("MAF")]
+TBmfreqPHNegr <- TBmfreqPHNegr %>% 
+  rename("Negritos (Philippines)"="MAF")
+TBmfreqPHOther <- TBmfreqPHOther[, c("MAF")]
+TBmfreqPHOther <- TBmfreqPHOther %>% 
+  rename("Non-Kankanaey (Philippines)"="MAF")
+TBmfreqPHIgorTR <- TBmfreqPHIgorTR[, c("MAF")]
+TBmfreqPHIgorTR <- TBmfreqPHIgorTR %>% 
+  rename("Kankanaey (Philippines"="MAF")
+TBmfreqPJL <- TBmfreqPJL[, c("MAF")]
+TBmfreqPJL <- TBmfreqPJL %>% 
+  rename("Punjabi (Pakistan)"="MAF")
+TBmfreqPNGBai <- TBmfreqPNGBai[, c("MAF")]
+TBmfreqPNGBai <- TBmfreqPNGBai %>% 
+  rename("PNG Baining"="MAF")
+TBmfreqPNGCAF <- TBmfreqPNGCAF[, c("MAF")]
+TBmfreqPNGCAF <- TBmfreqPNGCAF %>% 
+  rename("PNG Coastal"="MAF")
+TBmfreqPNGHAF <- TBmfreqPNGHAF[, c("MAF")]
+TBmfreqPNGHAF <- TBmfreqPNGHAF %>% 
+  rename("PNG Highlands"="MAF")
+TBmfreqPNGNas <- TBmfreqPNGNas[, c("MAF")]
+TBmfreqPNGNas <- TBmfreqPNGNas %>% 
+  rename("PNG Nasioi"="MAF")
+TBmfreqSTU <- TBmfreqSTU[, c("MAF")]
+TBmfreqSTU <- TBmfreqSTU %>% 
+  rename("Tamil (Sri Lanka)"="MAF")
+TBmfreqSulawesi <- TBmfreqSulawesi[, c("MAF")]
+TBmfreqSulawesi <- TBmfreqSulawesi %>% 
+  rename("Sulawesi"="MAF")
+TBmfreqSumAna <- TBmfreqSumAna[, c("MAF")]
+TBmfreqSumAna <- TBmfreqSumAna %>% 
+  rename("Sumba (Ana)"="MAF")
+TBmfreqSumatra <- TBmfreqSumatra[, c("MAF")]
+TBmfreqSumatra <- TBmfreqSumatra %>% 
+  rename("Sumatra"="MAF")
+TBmfreqSumRin <- TBmfreqSumRin[, c("MAF")]
+TBmfreqSumRin <- TBmfreqSumRin %>% 
+  rename("Sumba (Rin)"="MAF")
+TBmfreqSumWun <- TBmfreqSumWun[, c("MAF")]
+TBmfreqSumWun <- TBmfreqSumWun %>% 
+  rename("Sumba (Wun)"="MAF")
+TBmfreqTaiwan <- TBmfreqTaiwan[, c("MAF")]
+TBmfreqTaiwan <- TBmfreqTaiwan %>% 
+  rename("Taiwan"="MAF")
+TBmfreqTimKam <- TBmfreqTimKam[, c("MAF")]
+TBmfreqTimKam <- TBmfreqTimKam %>% 
+  rename("Timor (Kam)"="MAF")
+TBmfreqTimULa <- TBmfreqTimULa[, c("MAF")]
+TBmfreqTimULa <- TBmfreqTimULa %>% 
+  rename("Timor (ULa)"="MAF")
+TBmfreqVietnam <- TBmfreqVietnam[, c("MAF")]
+TBmfreqVietnam <- TBmfreqVietnam %>% 
+  rename("Vietnam"="MAF")
+TBmfreqYRI <- TBmfreqYRI[, c("MAF")]
+TBmfreqYRI <- TBmfreqYRI %>% 
+  rename("Yuruba (Nigeria)"="MAF")
+
+TBmall <- cbind(TBmref, TBmfreqAlor, TBmfreqBali, TBmfreqBEB, TBmfreqBorneo, TBmfreqCDX, TBmfreqCEU, TBmfreqCHB, TBmfreqCHS, TBmfreqFloBamAF, TBmfreqFloBenAF, TBmfreqFloRamAF, TBmfreqGIH, TBmfreqITU, TBmfreqJavaAF, TBmfreqJPT, TBmfreqKHV, TBmfreqLembat, TBmfreqMalay, TBmfreqMentaw, TBmfreqNias, TBmfreqPantar, TBmfreqPHNegr, TBmfreqPHOther, TBmfreqPHIgorTR, TBmfreqPJL, TBmfreqPNGBai, TBmfreqPNGCAF, TBmfreqPNGHAF, TBmfreqPNGNas, TBmfreqSTU, TBmfreqSulawesi, TBmfreqSumAna, TBmfreqSumatra, TBmfreqSumRin, TBmfreqSumWun, TBmfreqTaiwan, TBmfreqTimKam, TBmfreqTimULa, TBmfreqVietnam, TBmfreqYRI)
+write.csv(TBmall, "TBmall.csv", row.names = FALSE)
+
+##Creating pharmacogenetic tables
+#Load data
+MalCli <- read.csv("Malariaall.csv", header=TRUE)
+
+#Rename data
+MalCli <- MalCli %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Papua New Guinea (Baining)" = PNG.Baining,
+    "Papua New Guinea (Coastal)" = PNG.Coastal,
+    "Papua New Guinea (Highland)" = PNG.Highlands,
+    "Papua New Guinea (Nasioi)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+  
+#Remove non-Indonesian populations
+MalCli <- MalCli[, c("SNP","Alor", "Bali", "Borneo", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Java", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Papua New Guinea (Baining)", "Papua New Guinea (Coastal)", "Papua New Guinea (Highland)", "Papua New Guinea (Nasioi)", "Sulawesi", "Sumatra", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Timor (Kam)", "Timor (ULa)")]
+
+#Renaming column headers 
+MalCli <- data.frame(t(MalCli))
+MalCli <- tibble::rownames_to_column(MalCli,"Population")
+MalCli <- janitor::row_to_names(MalCli, row_number = 1)
+MalCli <- MalCli %>%
+  rename(
+    "Population"=SNP,
+  )
+  
+#Making data numeric
+MalCli <- MalCli %>%
+  mutate_at(c(2:20), as.numeric) 
+
+#Manually removing alleles below exclusion threshold
+
+MalCli$`HLA_B*53`=NULL
+MalCli$`HLA_B*53:01`=NULL
+MalCli$`HLA_A*33:01`=NULL
+MalCli$`HLA_A*66:02`=NULL
+MalCli$`HLA_B*78:01`=NULL
+MalCli$`HLA_DRB1*08:09`=NULL
+MalCli$`HLA_DQB1*02:03`=NULL
+MalCli$`HLA_DRB1*04:01`=NULL
+MalCli$`HLA_A*30:01`=NULL
+MalCli$`HLA_A*74`=NULL
+MalCli$`HLA_DRB1*01:01`=NULL
+MalCli$`HLA_DPB1*17:01`=NULL
+MalCli$`HLA_DRB1*10:01`=NULL
+MalCli$`HLA_DRB1*13:02`=NULL
+MalCli$`HLA_B*35:01`=NULL
+
+#Removing "HLA" prefix
+colnames(MalCli) <- sub("^HLA_", "", colnames(MalCli))
+
+#Creating table
+MalCli %>%
+  gt() %>%
+  data_color(columns = 5:6, 
+             colors = col_numeric(palette = c("white","darkgreen"),
+                                  domain = c(0,1))) %>%
+  data_color(columns = 2:4, 
+             colors = col_numeric(palette = c("white","darkred"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:6,
+             align = "center") %>%
+  fmt_number(columns = 2:6,
+             decimals = 3) %>%
+  gtsave("Malaria-Table.pdf")
+##TB
+#Load data
+TBCli <- read.csv("TBall.csv", header=TRUE)
+
+#Rename data
+TBCli <- TBCli %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Papua New Guinea (Baining)" = PNG.Baining,
+    "Papua New Guinea (Coastal)" = PNG.Coastal,
+    "Papua New Guinea (Highland)" = PNG.Highlands,
+    "Papua New Guinea (Nasioi)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+    
+#Remove non-Indonesian populations
+TBCli <- TBCli[, c("SNP","Alor", "Bali", "Borneo", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Java", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Papua New Guinea (Baining)", "Papua New Guinea (Coastal)", "Papua New Guinea (Highland)", "Papua New Guinea (Nasioi)", "Sulawesi", "Sumatra", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Timor (Kam)", "Timor (ULa)")]
+
+#Renaming column headers 
+TBCli <- data.frame(t(TBCli))
+TBCli <- tibble::rownames_to_column(TBCli,"Population")
+TBCli <- janitor::row_to_names(TBCli, row_number = 1)
+TBCli <- TBCli %>%
+  rename(
+    "Population"=SNP,
+  )
+  
+#Making data numeric
+TBCli <- TBCli %>%
+  mutate_at(c(2:23), as.numeric) 
+
+#Manually removing alleles below exclusion threshold
+TBCli$`HLA_A*02:02`=NULL
+TBCli$`HLA_A*30:02`=NULL
+TBCli$`HLA_B*58:02`=NULL
+TBCli$`HLA_DQB1*06:09`=NULL
+TBCli$`HLA_DRB1*10`=NULL
+
+#Removing "HLA" prefix
+colnames(TBCli) <- sub("^HLA_", "", colnames(TBCli))
+
+#Creating table
+TBCli %>%
+  gt() %>%
+  data_color(columns = 2:4 | 8:9 |13:15|17 , 
+             colors = col_numeric(palette = c("white","darkgreen"),
+                                  domain = c(0,1))) %>%
+  data_color(columns = 5:7| 10:12 |16 |18,
+             colors = col_numeric(palette = c("white","red"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:18,
+             align = "center") %>%
+  fmt_number(columns = 2:18,
+             decimals = 3)%>%
+  gtsave("TB-Table.pdf", zoom=1)
+
+##HBV 
+
+#Load data
+HBVCli <- read.csv("HBVall.csv", header=TRUE)
+
+#Rename data
+HBVCli <- HBVCli %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Papua New Guinea (Baining)" = PNG.Baining,
+    "Papua New Guinea (Coastal)" = PNG.Coastal,
+    "Papua New Guinea (Highland)" = PNG.Highlands,
+    "Papua New Guinea (Nasioi)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+#Remove non-Indonesian populations
+HBVCli <- HBVCli[, c("SNP","Alor", "Bali", "Borneo", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Java", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Papua New Guinea (Baining)", "Papua New Guinea (Coastal)", "Papua New Guinea (Highland)", "Papua New Guinea (Nasioi)", "Sulawesi", "Sumatra", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Timor (Kam)", "Timor (ULa)")]
+
+#Renaming column headers 
+HBVCli <- data.frame(t(HBVCli))
+HBVCli <- tibble::rownames_to_column(HBVCli,"Population")
+HBVCli <- janitor::row_to_names(HBVCli, row_number = 1)
+HBVCli <- HBVCli %>%
+  rename(
+    "Population"=SNP,
+  )
+  
+#Making data numeric
+HBVCli <- HBVCli %>%
+  mutate_at(c(2:40), as.numeric) 
+  
+#Manually removing alleles below exclusion threshold
+HBVCli$`HLA_DRB1*04:06`=NULL
+HBVCli$`HLA_DRB1*13:02`=NULL
+HBVCli$`HLA_DRB1*12:01`=NULL
+HBVCli$`HLA_A*03`=NULL
+HBVCli$`HLA_A*03:01`=NULL
+HBVCli$`HLA_A*26`=NULL
+HBVCli$`HLA_B*08`=NULL
+
+#Removing "HLA" prefix
+colnames(HBVCli) <- sub("^HLA_", "", colnames(HBVCli))
+
+#Creating tables
+HBVCliDet %>%
+  gt() %>%
+  data_color(columns = 2:17, 
+             colors = col_numeric(palette = c("white","darkred"),
+                                  domain = c(0,1)))%>%
+  cols_align(columns=2:17,
+             align = "center") %>%
+  fmt_number(columns = 2:17,
+             decimals = 3) %>%
+  gtsave("HBVDet-Table.pdf", zoom=1)
+
+HBVCliProt %>%
+  gt() %>%
+  data_color(columns = 2:20, 
+             colors = col_numeric(palette = c("white","darkgreen"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:20,
+             align = "center") %>%
+  fmt_number(columns = 2:20,
+             decimals = 3) %>%
+  gtsave("HBVPro-Table.pdf", zoom=1)
+
+##Malaria - vaccine
+
+#Load data
+MV <- read.csv("MalariaVall.csv", header=TRUE)
+
+#Rename data
+MV <- MV %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Papua New Guinea (Baining)" = PNG.Baining,
+    "Papua New Guinea (Coastal)" = PNG.Coastal,
+    "Papua New Guinea (Highland)" = PNG.Highlands,
+    "Papua New Guinea (Nasioi)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+#Remove non-Indonesian populations
+MV <- MV[, c("SNP","Alor", "Bali", "Borneo", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Java", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Papua New Guinea (Baining)", "Papua New Guinea (Coastal)", "Papua New Guinea (Highland)", "Papua New Guinea (Nasioi)", "Sulawesi", "Sumatra", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Timor (Kam)", "Timor (ULa)")]
+
+#Renaming column headers 
+MV <- data.frame(t(MV))
+MV <- tibble::rownames_to_column(MV,"Population")
+MV <- janitor::row_to_names(MV, row_number = 1)
+MV <- MV %>%
+  rename(
+    "Population"=SNP,
+  )
+
+#Making data numeric
+MV <- MV %>%
+  mutate_at(c(2:8), as.numeric) 
+
+#Manually removing alleles below exclusion threshold
+MV$`HLA_B*53`=NULL
+
+#Removing "HLA" prefix
+colnames(MV) <- sub("^HLA_", "", colnames(MV))
+
+#Creating table
+MV %>%
+  gt() %>%
+  data_color(columns = 2|4|6:7, 
+             colors = col_numeric(palette = c("white","darkgreen"),
+                                  domain = c(0,1))) %>%
+  data_color(columns = 3|5, 
+             colors = col_numeric(palette = c("white","darkred"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:7,
+             align = "center") %>%
+  fmt_number(columns = 2:7,
+             decimals = 3) %>%
+  gtsave("Malaria-Vaccine-Table.pdf")
+
+##TB - medication 
+
+#Load data
+TBM <- read.csv("TBmall.csv", header=TRUE)
+
+#Rename data
+TBM <- TBM %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Papua New Guinea (Baining)" = PNG.Baining,
+    "Papua New Guinea (Coastal)" = PNG.Coastal,
+    "Papua New Guinea (Highland)" = PNG.Highlands,
+    "Papua New Guinea (Nasioi)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+#Remove non-Indonesian populations
+TBM <- TBM[, c("SNP","Alor", "Bali", "Borneo", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Java", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Papua New Guinea (Baining)", "Papua New Guinea (Coastal)", "Papua New Guinea (Highland)", "Papua New Guinea (Nasioi)", "Sulawesi", "Sumatra", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Timor (Kam)", "Timor (ULa)")]
+
+#Renaming column headers 
+TBM <- data.frame(t(TBM))
+TBM <- tibble::rownames_to_column(TBM,"Population")
+TBM <- janitor::row_to_names(TBM, row_number = 1)
+TBM <- TBM %>%
+  rename(
+    "Population"=SNP,
+  )
+
+#Making data numeric
+TBM <- TBM %>%
+  mutate_at(c(2:8), as.numeric) 
+
+#Manually removing alleles below exclusion threshold
+TBM$`HLA_B*14`=NULL
+TBM$`HLA_B*41`=NULL
+TBM$`HLA_B*57:02`=NULL
+TBM$`HLA_B*57:03`=NULL
+
+#Removing "HLA" prefix
+colnames(TBM) <- sub("^HLA_", "", colnames(TBM))
+
+#Creating table
+TBM %>%
+  gt() %>%
+  data_color(columns = 3, 
+             colors = col_numeric(palette = c("white","darkgreen"),
+                                  domain = c(0,1))) %>%
+  data_color(columns = 2|4, 
+             colors = col_numeric(palette = c("white","darkred"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:4,
+             align = "center") %>%
+  fmt_number(columns = 2:4,
+             decimals = 3) %>%
+  gtsave("TB-Medicine-Table.pdf")
+
+##HBV - medication
+
+#Load data
+HBVM <- read.csv("HBVmall.csv", header=TRUE)
+
+#Rename data
+HBVM <- HBVM %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Papua New Guinea (Baining)" = PNG.Baining,
+    "Papua New Guinea (Coastal)" = PNG.Coastal,
+    "Papua New Guinea (Highland)" = PNG.Highlands,
+    "Papua New Guinea (Nasioi)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+#Remove non-Indonesian populations
+HBVM <- HBVM[, c("SNP","Alor", "Bali", "Borneo", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Java", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Papua New Guinea (Baining)", "Papua New Guinea (Coastal)", "Papua New Guinea (Highland)", "Papua New Guinea (Nasioi)", "Sulawesi", "Sumatra", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Timor (Kam)", "Timor (ULa)")]
+
+#Renaming column headers 
+HBVM <- data.frame(t(HBVM))
+HBVM <- tibble::rownames_to_column(HBVM,"Population")
+HBVM <- janitor::row_to_names(HBVM, row_number = 1)
+HBVM <- HBVM %>%
+  rename(
+    "Population"=SNP,
+  )
+
+#Making data numeric
+HBVM <- HBVM %>%
+  mutate_at(c(2:11), as.numeric) 
+
+#Removing "HLA" prefix
+colnames(HBVM) <- sub("^HLA_", "", colnames(HBVM))
+
+#Creating table
+HBVM %>%
+  gt() %>%
+  data_color(columns = 2|6:7|9, 
+             colors = col_numeric(palette = c("white","darkgreen"),
+                                  domain = c(0,1))) %>%
+  data_color(columns = 3:5|8|10:11,  
+             colors = col_numeric(palette = c("white","darkred"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:11,
+             align = "center") %>%
+  fmt_number(columns = 2:11,
+             decimals = 3) %>%
+  gtsave("HBV-Medicine-Table.pdf", zoom=1)
+
+##HBV - vaccine
+
+#Load data
+HBVV <- read.csv("HBVVall.csv", header=TRUE)
+
+#Rename data
+HBVV <- HBVV %>%
+  rename(
+    "Dai (China)" = Dai..China.,
+    "Han (China)" = Han..China.,
+    "Southern Han (China)" = Southern.Han..China.,
+    "Flores Bama" = Flores..Bama.,
+    "Flores Bena" = Flores..Bena.,
+    "Flores Rampasasa" = Flores..Rampasasa.,
+    "Gujarati (India)" = Gujarati..India.,
+    "Telugu (India)" = Telugu..India.,
+    "KHV (Vietnam)" = KHV..Vietnam.,
+    "Negritos (Philippines)" = Negritos..Philippines.,
+    "Kankanaey (Philippines)" = Kankanaey..Philippines,
+    "Non-Kankanaey (Philippines)" = Non.Kankanaey..Philippines.,
+    "Punjabi (Pakistan)" = Punjabi..Pakistan.,
+    "Papua New Guinea (Baining)" = PNG.Baining,
+    "Papua New Guinea (Coastal)" = PNG.Coastal,
+    "Papua New Guinea (Highland)" = PNG.Highlands,
+    "Papua New Guinea (Nasioi)" = PNG.Nasioi,
+    "Tamil (Sri Lanka)" = Tamil..Sri.Lanka.,
+    "Sumba (Ana)" =Sumba..Ana.,
+    "Sumba (Rin)" = Sumba..Rin.,
+    "Sumba (Wun)" = Sumba..Wun.,
+    "Timor (Kam)" = Timor..Kam.,
+    "Timor (ULa)" = Timor..ULa.,
+    "Yuruba (Nigeria)" = Yuruba..Nigeria.
+  )
+
+#Remove non-Indonesian populations
+HBVV <- HBVV[, c("SNP","Alor", "Bali", "Borneo", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Java", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Papua New Guinea (Baining)", "Papua New Guinea (Coastal)", "Papua New Guinea (Highland)", "Papua New Guinea (Nasioi)", "Sulawesi", "Sumatra", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Timor (Kam)", "Timor (ULa)")]
+
+#Renaming column headers 
+HBVV <- data.frame(t(HBVV))
+HBVV <- tibble::rownames_to_column(HBVV,"Population")
+HBVV <- janitor::row_to_names(HBVV, row_number = 1)
+HBVV <- HBVV %>%
+  rename(
+    "Population"=SNP,
+  )
+
+#Making data numeric
+HBVV <- HBVV %>%
+  mutate_at(c(2:42), as.numeric) 
+
+#Manually removing alleles below exclusion threshold
+HBVV$`HLA_DQB1*06:04`=NULL
+HBVV$`HLA_DQB1*02:02`=NULL
+HBVV$`HLA_DPB1*11:01`=NULL
+HBVV$`HLA_DRB1*04:01`=NULL
+HBVV$`HLA_DRB1*08:02`=NULL
+HBVV$`HLA_DRB1*13:02`=NULL
+HBVV$`HLA_DRB1*14:03`=NULL
+HBVV$`HLA_DRB1*01`=NULL
+HBVV$`HLA_DRB1*04:06`=NULL
+HBVV$`HLA_DRB1*10`=NULL
+
+#Removing "HLA" prefix
+colnames(HBVV) <- sub("^HLA_", "", colnames(HBVV))
+
+#Creating table
+HBVVDet %>%
+  gt() %>%
+  data_color(columns = 2:17, 
+             colors = col_numeric(palette = c("white","darkred"),
+                                  domain = c(0,1)))%>% 
+  cols_align(columns=2:17,
+             align = "center") %>%
+  fmt_number(columns = 2:17,
+             decimals = 3) %>%
+  gtsave("HBVDet-Vaccine-Table.pdf")
+
+HBVVProt %>%
+  gt() %>%
+  data_color(columns = 2:16, 
+             colors = col_numeric(palette = c("white","darkgreen"),
+                                  domain = c(0,1))) %>%
+  cols_align(columns=2:16,
+             align = "center") %>%
+  fmt_number(columns = 2:16,
+             decimals = 3) %>%
+  gtsave("HBVPro-Vaccine-Table.pdf")

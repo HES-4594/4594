@@ -1,0 +1,4152 @@
+##MAF pie charts
+setwd()
+#Read data
+
+HLA_A <- read.table("HLA-ASnpFrequencies.frq.strat", header=T)
+HLA_B <- read.table("HLA-BSnpFrequencies.frq.strat", header=T)
+HLA_C <- read.table("HLA-CSnpFrequencies.frq.strat", header=T)
+HLA_DR <-read.table("HLA-DRSnpFrequencies.frq.strat", header=T)
+HLA_DPA <-read.table("HLA-DPASnpFrequencies.frq.strat", header=T)
+HLA_DPB <-read.table("HLA-DPBSnpFrequencies.frq.strat", header=T)
+HLA_DQA <-read.table("HLA-DQASnpFrequencies.frq.strat", header=T)
+HLA_DQB <-read.table("HLA-DQBSnpFrequencies.frq.strat", header=T)
+
+#Remove specific HLA proteins
+HLA_A <- HLA_A[!grepl(":", HLA_A$SNP),]
+HLA_B <- HLA_B[!grepl(":", HLA_B$SNP),]
+HLA_C <- HLA_C[!grepl(":", HLA_C$SNP),]
+HLA_DR <- HLA_DR[!grepl(":", HLA_DR$SNP),]
+HLA_DPA <- HLA_DPA[!grepl(":", HLA_DPA$SNP),]
+HLA_DPB <- HLA_DPB[!grepl(":", HLA_DPB$SNP),]
+HLA_DQA <- HLA_DQA[!grepl(":", HLA_DQA$SNP),]
+HLA_DQB <- HLA_DQB[!grepl(":", HLA_DQB$SNP),]
+
+#Filter by specific family ID
+
+HLA_A_AlorAF <- filter(HLA_A, CLST=="AlorAF")
+HLA_B_AlorAF <- filter(HLA_B, CLST=="AlorAF")
+HLA_C_AlorAF <- filter(HLA_C, CLST=="AlorAF")
+HLA_DR_AlorAF <- filter(HLA_DR, CLST=="AlorAF")
+HLA_DPA_AlorAF <- filter(HLA_DPA, CLST=="AlorAF")
+HLA_DPB_AlorAF <- filter(HLA_DPB, CLST=="AlorAF")
+HLA_DQA_AlorAF <- filter(HLA_DQA, CLST=="AlorAF")
+HLA_DQB_AlorAF <- filter(HLA_DQB, CLST=="AlorAF")
+HLA_A_BaliAF <- filter(HLA_A, CLST=="BaliAF")
+HLA_B_BaliAF <- filter(HLA_B, CLST=="BaliAF")
+HLA_C_BaliAF <- filter(HLA_C, CLST=="BaliAF")
+HLA_DR_BaliAF <- filter(HLA_DR, CLST=="BaliAF")
+HLA_DPA_BaliAF <- filter(HLA_DPA, CLST=="BaliAF")
+HLA_DPB_BaliAF <- filter(HLA_DPB, CLST=="BaliAF")
+HLA_DQA_BaliAF <- filter(HLA_DQA, CLST=="BaliAF")
+HLA_DQB_BaliAF <- filter(HLA_DQB, CLST=="BaliAF")
+HLA_A_BEB <- filter(HLA_A, CLST=="BEB")
+HLA_B_BEB <- filter(HLA_B, CLST=="BEB")
+HLA_C_BEB <- filter(HLA_C, CLST=="BEB")
+HLA_DR_BEB <- filter(HLA_DR, CLST=="BEB")
+HLA_DPA_BEB <- filter(HLA_DPA, CLST=="BEB")
+HLA_DPB_BEB <- filter(HLA_DPB, CLST=="BEB")
+HLA_DQA_BEB <- filter(HLA_DQA, CLST=="BEB")
+HLA_DQB_BEB <- filter(HLA_DQB, CLST=="BEB")
+HLA_A_Borneo <- filter(HLA_A, CLST=="Borneo")
+HLA_B_Borneo <- filter(HLA_B, CLST=="Borneo")
+HLA_C_Borneo <- filter(HLA_C, CLST=="Borneo")
+HLA_DR_Borneo <- filter(HLA_DR, CLST=="Borneo")
+HLA_DPA_Borneo <- filter(HLA_DPA, CLST=="Borneo")
+HLA_DPB_Borneo <- filter(HLA_DPB, CLST=="Borneo")
+HLA_DQA_Borneo <- filter(HLA_DQA, CLST=="Borneo")
+HLA_DQB_Borneo <- filter(HLA_DQB, CLST=="Borneo")
+HLA_A_CDX <- filter(HLA_A, CLST=="CDX")
+HLA_B_CDX <- filter(HLA_B, CLST=="CDX")
+HLA_C_CDX <- filter(HLA_C, CLST=="CDX")
+HLA_DR_CDX <- filter(HLA_DR, CLST=="CDX")
+HLA_DPA_CDX <- filter(HLA_DPA, CLST=="CDX")
+HLA_DPB_CDX <- filter(HLA_DPB, CLST=="CDX")
+HLA_DQA_CDX <- filter(HLA_DQA, CLST=="CDX")
+HLA_DQB_CDX <- filter(HLA_DQB, CLST=="CDX")
+HLA_A_CEU <- filter(HLA_A, CLST=="CEU")
+HLA_B_CEU <- filter(HLA_B, CLST=="CEU")
+HLA_C_CEU <- filter(HLA_C, CLST=="CEU")
+HLA_DR_CEU <- filter(HLA_DR, CLST=="CEU")
+HLA_DPA_CEU <- filter(HLA_DPA, CLST=="CEU")
+HLA_DPB_CEU <- filter(HLA_DPB, CLST=="CEU")
+HLA_DQA_CEU <- filter(HLA_DQA, CLST=="CEU")
+HLA_DQB_CEU <- filter(HLA_DQB, CLST=="CEU")
+HLA_A_CHB <- filter(HLA_A, CLST=="CHB")
+HLA_B_CHB <- filter(HLA_B, CLST=="CHB")
+HLA_C_CHB <- filter(HLA_C, CLST=="CHB")
+HLA_DR_CHB <- filter(HLA_DR, CLST=="CHB")
+HLA_DPA_CHB <- filter(HLA_DPA, CLST=="CHB")
+HLA_DPB_CHB <- filter(HLA_DPB, CLST=="CHB")
+HLA_DQA_CHB <- filter(HLA_DQA, CLST=="CHB")
+HLA_DQB_CHB <- filter(HLA_DQB, CLST=="CHB")
+HLA_A_CHS <- filter(HLA_A, CLST=="CHS")
+HLA_B_CHS <- filter(HLA_B, CLST=="CHS")
+HLA_C_CHS <- filter(HLA_C, CLST=="CHS")
+HLA_DR_CHS <- filter(HLA_DR, CLST=="CHS")
+HLA_DPA_CHS <- filter(HLA_DPA, CLST=="CHS")
+HLA_DPB_CHS <- filter(HLA_DPB, CLST=="CHS")
+HLA_DQA_CHS <- filter(HLA_DQA, CLST=="CHS")
+HLA_DQB_CHS <- filter(HLA_DQB, CLST=="CHS")
+HLA_A_FloBamAF <- filter(HLA_A, CLST=="FloBamAF")
+HLA_B_FloBamAF <- filter(HLA_B, CLST=="FloBamAF")
+HLA_C_FloBamAF <- filter(HLA_C, CLST=="FloBamAF")
+HLA_DR_FloBamAF <- filter(HLA_DR, CLST=="FloBamAF")
+HLA_DPA_FloBamAF <- filter(HLA_DPA, CLST=="FloBamAF")
+HLA_DPB_FloBamAF <- filter(HLA_DPB, CLST=="FloBamAF")
+HLA_DQA_FloBamAF <- filter(HLA_DQA, CLST=="FloBamAF")
+HLA_DQB_FloBamAF <- filter(HLA_DQB, CLST=="FloBamAF")
+HLA_A_FloBenAF <- filter(HLA_A, CLST=="FloBenAF")
+HLA_B_FloBenAF <- filter(HLA_B, CLST=="FloBenAF")
+HLA_C_FloBenAF <- filter(HLA_C, CLST=="FloBenAF")
+HLA_DR_FloBenAF <- filter(HLA_DR, CLST=="FloBenAF")
+HLA_DPA_FloBenAF <- filter(HLA_DPA, CLST=="FloBenAF")
+HLA_DPB_FloBenAF <- filter(HLA_DPB, CLST=="FloBenAF")
+HLA_DQA_FloBenAF <- filter(HLA_DQA, CLST=="FloBenAF")
+HLA_DQB_FloBenAF <- filter(HLA_DQB, CLST=="FloBenAF")
+HLA_A_FloRamAF <- filter(HLA_A, CLST=="FloRamAF")
+HLA_B_FloRamAF <- filter(HLA_B, CLST=="FloRamAF")
+HLA_C_FloRamAF <- filter(HLA_C, CLST=="FloRamAF")
+HLA_DR_FloRamAF <- filter(HLA_DR, CLST=="FloRamAF")
+HLA_DPA_FloRamAF <- filter(HLA_DPA, CLST=="FloRamAF")
+HLA_DPB_FloRamAF <- filter(HLA_DPB, CLST=="FloRamAF")
+HLA_DQA_FloRamAF <- filter(HLA_DQA, CLST=="FloRamAF")
+HLA_DQB_FloRamAF <- filter(HLA_DQB, CLST=="FloRamAF")
+HLA_A_GIH <- filter(HLA_A, CLST=="GIH")
+HLA_B_GIH <- filter(HLA_B, CLST=="GIH")
+HLA_C_GIH <- filter(HLA_C, CLST=="GIH")
+HLA_DR_GIH <- filter(HLA_DR, CLST=="GIH")
+HLA_DPA_GIH <- filter(HLA_DPA, CLST=="GIH")
+HLA_DPB_GIH <- filter(HLA_DPB, CLST=="GIH")
+HLA_DQA_GIH <- filter(HLA_DQA, CLST=="GIH")
+HLA_DQB_GIH <- filter(HLA_DQB, CLST=="GIH")
+HLA_A_ITU <- filter(HLA_A, CLST=="ITU")
+HLA_B_ITU <- filter(HLA_B, CLST=="ITU")
+HLA_C_ITU <- filter(HLA_C, CLST=="ITU")
+HLA_DR_ITU <- filter(HLA_DR, CLST=="ITU")
+HLA_DPA_ITU <- filter(HLA_DPA, CLST=="ITU")
+HLA_DPB_ITU <- filter(HLA_DPB, CLST=="ITU")
+HLA_DQA_ITU <- filter(HLA_DQA, CLST=="ITU")
+HLA_DQB_ITU <- filter(HLA_DQB, CLST=="ITU")
+HLA_A_JavaAF <- filter(HLA_A, CLST=="JavaAF")
+HLA_B_JavaAF <- filter(HLA_B, CLST=="JavaAF")
+HLA_C_JavaAF <- filter(HLA_C, CLST=="JavaAF")
+HLA_DR_JavaAF <- filter(HLA_DR, CLST=="JavaAF")
+HLA_DPA_JavaAF <- filter(HLA_DPA, CLST=="JavaAF")
+HLA_DPB_JavaAF <- filter(HLA_DPB, CLST=="JavaAF")
+HLA_DQA_JavaAF <- filter(HLA_DQA, CLST=="JavaAF")
+HLA_DQB_JavaAF <- filter(HLA_DQB, CLST=="JavaAF")
+HLA_A_JPT <- filter(HLA_A, CLST=="JPT")
+HLA_B_JPT <- filter(HLA_B, CLST=="JPT")
+HLA_C_JPT <- filter(HLA_C, CLST=="JPT")
+HLA_DR_JPT <- filter(HLA_DR, CLST=="JPT")
+HLA_DPA_JPT <- filter(HLA_DPA, CLST=="JPT")
+HLA_DPB_JPT <- filter(HLA_DPB, CLST=="JPT")
+HLA_DQA_JPT <- filter(HLA_DQA, CLST=="JPT")
+HLA_DQB_JPT <- filter(HLA_DQB, CLST=="JPT")
+HLA_A_KHV <- filter(HLA_A, CLST=="KHV")
+HLA_B_KHV <- filter(HLA_B, CLST=="KHV")
+HLA_C_KHV <- filter(HLA_C, CLST=="KHV")
+HLA_DR_KHV <- filter(HLA_DR, CLST=="KHV")
+HLA_DPA_KHV <- filter(HLA_DPA, CLST=="KHV")
+HLA_DPB_KHV <- filter(HLA_DPB, CLST=="KHV")
+HLA_DQA_KHV <- filter(HLA_DQA, CLST=="KHV")
+HLA_DQB_KHV <- filter(HLA_DQB, CLST=="KHV")
+HLA_A_LembatAF <- filter(HLA_A, CLST=="LembatAF")
+HLA_B_LembatAF <- filter(HLA_B, CLST=="LembatAF")
+HLA_C_LembatAF <- filter(HLA_C, CLST=="LembatAF")
+HLA_DR_LembatAF <- filter(HLA_DR, CLST=="LembatAF")
+HLA_DPA_LembatAF <- filter(HLA_DPA, CLST=="LembatAF")
+HLA_DPB_LembatAF <- filter(HLA_DPB, CLST=="LembatAF")
+HLA_DQA_LembatAF <- filter(HLA_DQA, CLST=="LembatAF")
+HLA_DQB_LembatAF <- filter(HLA_DQB, CLST=="LembatAF")
+HLA_A_MalayAF <- filter(HLA_A, CLST=="MalayAF")
+HLA_B_MalayAF <- filter(HLA_B, CLST=="MalayAF")
+HLA_C_MalayAF <- filter(HLA_C, CLST=="MalayAF")
+HLA_DR_MalayAF <- filter(HLA_DR, CLST=="MalayAF")
+HLA_DPA_MalayAF <- filter(HLA_DPA, CLST=="MalayAF")
+HLA_DPB_MalayAF <- filter(HLA_DPB, CLST=="MalayAF")
+HLA_DQA_MalayAF <- filter(HLA_DQA, CLST=="MalayAF")
+HLA_DQB_MalayAF <- filter(HLA_DQB, CLST=="MalayAF")
+HLA_A_MentawAF <- filter(HLA_A, CLST=="MentawAF")
+HLA_B_MentawAF <- filter(HLA_B, CLST=="MentawAF")
+HLA_C_MentawAF <- filter(HLA_C, CLST=="MentawAF")
+HLA_DR_MentawAF <- filter(HLA_DR, CLST=="MentawAF")
+HLA_DPA_MentawAF <- filter(HLA_DPA, CLST=="MentawAF")
+HLA_DPB_MentawAF <- filter(HLA_DPB, CLST=="MentawAF")
+HLA_DQA_MentawAF <- filter(HLA_DQA, CLST=="MentawAF")
+HLA_DQB_MentawAF <- filter(HLA_DQB, CLST=="MentawAF")
+HLA_A_NiasAF <- filter(HLA_A, CLST=="NiasAF")
+HLA_B_NiasAF <- filter(HLA_B, CLST=="NiasAF")
+HLA_C_NiasAF <- filter(HLA_C, CLST=="NiasAF")
+HLA_DR_NiasAF <- filter(HLA_DR, CLST=="NiasAF")
+HLA_DPA_NiasAF <- filter(HLA_DPA, CLST=="NiasAF")
+HLA_DPB_NiasAF <- filter(HLA_DPB, CLST=="NiasAF")
+HLA_DQA_NiasAF <- filter(HLA_DQA, CLST=="NiasAF")
+HLA_DQB_NiasAF <- filter(HLA_DQB, CLST=="NiasAF")
+HLA_A_PantarAF <- filter(HLA_A, CLST=="PantarAF")
+HLA_B_PantarAF <- filter(HLA_B, CLST=="PantarAF")
+HLA_C_PantarAF <- filter(HLA_C, CLST=="PantarAF")
+HLA_DR_PantarAF <- filter(HLA_DR, CLST=="PantarAF")
+HLA_DPA_PantarAF <- filter(HLA_DPA, CLST=="PantarAF")
+HLA_DPB_PantarAF <- filter(HLA_DPB, CLST=="PantarAF")
+HLA_DQA_PantarAF <- filter(HLA_DQA, CLST=="PantarAF")
+HLA_DQB_PantarAF <- filter(HLA_DQB, CLST=="PantarAF")
+HLA_A_PHIgorTR <- filter(HLA_A, CLST=="PHIgorTR")
+HLA_B_PHIgorTR <- filter(HLA_B, CLST=="PHIgorTR")
+HLA_C_PHIgorTR <- filter(HLA_C, CLST=="PHIgorTR")
+HLA_DR_PHIgorTR <- filter(HLA_DR, CLST=="PHIgorTR")
+HLA_DPA_PHIgorTR <- filter(HLA_DPA, CLST=="PHIgorTR")
+HLA_DPB_PHIgorTR <- filter(HLA_DPB, CLST=="PHIgorTR")
+HLA_DQA_PHIgorTR <- filter(HLA_DQA, CLST=="PHIgorTR")
+HLA_DQB_PHIgorTR <- filter(HLA_DQB, CLST=="PHIgorTR")
+HLA_A_PHNegr <- filter(HLA_A, CLST=="PHNegr")
+HLA_B_PHNegr <- filter(HLA_B, CLST=="PHNegr")
+HLA_C_PHNegr <- filter(HLA_C, CLST=="PHNegr")
+HLA_DR_PHNegr <- filter(HLA_DR, CLST=="PHNegr")
+HLA_DPA_PHNegr <- filter(HLA_DPA, CLST=="PHNegr")
+HLA_DPB_PHNegr <- filter(HLA_DPB, CLST=="PHNegr")
+HLA_DQA_PHNegr <- filter(HLA_DQA, CLST=="PHNegr")
+HLA_DQB_PHNegr <- filter(HLA_DQB, CLST=="PHNegr")
+HLA_A_PHOther <- filter(HLA_A, CLST=="PHOther")
+HLA_B_PHOther <- filter(HLA_B, CLST=="PHOther")
+HLA_C_PHOther <- filter(HLA_C, CLST=="PHOther")
+HLA_DR_PHOther <- filter(HLA_DR, CLST=="PHOther")
+HLA_DPA_PHOther <- filter(HLA_DPA, CLST=="PHOther")
+HLA_DPB_PHOther <- filter(HLA_DPB, CLST=="PHOther")
+HLA_DQA_PHOther <- filter(HLA_DQA, CLST=="PHOther")
+HLA_DQB_PHOther <- filter(HLA_DQB, CLST=="PHOther")
+HLA_A_PJL <- filter(HLA_A, CLST=="PJL")
+HLA_B_PJL <- filter(HLA_B, CLST=="PJL")
+HLA_C_PJL <- filter(HLA_C, CLST=="PJL")
+HLA_DR_PJL <- filter(HLA_DR, CLST=="PJL")
+HLA_DPA_PJL <- filter(HLA_DPA, CLST=="PJL")
+HLA_DPB_PJL <- filter(HLA_DPB, CLST=="PJL")
+HLA_DQA_PJL <- filter(HLA_DQA, CLST=="PJL")
+HLA_DQB_PJL <- filter(HLA_DQB, CLST=="PJL")
+HLA_A_PNGBaiAF <- filter(HLA_A, CLST=="PNGBaiAF")
+HLA_B_PNGBaiAF <- filter(HLA_B, CLST=="PNGBaiAF")
+HLA_C_PNGBaiAF <- filter(HLA_C, CLST=="PNGBaiAF")
+HLA_DR_PNGBaiAF <- filter(HLA_DR, CLST=="PNGBaiAF")
+HLA_DPA_PNGBaiAF <- filter(HLA_DPA, CLST=="PNGBaiAF")
+HLA_DPB_PNGBaiAF <- filter(HLA_DPB, CLST=="PNGBaiAF")
+HLA_DQA_PNGBaiAF <- filter(HLA_DQA, CLST=="PNGBaiAF")
+HLA_DQB_PNGBaiAF <- filter(HLA_DQB, CLST=="PNGBaiAF")
+HLA_A_PNGCAF <- filter(HLA_A, CLST=="PNGCAF")
+HLA_B_PNGCAF <- filter(HLA_B, CLST=="PNGCAF")
+HLA_C_PNGCAF <- filter(HLA_C, CLST=="PNGCAF")
+HLA_DR_PNGCAF <- filter(HLA_DR, CLST=="PNGCAF")
+HLA_DPA_PNGCAF <- filter(HLA_DPA, CLST=="PNGCAF")
+HLA_DPB_PNGCAF <- filter(HLA_DPB, CLST=="PNGCAF")
+HLA_DQA_PNGCAF <- filter(HLA_DQA, CLST=="PNGCAF")
+HLA_DQB_PNGCAF <- filter(HLA_DQB, CLST=="PNGCAF")
+HLA_A_PNGHAF <- filter(HLA_A, CLST=="PNGHAF")
+HLA_B_PNGHAF <- filter(HLA_B, CLST=="PNGHAF")
+HLA_C_PNGHAF <- filter(HLA_C, CLST=="PNGHAF")
+HLA_DR_PNGHAF <- filter(HLA_DR, CLST=="PNGHAF")
+HLA_DPA_PNGHAF <- filter(HLA_DPA, CLST=="PNGHAF")
+HLA_DPB_PNGHAF <- filter(HLA_DPB, CLST=="PNGHAF")
+HLA_DQA_PNGHAF <- filter(HLA_DQA, CLST=="PNGHAF")
+HLA_DQB_PNGHAF <- filter(HLA_DQB, CLST=="PNGHAF")
+HLA_A_PNGNasAF <- filter(HLA_A, CLST=="PNGNasAF")
+HLA_B_PNGNasAF <- filter(HLA_B, CLST=="PNGNasAF")
+HLA_C_PNGNasAF <- filter(HLA_C, CLST=="PNGNasAF")
+HLA_DR_PNGNasAF <- filter(HLA_DR, CLST=="PNGNasAF")
+HLA_DPA_PNGNasAF <- filter(HLA_DPA, CLST=="PNGNasAF")
+HLA_DPB_PNGNasAF <- filter(HLA_DPB, CLST=="PNGNasAF")
+HLA_DQA_PNGNasAF <- filter(HLA_DQA, CLST=="PNGNasAF")
+HLA_DQB_PNGNasAF <- filter(HLA_DQB, CLST=="PNGNasAF")
+HLA_A_STU <- filter(HLA_A, CLST=="STU")
+HLA_B_STU <- filter(HLA_B, CLST=="STU")
+HLA_C_STU <- filter(HLA_C, CLST=="STU")
+HLA_DR_STU <- filter(HLA_DR, CLST=="STU")
+HLA_DPA_STU <- filter(HLA_DPA, CLST=="STU")
+HLA_DPB_STU <- filter(HLA_DPB, CLST=="STU")
+HLA_DQA_STU <- filter(HLA_DQA, CLST=="STU")
+HLA_DQB_STU <- filter(HLA_DQB, CLST=="STU")
+HLA_A_Sulawesi <- filter(HLA_A, CLST=="Sulawesi")
+HLA_B_Sulawesi <- filter(HLA_B, CLST=="Sulawesi")
+HLA_C_Sulawesi <- filter(HLA_C, CLST=="Sulawesi")
+HLA_DR_Sulawesi <- filter(HLA_DR, CLST=="Sulawesi")
+HLA_DPA_Sulawesi <- filter(HLA_DPA, CLST=="Sulawesi")
+HLA_DPB_Sulawesi <- filter(HLA_DPB, CLST=="Sulawesi")
+HLA_DQA_Sulawesi <- filter(HLA_DQA, CLST=="Sulawesi")
+HLA_DQB_Sulawesi <- filter(HLA_DQB, CLST=="Sulawesi")
+HLA_A_SumAnaAF <- filter(HLA_A, CLST=="SumAnaAF")
+HLA_B_SumAnaAF <- filter(HLA_B, CLST=="SumAnaAF")
+HLA_C_SumAnaAF <- filter(HLA_C, CLST=="SumAnaAF")
+HLA_DR_SumAnaAF <- filter(HLA_DR, CLST=="SumAnaAF")
+HLA_DPA_SumAnaAF <- filter(HLA_DPA, CLST=="SumAnaAF")
+HLA_DPB_SumAnaAF <- filter(HLA_DPB, CLST=="SumAnaAF")
+HLA_DQA_SumAnaAF <- filter(HLA_DQA, CLST=="SumAnaAF")
+HLA_DQB_SumAnaAF <- filter(HLA_DQB, CLST=="SumAnaAF")
+HLA_A_SumatrAF <- filter(HLA_A, CLST=="SumatrAF")
+HLA_B_SumatrAF <- filter(HLA_B, CLST=="SumatrAF")
+HLA_C_SumatrAF <- filter(HLA_C, CLST=="SumatrAF")
+HLA_DR_SumatrAF <- filter(HLA_DR, CLST=="SumatrAF")
+HLA_DPA_SumatrAF <- filter(HLA_DPA, CLST=="SumatrAF")
+HLA_DPB_SumatrAF <- filter(HLA_DPB, CLST=="SumatrAF")
+HLA_DQA_SumatrAF <- filter(HLA_DQA, CLST=="SumatrAF")
+HLA_DQB_SumatrAF <- filter(HLA_DQB, CLST=="SumatrAF")
+HLA_A_SumRinAF <- filter(HLA_A, CLST=="SumRinAF")
+HLA_B_SumRinAF <- filter(HLA_B, CLST=="SumRinAF")
+HLA_C_SumRinAF <- filter(HLA_C, CLST=="SumRinAF")
+HLA_DR_SumRinAF <- filter(HLA_DR, CLST=="SumRinAF")
+HLA_DPA_SumRinAF <- filter(HLA_DPA, CLST=="SumRinAF")
+HLA_DPB_SumRinAF <- filter(HLA_DPB, CLST=="SumRinAF")
+HLA_DQA_SumRinAF <- filter(HLA_DQA, CLST=="SumRinAF")
+HLA_DQB_SumRinAF <- filter(HLA_DQB, CLST=="SumRinAF")
+HLA_A_SumWunAF <- filter(HLA_A, CLST=="SumWunAF")
+HLA_B_SumWunAF <- filter(HLA_B, CLST=="SumWunAF")
+HLA_C_SumWunAF <- filter(HLA_C, CLST=="SumWunAF")
+HLA_DR_SumWunAF <- filter(HLA_DR, CLST=="SumWunAF")
+HLA_DPA_SumWunAF <- filter(HLA_DPA, CLST=="SumWunAF")
+HLA_DPB_SumWunAF <- filter(HLA_DPB, CLST=="SumWunAF")
+HLA_DQA_SumWunAF <- filter(HLA_DQA, CLST=="SumWunAF")
+HLA_DQB_SumWunAF <- filter(HLA_DQB, CLST=="SumWunAF")
+HLA_A_TaiwanAF <- filter(HLA_A, CLST=="TaiwanAF")
+HLA_B_TaiwanAF <- filter(HLA_B, CLST=="TaiwanAF")
+HLA_C_TaiwanAF <- filter(HLA_C, CLST=="TaiwanAF")
+HLA_DR_TaiwanAF <- filter(HLA_DR, CLST=="TaiwanAF")
+HLA_DPA_TaiwanAF <- filter(HLA_DPA, CLST=="TaiwanAF")
+HLA_DPB_TaiwanAF <- filter(HLA_DPB, CLST=="TaiwanAF")
+HLA_DQA_TaiwanAF <- filter(HLA_DQA, CLST=="TaiwanAF")
+HLA_DQB_TaiwanAF <- filter(HLA_DQB, CLST=="TaiwanAF")
+HLA_A_TimKamAF <- filter(HLA_A, CLST=="TimKamAF")
+HLA_B_TimKamAF <- filter(HLA_B, CLST=="TimKamAF")
+HLA_C_TimKamAF <- filter(HLA_C, CLST=="TimKamAF")
+HLA_DR_TimKamAF <- filter(HLA_DR, CLST=="TimKamAF")
+HLA_DPA_TimKamAF <- filter(HLA_DPA, CLST=="TimKamAF")
+HLA_DPB_TimKamAF <- filter(HLA_DPB, CLST=="TimKamAF")
+HLA_DQA_TimKamAF <- filter(HLA_DQA, CLST=="TimKamAF")
+HLA_DQB_TimKamAF <- filter(HLA_DQB, CLST=="TimKamAF")
+HLA_A_TimULaAF <- filter(HLA_A, CLST=="TimULaAF")
+HLA_B_TimULaAF <- filter(HLA_B, CLST=="TimULaAF")
+HLA_C_TimULaAF <- filter(HLA_C, CLST=="TimULaAF")
+HLA_DR_TimULaAF <- filter(HLA_DR, CLST=="TimULaAF")
+HLA_DPA_TimULaAF <- filter(HLA_DPA, CLST=="TimULaAF")
+HLA_DPB_TimULaAF <- filter(HLA_DPB, CLST=="TimULaAF")
+HLA_DQA_TimULaAF <- filter(HLA_DQA, CLST=="TimULaAF")
+HLA_DQB_TimULaAF <- filter(HLA_DQB, CLST=="TimULaAF")
+HLA_A_Vietnam <- filter(HLA_A, CLST=="Vietnam")
+HLA_B_Vietnam <- filter(HLA_B, CLST=="Vietnam")
+HLA_C_Vietnam <- filter(HLA_C, CLST=="Vietnam")
+HLA_DR_Vietnam <- filter(HLA_DR, CLST=="Vietnam")
+HLA_DPA_Vietnam <- filter(HLA_DPA, CLST=="Vietnam")
+HLA_DPB_Vietnam <- filter(HLA_DPB, CLST=="Vietnam")
+HLA_DQA_Vietnam <- filter(HLA_DQA, CLST=="Vietnam")
+HLA_DQB_Vietnam <- filter(HLA_DQB, CLST=="Vietnam")
+HLA_A_YRI <- filter(HLA_A, CLST=="YRI")
+HLA_B_YRI <- filter(HLA_B, CLST=="YRI")
+HLA_C_YRI <- filter(HLA_C, CLST=="YRI")
+HLA_DR_YRI <- filter(HLA_DR, CLST=="YRI")
+HLA_DPA_YRI <- filter(HLA_DPA, CLST=="YRI")
+HLA_DPB_YRI <- filter(HLA_DPB, CLST=="YRI")
+HLA_DQA_YRI <- filter(HLA_DQA, CLST=="YRI")
+HLA_DQB_YRI <- filter(HLA_DQB, CLST=="YRI")
+
+#Group the below 5 more common SNPs as 'Other'
+##AlorAF
+HLA_A_AlorAF <- HLA_A_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_AlorAF <- HLA_B_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_AlorAF <- HLA_C_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_AlorAF <- HLA_DPA_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_AlorAF <- HLA_DPB_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_AlorAF <- HLA_DR_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_AlorAF <- HLA_DQA_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_AlorAF <- HLA_DQB_AlorAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##BaliAF
+
+HLA_A_BaliAF <- HLA_A_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_BaliAF <- HLA_B_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_BaliAF <- HLA_C_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_BaliAF <- HLA_DPA_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_BaliAF <- HLA_DPB_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_BaliAF <- HLA_DR_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_BaliAF <- HLA_DQA_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_BaliAF <- HLA_DQB_BaliAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##BEB
+
+HLA_A_BEB <- HLA_A_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_BEB <- HLA_B_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_BEB <- HLA_C_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_BEB <- HLA_DPA_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_BEB <- HLA_DPB_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_BEB <- HLA_DR_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_BEB <- HLA_DQA_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_BEB <- HLA_DQB_BEB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##Borneo
+
+HLA_A_Borneo <- HLA_A_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_Borneo <- HLA_B_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_Borneo <- HLA_C_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_Borneo <- HLA_DPA_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_Borneo <- HLA_DPB_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_Borneo <- HLA_DR_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_Borneo <- HLA_DQA_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_Borneo <- HLA_DQB_Borneo %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##CDX
+
+HLA_A_CDX <- HLA_A_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_CDX <- HLA_B_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_CDX <- HLA_C_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_CDX <- HLA_DPA_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_CDX <- HLA_DPB_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_CDX <- HLA_DR_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_CDX <- HLA_DQA_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_CDX <- HLA_DQB_CDX %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##CEU
+
+HLA_A_CEU <- HLA_A_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_CEU <- HLA_B_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_CEU <- HLA_C_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_CEU <- HLA_DPA_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_CEU <- HLA_DPB_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_CEU <- HLA_DR_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_CEU <- HLA_DQA_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_CEU <- HLA_DQB_CEU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##CHB
+
+HLA_A_CHB <- HLA_A_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_CHB <- HLA_B_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_CHB <- HLA_C_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_CHB <- HLA_DPA_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_CHB <- HLA_DPB_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_CHB <- HLA_DR_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_CHB <- HLA_DQA_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_CHB <- HLA_DQB_CHB %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##CHS
+
+HLA_A_CHS <- HLA_A_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_CHS <- HLA_B_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_CHS <- HLA_C_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_CHS <- HLA_DPA_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_CHS <- HLA_DPB_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_CHS <- HLA_DR_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_CHS <- HLA_DQA_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_CHS <- HLA_DQB_CHS %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##FloBamAF
+
+HLA_A_FloBamAF <- HLA_A_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_FloBamAF <- HLA_B_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_FloBamAF <- HLA_C_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_FloBamAF <- HLA_DPA_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_FloBamAF <- HLA_DPB_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_FloBamAF <- HLA_DR_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_FloBamAF <- HLA_DQA_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_FloBamAF <- HLA_DQB_FloBamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##FloBenAF
+
+HLA_A_FloBenAF <- HLA_A_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_FloBenAF <- HLA_B_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_FloBenAF <- HLA_C_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_FloBenAF <- HLA_DPA_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_FloBenAF <- HLA_DPB_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_FloBenAF <- HLA_DR_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_FloBenAF <- HLA_DQA_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_FloBenAF <- HLA_DQB_FloBenAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##FloRamAF
+
+HLA_A_FloRamAF <- HLA_A_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_FloRamAF <- HLA_B_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_FloRamAF <- HLA_C_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_FloRamAF <- HLA_DPA_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_FloRamAF <- HLA_DPB_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_FloRamAF <- HLA_DR_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_FloRamAF <- HLA_DQA_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_FloRamAF <- HLA_DQB_FloRamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##GIH
+
+HLA_A_GIH <- HLA_A_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_GIH <- HLA_B_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_GIH <- HLA_C_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_GIH <- HLA_DPA_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_GIH <- HLA_DPB_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_GIH <- HLA_DR_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_GIH <- HLA_DQA_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_GIH <- HLA_DQB_GIH %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##ITU
+
+HLA_A_ITU <- HLA_A_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_ITU <- HLA_B_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 8, SNP, 'Other'))
+HLA_C_ITU <- HLA_C_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_ITU <- HLA_DPA_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_ITU <- HLA_DPB_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_ITU <- HLA_DR_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_ITU <- HLA_DQA_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_ITU <- HLA_DQB_ITU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##JavaAF
+
+HLA_A_JavaAF <- HLA_A_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_JavaAF <- HLA_B_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_JavaAF <- HLA_C_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_JavaAF <- HLA_DPA_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_JavaAF <- HLA_DPB_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_JavaAF <- HLA_DR_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_JavaAF <- HLA_DQA_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_JavaAF <- HLA_DQB_JavaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##JPT
+
+HLA_A_JPT <- HLA_A_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_JPT <- HLA_B_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_JPT <- HLA_C_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_JPT <- HLA_DPA_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_JPT <- HLA_DPB_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_JPT <- HLA_DR_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_JPT <- HLA_DQA_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_JPT <- HLA_DQB_JPT %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##KHV
+
+HLA_A_KHV <- HLA_A_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_KHV <- HLA_B_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_KHV <- HLA_C_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_KHV <- HLA_DPA_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_KHV <- HLA_DPB_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_KHV <- HLA_DR_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_KHV <- HLA_DQA_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_KHV <- HLA_DQB_KHV %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##LembatAF
+
+HLA_A_LembatAF <- HLA_A_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_LembatAF <- HLA_B_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_LembatAF <- HLA_C_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_LembatAF <- HLA_DPA_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_LembatAF <- HLA_DPB_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_LembatAF <- HLA_DR_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_LembatAF <- HLA_DQA_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_LembatAF <- HLA_DQB_LembatAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##Malay AF
+
+HLA_A_MalayAF <- HLA_A_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_MalayAF <- HLA_B_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_MalayAF <- HLA_C_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_MalayAF <- HLA_DPA_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_MalayAF <- HLA_DPB_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_MalayAF <- HLA_DR_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_MalayAF <- HLA_DQA_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_MalayAF <- HLA_DQB_MalayAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##MentawAF
+
+HLA_A_MentawAF <- HLA_A_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_MentawAF <- HLA_B_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_MentawAF <- HLA_C_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_MentawAF <- HLA_DPA_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_MentawAF <- HLA_DPB_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_MentawAF <- HLA_DR_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_MentawAF <- HLA_DQA_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_MentawAF <- HLA_DQB_MentawAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##NiasAF
+
+HLA_A_NiasAF <- HLA_A_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_NiasAF <- HLA_B_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_NiasAF <- HLA_C_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_NiasAF <- HLA_DPA_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_NiasAF <- HLA_DPB_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_NiasAF <- HLA_DR_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_NiasAF <- HLA_DQA_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_NiasAF <- HLA_DQB_NiasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+#PantarAF 
+
+HLA_A_PantarAF <- HLA_A_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PantarAF <- HLA_B_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PantarAF <- HLA_C_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PantarAF <- HLA_DPA_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PantarAF <- HLA_DPB_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PantarAF <- HLA_DR_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PantarAF <- HLA_DQA_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PantarAF <- HLA_DQB_PantarAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PHIgorTR
+
+HLA_A_PHIgorTR <- HLA_A_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PHIgorTR <- HLA_B_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PHIgorTR <- HLA_C_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PHIgorTR <- HLA_DPA_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PHIgorTR <- HLA_DPB_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PHIgorTR <- HLA_DR_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PHIgorTR <- HLA_DQA_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PHIgorTR <- HLA_DQB_PHIgorTR %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PHNegr
+
+HLA_A_PHNegr <- HLA_A_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PHNegr <- HLA_B_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PHNegr <- HLA_C_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PHNegr <- HLA_DPA_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PHNegr <- HLA_DPB_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PHNegr <- HLA_DR_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PHNegr <- HLA_DQA_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PHNegr <- HLA_DQB_PHNegr %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PHOther
+
+HLA_A_PHOther <- HLA_A_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PHOther <- HLA_B_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PHOther <- HLA_C_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PHOther <- HLA_DPA_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PHOther <- HLA_DPB_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PHOther <- HLA_DR_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PHOther <- HLA_DQA_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PHOther <- HLA_DQB_PHOther %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PJL
+
+HLA_A_PJL <- HLA_A_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PJL <- HLA_B_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PJL <- HLA_C_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PJL <- HLA_DPA_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PJL <- HLA_DPB_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PJL <- HLA_DR_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PJL <- HLA_DQA_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PJL <- HLA_DQB_PJL %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PNGBaiAF
+
+HLA_A_PNGBaiAF <- HLA_A_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PNGBaiAF <- HLA_B_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PNGBaiAF <- HLA_C_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PNGBaiAF <- HLA_DPA_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PNGBaiAF <- HLA_DPB_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PNGBaiAF <- HLA_DR_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PNGBaiAF <- HLA_DQA_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PNGBaiAF <- HLA_DQB_PNGBaiAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PNGCAF
+HLA_A_PNGCAF <- HLA_A_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PNGCAF <- HLA_B_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PNGCAF <- HLA_C_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PNGCAF <- HLA_DPA_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PNGCAF <- HLA_DPB_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PNGCAF <- HLA_DR_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PNGCAF <- HLA_DQA_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PNGCAF <- HLA_DQB_PNGCAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PNGHAF
+
+HLA_A_PNGHAF <- HLA_A_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PNGHAF <- HLA_B_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PNGHAF <- HLA_C_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PNGHAF <- HLA_DPA_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PNGHAF <- HLA_DPB_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PNGHAF <- HLA_DR_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PNGHAF <- HLA_DQA_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PNGHAF <- HLA_DQB_PNGHAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##PNGNasAF
+
+HLA_A_PNGNasAF <- HLA_A_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_PNGNasAF <- HLA_B_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_PNGNasAF <- HLA_C_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_PNGNasAF <- HLA_DPA_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_PNGNasAF <- HLA_DPB_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_PNGNasAF <- HLA_DR_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_PNGNasAF <- HLA_DQA_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_PNGNasAF <- HLA_DQB_PNGNasAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##STU
+
+HLA_A_STU <- HLA_A_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_STU <- HLA_B_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_STU <- HLA_C_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_STU <- HLA_DPA_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_STU <- HLA_DPB_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_STU <- HLA_DR_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_STU <- HLA_DQA_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_STU <- HLA_DQB_STU %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##Sulawesi
+
+HLA_A_Sulawesi <- HLA_A_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_Sulawesi <- HLA_B_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_Sulawesi <- HLA_C_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_Sulawesi <- HLA_DPA_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_Sulawesi <- HLA_DPB_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_Sulawesi <- HLA_DR_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_Sulawesi <- HLA_DQA_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_Sulawesi <- HLA_DQB_Sulawesi %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##SumAnaAF
+
+HLA_A_SumAnaAF <- HLA_A_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_SumAnaAF <- HLA_B_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_SumAnaAF <- HLA_C_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_SumAnaAF <- HLA_DPA_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_SumAnaAF <- HLA_DPB_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_SumAnaAF <- HLA_DR_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_SumAnaAF <- HLA_DQA_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_SumAnaAF <- HLA_DQB_SumAnaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##SumatrAF 
+
+HLA_A_SumatrAF <- HLA_A_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_SumatrAF <- HLA_B_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_SumatrAF <- HLA_C_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_SumatrAF <- HLA_DPA_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_SumatrAF <- HLA_DPB_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_SumatrAF <- HLA_DR_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_SumatrAF <- HLA_DQA_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_SumatrAF <- HLA_DQB_SumatrAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##SumRinAF
+
+HLA_A_SumRinAF <- HLA_A_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_SumRinAF <- HLA_B_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_SumRinAF <- HLA_C_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_SumRinAF <- HLA_DPA_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_SumRinAF <- HLA_DPB_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_SumRinAF <- HLA_DR_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_SumRinAF <- HLA_DQA_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_SumRinAF <- HLA_DQB_SumRinAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##SumWunAF
+
+HLA_A_SumWunAF <- HLA_A_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_SumWunAF <- HLA_B_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_SumWunAF <- HLA_C_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_SumWunAF <- HLA_DPA_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_SumWunAF <- HLA_DPB_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_SumWunAF <- HLA_DR_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_SumWunAF <- HLA_DQA_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_SumWunAF <- HLA_DQB_SumWunAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##TaiwanAF 
+
+HLA_A_TaiwanAF <- HLA_A_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_TaiwanAF <- HLA_B_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_TaiwanAF <- HLA_C_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_TaiwanAF <- HLA_DPA_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_TaiwanAF <- HLA_DPB_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_TaiwanAF <- HLA_DR_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_TaiwanAF <- HLA_DQA_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_TaiwanAF <- HLA_DQB_TaiwanAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##TimKamAF
+
+HLA_A_TimKamAF <- HLA_A_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_TimKamAF <- HLA_B_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_TimKamAF <- HLA_C_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_TimKamAF <- HLA_DPA_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_TimKamAF <- HLA_DPB_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_TimKamAF <- HLA_DR_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_TimKamAF <- HLA_DQA_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_TimKamAF <- HLA_DQB_TimKamAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##TimULaAF
+
+HLA_A_TimULaAF <- HLA_A_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_TimULaAF <- HLA_B_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_TimULaAF <- HLA_C_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_TimULaAF <- HLA_DPA_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_TimULaAF <- HLA_DPB_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_TimULaAF <- HLA_DR_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_TimULaAF <- HLA_DQA_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_TimULaAF <- HLA_DQB_TimULaAF %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##Vietnam
+
+HLA_A_Vietnam <- HLA_A_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_Vietnam <- HLA_B_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_Vietnam <- HLA_C_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_Vietnam <- HLA_DPA_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_Vietnam <- HLA_DPB_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_Vietnam <- HLA_DR_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_Vietnam <- HLA_DQA_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_Vietnam <- HLA_DQB_Vietnam %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##YRI
+
+HLA_A_YRI <- HLA_A_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_B_YRI <- HLA_B_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_C_YRI <- HLA_C_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPA_YRI <- HLA_DPA_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DPB_YRI <- HLA_DPB_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DR_YRI <- HLA_DR_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQA_YRI <- HLA_DQA_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+HLA_DQB_YRI <- HLA_DQB_YRI %>% 
+  mutate(rank = rank(-MAF), 
+         SNP = ifelse(rank <= 5, SNP, 'Other'))
+
+##Pie charts for each population
+#Assign colours to specific alleles
+group.colors.HLAA <- c("HLA_A*01"= "red", "HLA_A*02"="blue", "HLA_A*03"="darkolivegreen1", "HLA_A*11"="yellow", "HLA_A*23"="cyan", "HLA_A*24"="deeppink", "HLA_A*25"="grey", "HLA_A*26"="azure2", "HLA_A*29"="burlywood4", "HLA_A*30"="brown1", "HLA_A*31"="darkorange4", "HLA_A*32"="green", "HLA_A*33"="darkviolet", "HLA_A*34"="darkgreen", "HLA_A*36"="cyan4", "HLA_A*66"="deepskyblue", "HLA_A*68"="darkorange", "HLA_A*69"="cadetblue", "HLA_A*74"="burlywood", "HLA_A*80"="coral")
+group.colors.HLAB <- c("HLA_B*07"= "red", "HLA_B*08"="chartreuse", "HLA_B*13"="darkgreen", "HLA_B*14"="yellow", "HLA_B*15"="cyan", "HLA_B*18"="darkorange", "HLA_B*27"="purple", "HLA_B*35"="beige", "HLA_B*37"="brown1", "HLA_B*38"="darkblue", "HLA_B*39"="darkseagreen", "HLA_B*40"="darkred", "HLA_B*41"="darkkhaki", "HLA_B*42"="deepskyblue", "HLA_B*44"="deeppink", "HLA_B*45"="cornsilk3", "HLA_B*46"="burlywood", "HLA_B*47"="chartreuse4", "HLA_B*48"="darkolivegreen1", "HLA_B*49"="darkorange3", "HLA_B*50"="bisque", "HLA_B*51"="goldenrod4", "HLA_B*52"="darkorchid4", "HLA_B*53"="darkgoldenrod1", "HLA_B*54"="azure", "HLA_B*55"="darkorchid1", "HLA_B*56"="blue", "HLA_B*57"="cornflowerblue", "HLA_B*58"="aquamarine4", "HLA_B*59"="darkslategray1", "HLA_B*67"="darkgoldenrod3", "HLA_B*78"="darkseagreen1")
+group.colors.HLAC <- c("HLA_C*01"= "red", "HLA_C*02"="blue", "HLA_C*03"="darkgreen", "HLA_C*04"="yellow", "HLA_C*05"="cyan", "HLA_C*06"="orange", "HLA_C*07"="purple", "HLA_C*08"="beige", "HLA_C*12"="darkblue", "HLA_C*14"="cadetblue3", "HLA_C*15"="cornflowerblue", "HLA_C*16"="cadetblue", "HLA_C*17"="darkorchid4", "HLA_C*18"="deepskyblue") 
+group.colors.HLADPA <- c("HLA_DPA1*01"= "red", "HLA_DPA1*02"="blue", "HLA_DPA1*03"="green", "HLA_DPA1*04"="yellow")
+group.colors.HLADPB <- c("HLA_DPB1*01"= "red", "HLA_DPB1*02"="blue", "HLA_DPB1*03"="green", "HLA_DPB1*04"="yellow", "HLA_DPB1*05"="cyan3", "HLA_DPB1*06"="orange", "HLA_DPB1*09"="purple", "HLA_DPB1*10"="beige", "HLA_DPB1*100"="brown1", "HLA_DPB1*11"="brown4", "HLA_DPB1*13"="darkorange3", "HLA_DPB1*14"="cornflowerblue", "HLA_DPB1*15"="darkgreen", "HLA_DPB1*150"="cadetblue1", "HLA_DPB1*16"="darkkhaki", "HLA_DPB1*17"="deeppink", "HLA_DPB1*18"="burlywood", "HLA_DPB1*19"="coral", "HLA_DPB1*21"="darkolivegreen2", "HLA_DPB1*23"="darkgray", "HLA_DPB1*26"="deepskyblue4", "HLA_DPB1*28"="darkorchid4", "HLA_DPB1*31"="darkgoldenrod", "HLA_DPB1*392"="aquamarine4")
+group.colors.HLADR <- c("HLA_DRB1*01"= "red", "HLA_DRB1*03"="blue", "HLA_DRB1*04"="green", "HLA_DRB1*07"="yellow", "HLA_DRB1*08"="cyan", "HLA_DRB1*09"="orange", "HLA_DRB1*10"="purple", "HLA_DRB1*11"="beige", "HLA_DRB1*12"="darkblue", "HLA_DRB1*13"="deepskyblue", "HLA_DRB1*14"="darkred", "HLA_DRB1*15"="darkgreen", "HLA_DRB1*16"="darkkhaki")
+group.colors.HLADQA <- c("HLA_DQA1*01"= "red", "HLA_DQA1*02"="blue", "HLA_DQA1*03"="green", "HLA_DQA1*04"="yellow", "HLA_DQA1*05"="cyan", "HLA_DQA1*06"="antiquewhite3")
+group.colors.HLADQB <- c("HLA_DQB1*02"= "red", "HLA_DQB1*03"="darkblue", "HLA_DQB1*04"="darkgreen", "HLA_DQB1*05"="yellow", "HLA_DQB1*06"="cyan")
+
+#Create pie charts
+
+#AlorAF
+ggplot(HLA_A_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A AlorAF.png", bg="transparent")
+ggplot(HLA_B_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA B (AlorAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B AlorAF.png")
+ggplot(HLA_C_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA C (AlorAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C AlorAF.png")
+ggplot(HLA_DPA_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA DPA (AlorAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA AlorAF.png")
+ggplot(HLA_DPB_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA DPB (AlorAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB AlorAF.png")
+ggplot(HLA_DQA_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA DQA (AlorAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA AlorAF.png")
+ggplot(HLA_DQB_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA DQB (AlorAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB AlorAF.png")
+ggplot(HLA_DR_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA DR (AlorAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR AlorAF.png")
+#BaliAF
+ggplot(HLA_A_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A BaliAF.png")
+ggplot(HLA_B_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA B (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B BaliAF.png")
+ggplot(HLA_C_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA C (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C BaliAF.png")
+ggplot(HLA_DPA_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA BaliAF.png")
+ggplot(HLA_DPB_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB BaliAF.png")
+ggplot(HLA_DQA_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA BaliAF.png")
+ggplot(HLA_DQB_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB BaliAF.png")
+ggplot(HLA_DR_BaliAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (BaliAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR BaliAF.png")
+#BEB
+ggplot(HLA_A_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A BEB.png")
+ggplot(HLA_B_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B BEB.png")
+ggplot(HLA_C_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C BEB.png")
+ggplot(HLA_DPA_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA BEB.png")
+ggplot(HLA_DPB_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB BEB.png")
+ggplot(HLA_DQA_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA BEB.png")
+ggplot(HLA_DQB_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB BEB.png")
+ggplot(HLA_DR_BEB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (BEB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR BEB.png")
+#Borneo
+ggplot(HLA_A_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A Borneo.png")
+ggplot(HLA_B_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B Borneo.png")
+ggplot(HLA_C_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C Borneo.png")
+ggplot(HLA_DPA_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA Borneo.png")
+ggplot(HLA_DPB_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB Borneo.png")
+ggplot(HLA_DQA_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA Borneo.png")
+ggplot(HLA_DQB_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB Borneo.png")
+ggplot(HLA_DR_Borneo, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (Borneo)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR Borneo.png")
+#CDX
+ggplot(HLA_A_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A CDX.png")
+ggplot(HLA_B_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B CDX.png")
+ggplot(HLA_C_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C CDX.png")
+ggplot(HLA_DPA_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA CDX.png")
+ggplot(HLA_DPB_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB CDX.png")
+ggplot(HLA_DQA_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA CDX.png")
+ggplot(HLA_DQB_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB CDX.png")
+ggplot(HLA_DR_CDX, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (CDX)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR CDX.png")
+#CEU
+ggplot(HLA_A_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A CEU.png")
+ggplot(HLA_B_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B CEU.png")
+ggplot(HLA_C_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C CEU.png")
+ggplot(HLA_DPA_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA CEU.png")
+ggplot(HLA_DPB_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB CEU.png")
+ggplot(HLA_DQA_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA CEU.png")
+ggplot(HLA_DQB_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB CEU.png")
+ggplot(HLA_DR_CEU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (CEU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR CEU.png")
+#CHB
+ggplot(HLA_A_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A CHB.png")
+ggplot(HLA_B_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B CHB.png")
+ggplot(HLA_C_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C CHB.png")
+ggplot(HLA_DPA_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA CHB.png")
+ggplot(HLA_DPB_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB CHB.png")
+ggplot(HLA_DQA_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA CHB.png")
+ggplot(HLA_DQB_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB CHB.png")
+ggplot(HLA_DR_CHB, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (CHB)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR CHB.png")
+#CHS
+ggplot(HLA_A_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A CHS.png")
+ggplot(HLA_B_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B CHS.png")
+ggplot(HLA_C_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C CHS.png")
+ggplot(HLA_DPA_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA CHS.png")
+ggplot(HLA_DPB_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB CHS.png")
+ggplot(HLA_DQA_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA CHS.png")
+ggplot(HLA_DQB_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB CHS.png")
+ggplot(HLA_DR_CHS, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (CHS)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR CHS.png")
+#FloBamAF
+ggplot(HLA_A_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A FloBamAF.png")
+ggplot(HLA_B_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B FloBamAF.png")
+ggplot(HLA_C_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C FloBamAF.png")
+ggplot(HLA_DPA_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA FloBamAF.png")
+ggplot(HLA_DPB_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB FloBamAF.png")
+ggplot(HLA_DQA_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA FloBamAF.png")
+ggplot(HLA_DQB_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB FloBamAF.png")
+ggplot(HLA_DR_FloBamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (FloBamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR FloBamAF.png")
+#FloBenAF
+ggplot(HLA_A_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A FloBenAF.png")
+ggplot(HLA_B_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B FloBenAF.png")
+ggplot(HLA_C_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C FloBenAF.png")
+ggplot(HLA_DPA_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA FloBenAF.png")
+ggplot(HLA_DPB_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB FloBenAF.png")
+ggplot(HLA_DQA_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA FloBenAF.png")
+ggplot(HLA_DQB_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB FloBenAF.png")
+ggplot(HLA_DR_FloBenAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (FloBenAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR FloBenAF.png")
+#FloRamAF
+ggplot(HLA_A_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A FloRamAF.png")
+ggplot(HLA_B_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B FloRamAF.png")
+ggplot(HLA_C_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C FloRamAF.png")
+ggplot(HLA_DPA_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA FloRamAF.png")
+ggplot(HLA_DPB_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB FloRamAF.png")
+ggplot(HLA_DQA_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA FloRamAF.png")
+ggplot(HLA_DQB_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB FloRamAF.png")
+ggplot(HLA_DR_FloRamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (FloRamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR FloRamAF.png")
+#GIH
+ggplot(HLA_A_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A GIH.png")
+ggplot(HLA_B_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B GIH.png")
+ggplot(HLA_C_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C GIH.png")
+ggplot(HLA_DPA_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA GIH.png")
+ggplot(HLA_DPB_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB GIH.png")
+ggplot(HLA_DQA_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA GIH.png")
+ggplot(HLA_DQB_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB GIH.png")
+ggplot(HLA_DR_GIH, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (GIH)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR GIH.png")
+#ITU
+ggplot(HLA_A_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A ITU.png")
+ggplot(HLA_B_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B ITU.png")
+ggplot(HLA_C_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C ITU.png")
+ggplot(HLA_DPA_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA ITU.png")
+ggplot(HLA_DPB_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB ITU.png")
+ggplot(HLA_DQA_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA ITU.png")
+ggplot(HLA_DQB_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB ITU.png")
+ggplot(HLA_DR_ITU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (ITU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR ITU.png")
+#JavaAF
+ggplot(HLA_A_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A JavaAF.png")
+ggplot(HLA_B_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B JavaAF.png")
+ggplot(HLA_C_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C JavaAF.png")
+ggplot(HLA_DPA_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA JavaAF.png")
+ggplot(HLA_DPB_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB JavaAF.png")
+ggplot(HLA_DQA_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA JavaAF.png")
+ggplot(HLA_DQB_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB JavaAF.png")
+ggplot(HLA_DR_JavaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (JavaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR JavaAF.png")
+#JPT
+ggplot(HLA_A_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A JPT.png")
+ggplot(HLA_B_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B JPT.png")
+ggplot(HLA_C_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C JPT.png")
+ggplot(HLA_DPA_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA JPT.png")
+ggplot(HLA_DPB_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB JPT.png")
+ggplot(HLA_DQA_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA JPT.png")
+ggplot(HLA_DQB_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB JPT.png")
+ggplot(HLA_DR_JPT, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (JPT)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR JPT.png")
+#KHV
+ggplot(HLA_A_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A KHV.png")
+ggplot(HLA_B_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B KHV.png")
+ggplot(HLA_C_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C KHV.png")
+ggplot(HLA_DPA_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA KHV.png")
+ggplot(HLA_DPB_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB KHV.png")
+ggplot(HLA_DQA_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA KHV.png")
+ggplot(HLA_DQB_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB KHV.png")
+ggplot(HLA_DR_KHV, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (KHV)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR KHV.png")
+#LembatAF
+ggplot(HLA_A_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A LembatAF.png")
+ggplot(HLA_B_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B LembatAF.png")
+ggplot(HLA_C_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C LembatAF.png")
+ggplot(HLA_DPA_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA LembatAF.png")
+ggplot(HLA_DPB_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB LembatAF.png")
+ggplot(HLA_DQA_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA LembatAF.png")
+ggplot(HLA_DQB_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB LembatAF.png")
+ggplot(HLA_DR_LembatAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (LembatAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR LembatAF.png")
+#MalayAF
+ggplot(HLA_A_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A MalayAF.png")
+ggplot(HLA_B_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B MalayAF.png")
+ggplot(HLA_C_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C MalayAF.png")
+ggplot(HLA_DPA_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA MalayAF.png")
+ggplot(HLA_DPB_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB MalayAF.png")
+ggplot(HLA_DQA_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA MalayAF.png")
+ggplot(HLA_DQB_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB MalayAF.png")
+ggplot(HLA_DR_MalayAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (MalayAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR MalayAF.png")
+#MentawAF
+ggplot(HLA_A_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A MentawAF.png")
+ggplot(HLA_B_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B MentawAF.png")
+ggplot(HLA_C_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C MentawAF.png")
+ggplot(HLA_DPA_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA MentawAF.png")
+ggplot(HLA_DPB_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB MentawAF.png")
+ggplot(HLA_DQA_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA MentawAF.png")
+ggplot(HLA_DQB_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB MentawAF.png")
+ggplot(HLA_DR_MentawAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (MentawAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR MentawAF.png")
+#NiasAF
+ggplot(HLA_A_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A NiasAF.png")
+ggplot(HLA_B_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B NiasAF.png")
+ggplot(HLA_C_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C NiasAF.png")
+ggplot(HLA_DPA_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA NiasAF.png")
+ggplot(HLA_DPB_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB NiasAF.png")
+ggplot(HLA_DQA_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA NiasAF.png")
+ggplot(HLA_DQB_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB NiasAF.png")
+ggplot(HLA_DR_NiasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (NiasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR NiasAF.png")
+#PantarAF
+ggplot(HLA_A_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PantarAF.png")
+ggplot(HLA_B_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PantarAF.png")
+ggplot(HLA_C_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PantarAF.png")
+ggplot(HLA_DPA_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PantarAF.png")
+ggplot(HLA_DPB_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PantarAF.png")
+ggplot(HLA_DQA_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PantarAF.png")
+ggplot(HLA_DQB_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PantarAF.png")
+ggplot(HLA_DR_PantarAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PantarAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PantarAF.png")
+#PHIgorTR
+ggplot(HLA_A_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PHIgorTR.png")
+ggplot(HLA_B_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PHIgorTR.png")
+ggplot(HLA_C_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PHIgorTR.png")
+ggplot(HLA_DPA_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PHIgorTR.png")
+ggplot(HLA_DPB_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PHIgorTR.png")
+ggplot(HLA_DQA_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PHIgorTR.png")
+ggplot(HLA_DQB_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PHIgorTR.png")
+ggplot(HLA_DR_PHIgorTR, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PHIgorTR)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PHIgorTR.png")
+#PHNegr
+ggplot(HLA_A_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PHNegr.png")
+ggplot(HLA_B_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PHNegr.png")
+ggplot(HLA_C_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PHNegr.png")
+ggplot(HLA_DPA_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PHNegr.png")
+ggplot(HLA_DPB_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PHNegr.png")
+ggplot(HLA_DQA_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PHNegr.png")
+ggplot(HLA_DQB_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PHNegr.png")
+ggplot(HLA_DR_PHNegr, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PHNegr)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PHNegr.png")
+#PHOther
+ggplot(HLA_A_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PHOther.png")
+ggplot(HLA_B_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PHOther.png")
+ggplot(HLA_C_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PHOther.png")
+ggplot(HLA_DPA_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PHOther.png")
+ggplot(HLA_DPB_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PHOther.png")
+ggplot(HLA_DQA_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PHOther.png")
+ggplot(HLA_DQB_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PHOther.png")
+ggplot(HLA_DR_PHOther, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PHOther)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PHOther.png")
+#PJL
+ggplot(HLA_A_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PJL.png")
+ggplot(HLA_B_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PJL.png")
+ggplot(HLA_C_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PJL.png")
+ggplot(HLA_DPA_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PJL.png")
+ggplot(HLA_DPB_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PJL.png")
+ggplot(HLA_DQA_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PJL.png")
+ggplot(HLA_DQB_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PJL.png")
+ggplot(HLA_DR_PJL, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PJL)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PJL.png")
+#PNGBaiAF
+ggplot(HLA_A_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PNGBaiAF.png")
+ggplot(HLA_B_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PNGBaiAF.png")
+ggplot(HLA_C_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PNGBaiAF.png")
+ggplot(HLA_DPA_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PNGBaiAF.png")
+ggplot(HLA_DPB_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PNGBaiAF.png")
+ggplot(HLA_DQA_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PNGBaiAF.png")
+ggplot(HLA_DQB_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PNGBaiAF.png")
+ggplot(HLA_DR_PNGBaiAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PNGBaiAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PNGBaiAF.png")
+#PNGCAF
+ggplot(HLA_A_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PNGCAF.png")
+ggplot(HLA_B_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PNGCAF.png")
+ggplot(HLA_C_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PNGCAF.png")
+ggplot(HLA_DPA_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PNGCAF.png")
+ggplot(HLA_DPB_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PNGCAF.png")
+ggplot(HLA_DQA_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PNGCAF.png")
+ggplot(HLA_DQB_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PNGCAF.png")
+ggplot(HLA_DR_PNGCAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PNGCAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PNGCAF.png")
+#PNGHAF
+ggplot(HLA_A_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PNGHAF.png")
+ggplot(HLA_B_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PNGHAF.png")
+ggplot(HLA_C_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PNGHAF.png")
+ggplot(HLA_DPA_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PNGHAF.png")
+ggplot(HLA_DPB_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PNGHAF.png")
+ggplot(HLA_DQA_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PNGHAF.png")
+ggplot(HLA_DQB_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PNGHAF.png")
+ggplot(HLA_DR_PNGHAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PNGHAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PNGHAF.png")
+#PNGNasAF
+ggplot(HLA_A_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A PNGNasAF.png")
+ggplot(HLA_B_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B PNGNasAF.png")
+ggplot(HLA_C_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C PNGNasAF.png")
+ggplot(HLA_DPA_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA PNGNasAF.png")
+ggplot(HLA_DPB_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB PNGNasAF.png")
+ggplot(HLA_DQA_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA PNGNasAF.png")
+ggplot(HLA_DQB_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB PNGNasAF.png")
+ggplot(HLA_DR_PNGNasAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (PNGNasAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR PNGNasAF.png")
+#STU
+ggplot(HLA_A_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A STU.png")
+ggplot(HLA_B_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B STU.png")
+ggplot(HLA_C_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C STU.png")
+ggplot(HLA_DPA_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA STU.png")
+ggplot(HLA_DPB_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB STU.png")
+ggplot(HLA_DQA_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA STU.png")
+ggplot(HLA_DQB_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB STU.png")
+ggplot(HLA_DR_STU, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (STU)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR STU.png")
+#Sulawesi
+ggplot(HLA_A_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A Sulawesi.png")
+ggplot(HLA_B_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B Sulawesi.png")
+ggplot(HLA_C_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C Sulawesi.png")
+ggplot(HLA_DPA_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA Sulawesi.png")
+ggplot(HLA_DPB_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB Sulawesi.png")
+ggplot(HLA_DQA_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA Sulawesi.png")
+ggplot(HLA_DQB_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB Sulawesi.png")
+ggplot(HLA_DR_Sulawesi, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (Sulawesi)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR Sulawesi.png")
+#SumAnaAF
+ggplot(HLA_A_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A SumAnaAF.png")
+ggplot(HLA_B_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B SumAnaAF.png")
+ggplot(HLA_C_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C SumAnaAF.png")
+ggplot(HLA_DPA_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA SumAnaAF.png")
+ggplot(HLA_DPB_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB SumAnaAF.png")
+ggplot(HLA_DQA_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA SumAnaAF.png")
+ggplot(HLA_DQB_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB SumAnaAF.png")
+ggplot(HLA_DR_SumAnaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (SumAnaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR SumAnaAF.png")
+#SumatrAF
+ggplot(HLA_A_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A SumatrAF.png")
+ggplot(HLA_B_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B SumatrAF.png")
+ggplot(HLA_C_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C SumatrAF.png")
+ggplot(HLA_DPA_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA SumatrAF.png")
+ggplot(HLA_DPB_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB SumatrAF.png")
+ggplot(HLA_DQA_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA SumatrAF.png")
+ggplot(HLA_DQB_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB SumatrAF.png")
+ggplot(HLA_DR_SumatrAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (SumatrAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR SumatrAF.png")
+#SumRinAF
+ggplot(HLA_A_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A SumRinAF.png")
+ggplot(HLA_B_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B SumRinAF.png")
+ggplot(HLA_C_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C SumRinAF.png")
+ggplot(HLA_DPA_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA SumRinAF.png")
+ggplot(HLA_DPB_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB SumRinAF.png")
+ggplot(HLA_DQA_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA SumRinAF.png")
+ggplot(HLA_DQB_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB SumRinAF.png")
+ggplot(HLA_DR_SumRinAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (SumRinAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR SumRinAF.png")
+#SumWunAF
+ggplot(HLA_A_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A SumWunAF.png")
+ggplot(HLA_B_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B SumWunAF.png")
+ggplot(HLA_C_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C SumWunAF.png")
+ggplot(HLA_DPA_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA SumWunAF.png")
+ggplot(HLA_DPB_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB SumWunAF.png")
+ggplot(HLA_DQA_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA SumWunAF.png")
+ggplot(HLA_DQB_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB SumWunAF.png")
+ggplot(HLA_DR_SumWunAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (SumWunAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR SumWunAF.png")
+#TaiwanAF
+ggplot(HLA_A_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A TaiwanAF.png")
+ggplot(HLA_B_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B TaiwanAF.png")
+ggplot(HLA_C_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C TaiwanAF.png")
+ggplot(HLA_DPA_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA TaiwanAF.png")
+ggplot(HLA_DPB_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB TaiwanAF.png")
+ggplot(HLA_DQA_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA TaiwanAF.png")
+ggplot(HLA_DQB_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB TaiwanAF.png")
+ggplot(HLA_DR_TaiwanAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (TaiwanAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR TaiwanAF.png")
+#TimKamAF
+ggplot(HLA_A_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A TimKanAF.png")
+ggplot(HLA_B_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B TimKanAF.png")
+ggplot(HLA_C_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C TimKanAF.png")
+ggplot(HLA_DPA_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA TimKanAF.png")
+ggplot(HLA_DPB_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB TimKanAF.png")
+ggplot(HLA_DQA_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA TimKanAF.png")
+ggplot(HLA_DQB_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB TimKanAF.png")
+ggplot(HLA_DR_TimKamAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (TimKamAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR TimKanAF.png")
+#TimULaAF
+ggplot(HLA_A_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A TimULaAF.png")
+ggplot(HLA_B_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B TimULaAF.png")
+ggplot(HLA_C_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C TimULaAF.png")
+ggplot(HLA_DPA_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA TimULaAF.png")
+ggplot(HLA_DPB_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB TimULaAF.png")
+ggplot(HLA_DQA_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA TimULaAF.png")
+ggplot(HLA_DQB_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB TimULaAF.png")
+ggplot(HLA_DR_TimULaAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (TimULaAF)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR TimULaAF.png")
+#Vietnam
+ggsave("HLA-A Vietnam.png")
+ggplot(HLA_B_Vietnam, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (Vietnam)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B Vietnam.png")
+ggplot(HLA_C_Vietnam, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (Vietnam)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C Vietnam.png")
+ggplot(HLA_DPA_Vietnam, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (Vietnam)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA Vietnam.png")
+ggplot(HLA_DPB_Vietnam, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (Vietnam)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB Vietnam.png")
+ggplot(HLA_DQA_Vietnam, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (Vietnam)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA Vietnam.png")
+ggplot(HLA_DQB_Vietnam, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (Vietnam)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB Vietnam.png")
+ggplot(HLA_DR_Vietnam, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (Vietnam)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR Vietnam.png")
+#YRI
+ggplot(HLA_A_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA A (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA A genes"))+
+  scale_fill_manual(values=group.colors.HLAA, limits=force)+
+  theme_void()
+ggsave("HLA-A YRI.png")
+ggplot(HLA_B_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA B (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA B genes"))+
+  scale_fill_manual(values=group.colors.HLAB, limits=force)+
+  theme_void()
+ggsave("HLA-B YRI.png")
+ggplot(HLA_C_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA C (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA C genes"))+
+  scale_fill_manual(values=group.colors.HLAC, limits=force)+
+  theme_void()
+ggsave("HLA-C YRI.png")
+ggplot(HLA_DPA_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPA (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPA genes"))+
+  scale_fill_manual(values=group.colors.HLADPA, limits=force)+
+  theme_void()
+ggsave("HLA-DPA YRI.png")
+ggplot(HLA_DPB_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DPB (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DPB genes"))+
+  scale_fill_manual(values=group.colors.HLADPB, limits=force)+
+  theme_void()
+ggsave("HLA-DPB YRI.png")
+ggplot(HLA_DQA_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQA (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQA genes"))+
+  scale_fill_manual(values=group.colors.HLADQA, limits=force)+
+  theme_void()
+ggsave("HLA-DQA YRI.png")
+ggplot(HLA_DQB_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DQB (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DQB genes"))+
+  scale_fill_manual(values=group.colors.HLADQB, limits=force)+
+  theme_void()
+ggsave("HLA-DQB YRI.png")
+ggplot(HLA_DR_YRI, aes(x="", y=MAF, fill=reorder(SNP, -MAF))) +
+  geom_bar(stat="identity", color="black", width=1) +
+  labs(title="HLA DR (YRI)", caption = "(Based on data from Hudjashov et al., 2017)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = "HLA DR genes"))+
+  scale_fill_manual(values=group.colors.HLADR, limits=force)+
+  theme_void()
+ggsave("HLA-DR YRI.png")
+
+#Create stand-alone legends
+#HLA-A
+LegendHLAA <- ggplot(HLA_A_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLAA)+
+  theme_void()
+
+legendHLAA <- cowplot::get_legend(LegendHLAA)
+
+grid.newpage()
+grid.draw(legendHLAA)
+ggsave("HLA_A legend.png", bg="transparent")
+
+#HLA-B
+LegendHLAB <- ggplot(HLA_B_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLAB)+
+  theme_void()
+
+legendHLAB <- cowplot::get_legend(LegendHLAB)
+
+grid.newpage()
+grid.draw(legendHLAB)
+ggsave("HLA_B legend.png", bg="transparent")
+
+#HLA-C
+LegendHLAC <- ggplot(HLA_C_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLAC)+
+  theme_void()
+
+legendHLAC <- cowplot::get_legend(LegendHLAC)
+
+grid.newpage()
+grid.draw(legendHLAC)
+ggsave("HLA_C legend.png", bg="transparent")
+
+#HLA-DPA
+LegendHLADPA <- ggplot(HLA_DPA_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLADPA)+
+  theme_void()
+
+legendHLADPA <- cowplot::get_legend(LegendHLADPA)
+
+grid.newpage()
+grid.draw(legendHLADPA)
+ggsave("HLA_DPA legend.png", bg="transparent")
+
+#HLA-DPB
+LegendHLADPB <- ggplot(HLA_DPB_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLADPB)+
+  theme_void()
+
+legendHLADPB <- cowplot::get_legend(LegendHLADPB)
+
+grid.newpage()
+grid.draw(legendHLADPB)
+ggsave("HLA_DPB legend.png", bg="transparent")
+
+#HLA-DQA
+LegendHLADQA <- ggplot(HLA_DQA_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLADQA)+
+  theme_void()
+
+legendHLADQA <- cowplot::get_legend(LegendHLADQA)
+
+grid.newpage()
+grid.draw(legendHLADQA)
+ggsave("HLA_DQA legend.png", bg="transparent")
+
+#HLA-DQB
+LegendHLADQB <- ggplot(HLA_DQB_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLADQB)+
+  theme_void()
+
+legendHLADQB <- cowplot::get_legend(LegendHLADQB)
+
+grid.newpage()
+grid.draw(legendHLADQB)
+ggsave("HLA_DQB legend.png", bg="transparent")
+
+#HLA-DR
+LegendHLADR <- ggplot(HLA_DR_AlorAF, aes(x="", y=MAF, fill=reorder(SNP, -MAF)))+
+  geom_bar(stat="identity", color="black", width=1)+
+  labs(title="HLA A (AlorAF)")+
+  coord_polar("y")+
+  guides(fill = guide_legend(title = NULL))+
+  scale_fill_manual(values=group.colors.HLADR)+
+  theme_void()
+
+legendHLADR <- cowplot::get_legend(LegendHLADR)
+
+grid.newpage()
+grid.draw(legendHLADR)
+ggsave("HLA_DR legend.png", bg="transparent")

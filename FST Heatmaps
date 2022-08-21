@@ -1,0 +1,274 @@
+####################
+### FST Heatmaps ###
+####################
+
+##Chr6
+#Set working directory
+setwd()
+
+#Read PLINK format files
+bed.fn <- FILE LOCATION
+fam.fn <- FILE LOCATION
+bim.fn <- FILE LOCATION
+
+#Create GDS file
+snpgdsBED2GDS(bed.fn, fam.fn, bim.fn, "chr6.gds")
+
+#Read GDS file
+genofile <- snpgdsOpen("chr6.gds")
+
+#Get sample ID
+sample.id <- read.gdsn(index.gdsn(genofile, "sample.id"))
+
+#Get population information
+pop_code <- scan("Popref.txt", what=character())
+
+#Define population
+flag <- pop_code %in% c("BaliAF", "AlorAF", "JavaAF", "YRI", "JPT", "BEB", "ITU", "TaiwanAF", "CDX", "CEU", "CDX", "CEU", "KHV", "STU", "CHS", "GIH", "Borneo", "PJL", "FloBamAF", "FloBenAF", "FloRamAF", "Sulawesi", "CHB", "LembatAF", "MalayAF", "MentawAF", "NiasAF", "PantarAF", "PHNegr", "PHIgorTR", "PHOther", "PNGBaiAF", "PNGCAF", "PNGHAF", "PNGNasAF", "SumAnaAF", "SumatrAF", "SumRinAF", "SumWunAF", "TimKamAF", "TimULaAF", "Vietnam")
+samp.sel <- sample.id[flag]
+pop.sel <- pop_code[flag]
+
+#Conduct FST calculation (according to Weir & Hill 2002)
+chr6 <- snpgdsFst(genofile, sample.id=samp.sel, population=as.factor(pop.sel), method=c("W&H02"))
+
+#Write .csv file
+write.csv(chr6$Beta, "chr6.csv", row.names=TRUE)
+
+#Read dataframe for heatmap
+heatmap_chr6 <- read.csv("chr6.csv", header=T, row.names =1)
+
+#Rename labels
+heatmap_chr6 <- heatmap_chr6 %>%
+  rename(
+    "Alor"=AlorAF,
+    "Bali"=BaliAF,
+    "Bangladeshi"=BEB,
+    "Dai"=CDX,
+    "European"=CEU,
+    "Han"=CHB,
+    "Southern Han"=CHS,
+    "Fl. Bama"=FloBamAF,
+    "Fl. Bena"=FloBenAF,
+    "Fl. Rampasasa"=FloRamAF,
+    "Gujarati"=GIH,
+    "Telugu"=ITU,
+    "Java"=JavaAF,
+    "Japanese"=JPT,
+    "Vietnam (KHV)"=KHV,
+    "Lembata"=LembatAF,
+    "Mentawai"=MentawAF,
+    "Nias"=NiasAF,
+    "Pantar"=PantarAF,
+    "Kankanaey"=PHIgorTR,
+    "Negritos"=PHNegr,
+    "Non-Kankanaey"=PHOther,
+    "Punjabi"=PJL,
+    "PNG Baining"=PNGBaiAF,
+    "PNG Coastal"=PNGCAF,
+    "PNG Highland"=PNGHAF,
+    "PNG Naisoi"=PNGNasAF,
+    "Tamil"=STU,
+    "Sumba (Ana)"=SumAnaAF,
+    "Sumatra"=SumatrAF,
+    "Sumba (Rin)"=SumRinAF,
+    "Sumba (Wun)"=SumWunAF,
+    "Taiwan"=TaiwanAF,
+    "Timor (Kam)"=TimKamAF,
+    "Timor (ULa)"=TimULaAF,
+    "Yoruba"=YRI
+  )
+
+#Flip data 
+heatmap_chr6 <- as.data.frame(t(heatmap_chr6))
+
+#Rename labels
+heatmap_chr6 <- heatmap_chr6 %>%
+  rename(
+    "Alor"=AlorAF,
+    "Bali"=BaliAF,
+    "Bangladeshi"=BEB,
+    "Dai"=CDX,
+    "European"=CEU,
+    "Han"=CHB,
+    "Southern Han"=CHS,
+    "Fl. Bama"=FloBamAF,
+    "Fl. Bena"=FloBenAF,
+    "Fl. Rampasasa"=FloRamAF,
+    "Gujarati"=GIH,
+    "Telugu"=ITU,
+    "Java"=JavaAF,
+    "Japanese"=JPT,
+    "Vietnam (KHV)"=KHV,
+    "Lembata"=LembatAF,
+    "Mentawai"=MentawAF,
+    "Nias"=NiasAF,
+    "Pantar"=PantarAF,
+    "Kankanaey"=PHIgorTR,
+    "Negritos"=PHNegr,
+    "Non-Kankanaey"=PHOther,
+    "Punjabi"=PJL,
+    "PNG Baining"=PNGBaiAF,
+    "PNG Coastal"=PNGCAF,
+    "PNG Highland"=PNGHAF,
+    "PNG Naisoi"=PNGNasAF,
+    "Tamil"=STU,
+    "Sumba (Ana)"=SumAnaAF,
+    "Sumatra"=SumatrAF,
+    "Sumba (Rin)"=SumRinAF,
+    "Sumba (Wun)"=SumWunAF,
+    "Taiwan"=TaiwanAF,
+    "Timor (Kam)"=TimKamAF,
+    "Timor (ULa)"=TimULaAF,
+    "Yoruba"=YRI
+  )
+
+#Format title
+expression(paste("\n", "Chromosome 6 F"[ST], " (Beta)")) -> TitleChr6
+
+#Remove self-calculation of FST
+diag(heatmap_chr6)=NA 
+
+#Generate heatmap
+heatmap.2(as.matrix(heatmap_chr6), main=TitleChr6, sepwidth = c(0.01, 0.01), sepcolor = "black", colsep=1:ncol(as.matrix(heatmap_chr6)),rowsep=1:nrow(as.matrix(heatmap_chr6)), trace="none", margins=c(6.5,6.5), scale="none", revC = TRUE)
+
+##HLA
+#Set working directory
+setwd()
+
+#Read PLINK format files
+bed.fn <- FILE LOCATION
+fam.fn <- FILE LOCATION
+bim.fn <- FILE LOCATION
+
+#Create GDS file
+snpgdsBED2GDS(bed.fn, fam.fn, bim.fn, "HUDHLA.gds")
+
+#Read GDS file
+genofile <- snpgdsOpen("HUDHLA.gds")
+
+#Get sample ID
+sample.id <- read.gdsn(index.gdsn(genofile, "sample.id"))
+
+#Get population information 
+pop_code <- scan("Popref.txt", what=character())
+
+#Define population
+flag <- pop_code %in% c("BaliAF", "AlorAF", "JavaAF", "YRI", "JPT", "BEB", "ITU", "TaiwanAF", "CDX", "CEU", "CDX", "CEU", "KHV", "STU", "CHS", "GIH", "Borneo", "PJL", "FloBamAF", "FloBenAF", "FloRamAF", "Sulawesi", "CHB", "LembatAF", "MalayAF", "MentawAF", "NiasAF", "PantarAF", "PHNegr", "PHIgorTR", "PHOther", "PNGBaiAF", "PNGCAF", "PNGHAF", "PNGNasAF", "SumAnaAF", "SumatrAF", "SumRinAF", "SumWunAF", "TimKamAF", "TimULaAF", "Vietnam")
+samp.sel <- sample.id[flag]
+pop.sel <- pop_code[flag]
+
+#Conduct FST calculation (according to Weir & Hill 2002)
+HLA <- snpgdsFst(genofile, sample.id=samp.sel, population=as.factor(pop.sel), method=c("W&H02"))
+
+#Write .csv file
+write.csv(HLA$Beta, "HLA-FST.csv", row.names=TRUE)
+
+#Read datafile
+FST_HLA <- read.csv("HLA-FST.csv", header=TRUE, row.names = 1)
+
+#Remove self-calculation of FST
+diag(FST_HLA)=NA
+
+#Rename labels
+FST_HLA <- FST_HLA %>%
+  rename(
+    "Alor"=AlorAF,
+    "Bali"=BaliAF,
+    "Bangladeshi"=BEB,
+    "Dai"=CDX,
+    "European"=CEU,
+    "Han"=CHB,
+    "Southern Han"=CHS,
+    "Fl. Bama"=FloBamAF,
+    "Fl. Bena"=FloBenAF,
+    "Fl. Rampasasa"=FloRamAF,
+    "Gujarati"=GIH,
+    "Telugu"=ITU,
+    "Java"=JavaAF,
+    "Japanese"=JPT,
+    "Vietnam (KHV)"=KHV,
+    "Lembata"=LembatAF,
+    "Malay"=MalayAF,
+    "Mentawai"=MentawAF,
+    "Nias"=NiasAF,
+    "Pantar"=PantarAF,
+    "Kankanaey"=PHIgorTR,
+    "Negritos"=PHNegr,
+    "Non-Kankanaey"=PHOther,
+    "Punjabi"=PJL,
+    "PNG Baining"=PNGBaiAF,
+    "PNG Coastal"=PNGCAF,
+    "PNG Highland"=PNGHAF,
+    "PNG Naisoi"=PNGNasAF,
+    "Tamil"=STU,
+    "Sumba (Ana)"=SumAnaAF,
+    "Sumatra"=SumatrAF,
+    "Sumba (Rin)"=SumRinAF,
+    "Sumba (Wun)"=SumWunAF,
+    "Taiwan"=TaiwanAF,
+    "Timor (Kam)"=TimKamAF,
+    "Timor (ULa)"=TimULaAF,
+    "Yoruba"=YRI
+  )
+
+#Flip dataset 
+FST_HLA <- as.data.frame(t(FST_HLA))
+
+#Rename labels
+FST_HLA <- FST_HLA %>%
+  rename(
+    "Alor"=AlorAF,
+    "Bali"=BaliAF,
+    "Bangladeshi"=BEB,
+    "Dai"=CDX,
+    "European"=CEU,
+    "Han"=CHB,
+    "Southern Han"=CHS,
+    "Fl. Bama"=FloBamAF,
+    "Fl. Bena"=FloBenAF,
+    "Fl. Rampasasa"=FloRamAF,
+    "Gujarati"=GIH,
+    "Telugu"=ITU,
+    "Java"=JavaAF,
+    "Japanese"=JPT,
+    "Vietnam (KHV)"=KHV,
+    "Lembata"=LembatAF,
+    "Malay"=MalayAF,
+    "Mentawai"=MentawAF,
+    "Nias"=NiasAF,
+    "Pantar"=PantarAF,
+    "Kankanaey"=PHIgorTR,
+    "Negritos"=PHNegr,
+    "Non-Kankanaey"=PHOther,
+    "Punjabi"=PJL,
+    "PNG Baining"=PNGBaiAF,
+    "PNG Coastal"=PNGCAF,
+    "PNG Highland"=PNGHAF,
+    "PNG Naisoi"=PNGNasAF,
+    "Tamil"=STU,
+    "Sumba (Ana)"=SumAnaAF,
+    "Sumatra"=SumatrAF,
+    "Sumba (Rin)"=SumRinAF,
+    "Sumba (Wun)"=SumWunAF,
+    "Taiwan"=TaiwanAF,
+    "Timor (Kam)"=TimKamAF,
+    "Timor (ULa)"=TimULaAF,
+    "Yoruba"=YRI
+  )
+
+#Ensuring row name coherence 
+row.names(FST_HLA) <- colnames(FST_HLA) <- c("Alor", "Bali", "Borneo", "Bangladeshi", "Dai", "European", "Han", "Southern Han", "Fl. Bama", "Fl. Bena", "Fl. Rampasasa", "Gujarati", "Telugu", "Java", "Japanese", "Vietnam (KHV)", "Lembata", "Malay", "Mentawai", "Nias", "Pantar", "Kankanaey", "Negritos", "Non-Kankanaey", "Punjabi", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Tamil", "Sulawesi", "Sumba (Ana)", "Sumatra", "Sumba (Rin)", "Sumba (Wun)", "Taiwan", "Timor (Kam)", "Timor (ULa)", "Vietnam", "Yoruba")
+#Ensuring data is in matrix format
+FST_HLA <- as.matrix(FST_HLA)
+
+#Establish order to mirror Chr6 heatmap
+order <- c("Yoruba", "Punjabi", "Gujarati", "Telugu", "Tamil", "Bangladeshi", "European", "PNG Baining", "PNG Coastal", "PNG Highland", "PNG Naisoi", "Alor", "Pantar", "Negritos", "Japanese", "Han", "Vietnam (KHV)", "Southern Han", "Dai", "Sumba (Rin)", "Fl. Rampasasa", "Sumba (Wun)", "Sumba (Ana)", "Fl. Bama", "Lembata", "Fl. Bena", "Timor (ULa)", "Timor (Kam)", "Sulawesi", "Java", "Bali", "Vietnam", "Malay", "Sumatra", "Borneo", "Non-Kankanaey", "Kankanaey", "Taiwan", "Mentawai", "Nias")
+FST_HLA <- as.data.frame(reorder_mat(mat=FST_HLA, order=order))
+
+#Format title
+expression(paste("\n", "HLA genes F"[ST], " (Beta)")) -> TitleHLA
+
+#Plot heatmap w. Dendrograms 
+heatmap.2(as.matrix(FST_HLA), main=TitleHLA, sepwidth = c(0.01, 0.01), sepcolor = "black", colsep=1:ncol(as.matrix(FST_HLA)),rowsep=1:nrow(as.matrix(FST_HLA)), trace="none", margins=c(6.5,6.5), scale="none", revC=TRUE)
+#Plot heatmap w. no dendrograms
+heatmap.2(as.matrix(FST_HLA), main=TitleHLA, sepwidth = c(0.01, 0.01), sepcolor = "black", colsep=1:ncol(as.matrix(FST_HLA)),rowsep=1:nrow(as.matrix(FST_HLA)), trace="none", margins=c(6.5,6.5), scale="none", dendrogram = "none", Rowv = NULL, Colv = NULL)

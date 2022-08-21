@@ -1,0 +1,186 @@
+################
+# Homozygosity #
+################
+#Set working directory
+setwd()
+# Clear workspace
+rm(list = ls())
+#Create homozygosity calculations in PLINK (do not run again)
+##Chromosome 6
+system("plink --vcf chr6_1000v3.dose.vcf.gz --make-bed --out HUDchr6")
+system("plink --bfile HUDchr6 --update-ids Labels.txt --make-bed --out HUDchr6")
+system("plink --bfile HUDchr6 --het --out CHR6-HET")
+
+##HLA
+system("plink --bfile HUDHLAonly --het --out HLA-HET")
+
+#Read datasets
+Chr6_HET <- read.table("CHR6-HET.het", header=TRUE)
+HLA_HET <- read.table("HLA-HET.het", header=TRUE)
+
+#Calculate average observed homozyg.
+Chr6AVGOHOM <- Chr6_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgOHOM = mean(O.HOM.)) 
+
+HLAAVGOHOM <- HLA_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgOHOM = mean(O.HOM.)) 
+
+write.csv(Chr6AVGOHOM, "Chr6AVGHOM.csv")
+write.csv(HLAAVGOHOM, "HLAAVGHOM.csv")
+#Calculate average expected homozyg.
+Chr6AVGEHOM <- Chr6_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgEHOM = mean(E.HOM.))
+
+HLAAVGEHOM <- HLA_HET %>%
+  group_by(FID) %>%
+  filter(n() >0 ) %>%
+  summarise(AvgEHOM = mean(E.HOM.))
+
+#Remove double FID column
+Chr6AVGEHOM$FID=NULL
+HLAAVGEHOM$FID=NULL
+
+#Combine average calcuations
+CHR6_AVG <- cbind(Chr6AVGOHOM, Chr6AVGEHOM)
+HLA_AVG <- cbind(HLAAVGOHOM, HLAAVGEHOM)
+
+#Calculate percentage change
+CHR6_AVG <- CHR6_AVG %>%
+  mutate(PercentageChange = ((CHR6_AVG$AvgOHOM - CHR6_AVG$AvgEHOM) / CHR6_AVG$AvgEHOM)*100)
+HLA_AVG <- HLA_AVG %>%
+  mutate(PercentageChange = ((HLA_AVG$AvgOHOM - HLA_AVG$AvgEHOM) / HLA_AVG$AvgEHOM)*100)
+
+#Rename labels
+CHR6_AVG$FID[CHR6_AVG$FID=="AlorAF"] <- "Alor"
+CHR6_AVG$FID[CHR6_AVG$FID=="BaliAF"] <- "Bali"
+CHR6_AVG$FID[CHR6_AVG$FID=="BEB"] <- "Bangladeshi"
+CHR6_AVG$FID[CHR6_AVG$FID=="CDX"] <- "Dai (China)"
+CHR6_AVG$FID[CHR6_AVG$FID=="CEU"] <- "European"
+CHR6_AVG$FID[CHR6_AVG$FID=="CHB"] <- "Han (China)"
+CHR6_AVG$FID[CHR6_AVG$FID=="CHS"] <- "Southern Han (China)"
+CHR6_AVG$FID[CHR6_AVG$FID=="FloBamAF"] <- "Flores Bama"
+CHR6_AVG$FID[CHR6_AVG$FID=="FloBenAF"] <- "Flores Bena"
+CHR6_AVG$FID[CHR6_AVG$FID=="FloRamAF"] <- "Flores Rampasasa"
+CHR6_AVG$FID[CHR6_AVG$FID=="GIH"] <- "Gujarati (India)"
+CHR6_AVG$FID[CHR6_AVG$FID=="ITU"] <- "Telugu (India)"
+CHR6_AVG$FID[CHR6_AVG$FID=="JavaAF"] <- "Java"
+CHR6_AVG$FID[CHR6_AVG$FID=="JPT"] <- "Japanese"
+CHR6_AVG$FID[CHR6_AVG$FID=="KHV"] <- "Vietnam (KHV)"
+CHR6_AVG$FID[CHR6_AVG$FID=="LembatAF"] <- "Lembata"
+CHR6_AVG$FID[CHR6_AVG$FID=="MalayAF"] <- "Malay"
+CHR6_AVG$FID[CHR6_AVG$FID=="MentawAF"] <- "Mentawai"
+CHR6_AVG$FID[CHR6_AVG$FID=="NiasAF"] <- "Nias"
+CHR6_AVG$FID[CHR6_AVG$FID=="PantarAF"] <- "Pantar"
+CHR6_AVG$FID[CHR6_AVG$FID=="PHIgorTR"] <- "Kankanaey (Philippines)"
+CHR6_AVG$FID[CHR6_AVG$FID=="PHOther"] <- "Non-Kankanaey (Philippines)"
+CHR6_AVG$FID[CHR6_AVG$FID=="PHNegr"] <- "Negritos (Philippines)"
+CHR6_AVG$FID[CHR6_AVG$FID=="PJL"] <- "Punjabi (Pakistan)"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGBaiAF"] <- "Papua New Guinea Baining"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGCAF"] <- "Papua New Guinea Coastal"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGHAF"] <- "Papua New Guinea Highlands"
+CHR6_AVG$FID[CHR6_AVG$FID=="PNGNasAF"] <- "Papua New Guinea Nasioi"
+CHR6_AVG$FID[CHR6_AVG$FID=="STU"] <- "Tamil (Sri Lanka)"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumAnaAF"] <- "Sumba (Ana)"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumatrAF"] <- "Sumatra"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumRinAF"] <- "Sumba (Rin)"
+CHR6_AVG$FID[CHR6_AVG$FID=="SumWunAF"] <- "Sumba (Wun)"
+CHR6_AVG$FID[CHR6_AVG$FID=="TaiwanAF"] <- "Taiwan"
+CHR6_AVG$FID[CHR6_AVG$FID=="TimKamAF"] <- "Timor (Kam)"
+CHR6_AVG$FID[CHR6_AVG$FID=="TimULaAF"] <- "Timor (ULa)"
+CHR6_AVG$FID[CHR6_AVG$FID=="TimUmaAF"] <- "Timor (Uma)"
+CHR6_AVG$FID[CHR6_AVG$FID=="YRI"] <- "Yoruba (Nigeria)"
+
+HLA_AVG$FID[HLA_AVG$FID=="AlorAF"] <- "Alor"
+HLA_AVG$FID[HLA_AVG$FID=="BaliAF"] <- "Bali"
+HLA_AVG$FID[HLA_AVG$FID=="BEB"] <- "Bangladeshi"
+HLA_AVG$FID[HLA_AVG$FID=="CDX"] <- "Dai (China)"
+HLA_AVG$FID[HLA_AVG$FID=="CEU"] <- "European"
+HLA_AVG$FID[HLA_AVG$FID=="CHB"] <- "Han (China)"
+HLA_AVG$FID[HLA_AVG$FID=="CHS"] <- "Southern Han (China)"
+HLA_AVG$FID[HLA_AVG$FID=="FloBamAF"] <- "Flores Bama"
+HLA_AVG$FID[HLA_AVG$FID=="FloBenAF"] <- "Flores Bena"
+HLA_AVG$FID[HLA_AVG$FID=="FloRamAF"] <- "Flores Rampasasa"
+HLA_AVG$FID[HLA_AVG$FID=="GIH"] <- "Gujarati (India)"
+HLA_AVG$FID[HLA_AVG$FID=="ITU"] <- "Telugu (India)"
+HLA_AVG$FID[HLA_AVG$FID=="JavaAF"] <- "Java"
+HLA_AVG$FID[HLA_AVG$FID=="JPT"] <- "Japanese"
+HLA_AVG$FID[HLA_AVG$FID=="KHV"] <- "Vietnam (KHV)"
+HLA_AVG$FID[HLA_AVG$FID=="LembatAF"] <- "Lembata"
+HLA_AVG$FID[HLA_AVG$FID=="MalayAF"] <- "Malay"
+HLA_AVG$FID[HLA_AVG$FID=="MentawAF"] <- "Mentawai"
+HLA_AVG$FID[HLA_AVG$FID=="NiasAF"] <- "Nias"
+HLA_AVG$FID[HLA_AVG$FID=="PantarAF"] <- "Pantar"
+HLA_AVG$FID[HLA_AVG$FID=="PHIgorTR"] <- "Kankanaey (Philippines)"
+HLA_AVG$FID[HLA_AVG$FID=="PHOther"] <- "Non-Kankanaey (Philippines)"
+HLA_AVG$FID[HLA_AVG$FID=="PHNegr"] <- "Negritos (Philippines)"
+HLA_AVG$FID[HLA_AVG$FID=="PJL"] <- "Punjabi (Pakistan)"
+HLA_AVG$FID[HLA_AVG$FID=="PNGBaiAF"] <- "Papua New Guinea Baining"
+HLA_AVG$FID[HLA_AVG$FID=="PNGCAF"] <- "Papua New Guinea Coastal"
+HLA_AVG$FID[HLA_AVG$FID=="PNGHAF"] <- "Papua New Guinea Highlands"
+HLA_AVG$FID[HLA_AVG$FID=="PNGNasAF"] <- "Papua New Guinea Nasioi"
+HLA_AVG$FID[HLA_AVG$FID=="STU"] <- "Tamil (Sri Lanka)"
+HLA_AVG$FID[HLA_AVG$FID=="SumAnaAF"] <- "Sumba (Ana)"
+HLA_AVG$FID[HLA_AVG$FID=="SumatrAF"] <- "Sumatra"
+HLA_AVG$FID[HLA_AVG$FID=="SumRinAF"] <- "Sumba (Rin)"
+HLA_AVG$FID[HLA_AVG$FID=="SumWunAF"] <- "Sumba (Wun)"
+HLA_AVG$FID[HLA_AVG$FID=="TaiwanAF"] <- "Taiwan"
+HLA_AVG$FID[HLA_AVG$FID=="TimKamAF"] <- "Timor (Kam)"
+HLA_AVG$FID[HLA_AVG$FID=="TimULaAF"] <- "Timor (ULa)"
+HLA_AVG$FID[HLA_AVG$FID=="TimUmaAF"] <- "Timor (Uma)"
+HLA_AVG$FID[HLA_AVG$FID=="YRI"] <- "Yoruba (Nigeria)"
+
+target <- c("Papua New Guinea Nasioi", "Papua New Guinea Baining", "Papua New Guinea Coastal", "Papua New Guinea Highlands", "Alor", "Timor (Kam)", "Timor (Uma)", "Timor (ULa)", "Pantar", "Lembata", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Sulawesi", "Bali", "Borneo", "Java", "Sumatra", "Malay", "Mentawai", "Nias", "Japanese", "Taiwan", "Kankanaey (Philippines)", "Negritos (Philippines)", "Non-Kankanaey (Philippines)", "Han (China)", "Southern Han (China)", "Dai (China)", "Vietnam (KHV)", "Vietnam", "Bangladeshi", "Gujarati (India)", "Tamil (Sri Lanka)", "Telugu (India)", "Punjabi (Pakistan)", "European", "Yoruba (Nigeria)")
+CHR6_AVG <- CHR6_AVG[match(target, CHR6_AVG$FID),]
+CHR6_AVG$FID <- factor(CHR6_AVG$FID, levels=CHR6_AVG$FID)
+HLA_AVG <- HLA_AVG[match(target, HLA_AVG$FID),]
+HLA_AVG$FID <- factor(HLA_AVG$FID, levels=HLA_AVG$FID)
+
+CHR6_AVG <- CHR6_AVG[-c(7),]
+HLA_AVG <- HLA_AVG[-c(7),]
+
+#Create scatterplot 
+##Chromosome 6
+ggplot(data = CHR6_AVG) +
+  aes(y = PercentageChange, x = FID, color=FID) +
+  theme(legend.position="none")+
+  ggtitle("Observed vs Expected Homozygosity - Chromosome 6")+
+  ylab("Difference between observed and expected")+
+  xlab("Population")+
+  geom_beeswarm(cex=0.5, size=3) +
+  coord_flip(ylim=c(-3,4))+
+  theme(
+    panel.background = element_rect(fill=NA),
+    panel.grid.major = element_line(colour=alpha("grey50", 0.3)),
+    panel.ontop = TRUE
+  )+
+  geom_hline(yintercept=0,linetype="dashed", col="black", lwd=0.5)+
+  scale_y_continuous(breaks = c(-3, -2.5, -2, -1.5, -1, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4),
+                     labels = c("-3%", "-2.5%","-2%","-1.5%","-1%", "-0.5%", "0", "0.5%", "1%", "1.5%", "2%", "2.5%", "3%", "3.5%", "4%"))+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai (China)", "Han (China)", "Southern Han (China)", "Gujarati (India)", "Telugu (India)", "Vietnam (KHV)", "Punjabi (Pakistan)", "Tamil (Sri Lanka)", "Taiwan", "Malay", "Vietnam", "Yoruba (Nigeria)", "Kankanaey (Philippines)", "Negritos (Philippines)", "Non-Kankanaey (Philippines)", "Papua New Guinea Baining", "Papua New Guinea Coastal", "Papua New Guinea Highlands", "Papua New Guinea Nasioi", "Timor (Kam)", "Timor (ULa)", "Timor (Uma)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "deeppink4", "grey", "grey", "grey", "grey", "grey", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black"))
+
+##HLA
+ggplot(data = HLA_AVG) +
+  aes(y = PercentageChange, x = FID, color=FID) +
+  theme(legend.position="none")+
+  ggtitle("Observed vs Expected Homozygosity - HLA")+
+  ylab("Difference between observed and expected")+
+  xlab("Population")+
+  geom_beeswarm(cex=0.5, size=3) +
+  coord_flip(ylim = c(-3, 4))+
+  theme(
+    panel.background = element_rect(fill=NA),
+    panel.grid.major = element_line(colour=alpha("grey50", 0.3)),
+    panel.ontop = TRUE
+  )+
+  geom_hline(yintercept=0,linetype="dashed", col="black", lwd=0.5)+
+  scale_y_continuous(breaks = c(-3, -2.5, -2, -1.5, -1, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0),
+                     labels = c("-3%", "-2.5%", "-2%", "-1.5%", "-1%", "-0.5%", "0", "0.5%", "1%", "1.5%", "2%", "2.5%", "3%", "3.5%", "4%"))+
+  scale_color_manual(breaks=c("European", "Japanese", "Bangladeshi", "Dai (China)", "Han (China)", "Southern Han (China)", "Gujarati (India)", "Telugu (India)", "Vietnam (KHV)", "Punjabi (Pakistan)", "Tamil (Sri Lanka)", "Taiwan", "Malay", "Vietnam", "Yoruba (Nigeria)", "Kankanaey (Philippines)", "Negritos (Philippines)", "Non-Kankanaey (Philippines)", "Papua New Guinea Baining", "Papua New Guinea Coastal", "Papua New Guinea Highlands", "Papua New Guinea Nasioi", "Timor (Kam)", "Timor (ULa)", "Timor (Uma)", "Alor", "Pantar", "Lembata", "Sulawesi", "Flores Bama", "Flores Bena", "Flores Rampasasa", "Sumba (Ana)", "Sumba (Rin)", "Sumba (Wun)", "Bali", "Borneo", "Java", "Mentawai", "Nias", "Sumatra"),
+                     values=c("grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "deeppink4", "grey", "grey", "grey", "grey", "grey", "chocolate4", "chocolate4", "chocolate4", "chocolate4", "indianred3", "indianred3", "indianred3", "pink", "darkorange", "darkgoldenrod1", "darkolivegreen1", "chartreuse1", "chartreuse1", "chartreuse1", "chartreuse4", "chartreuse4" , "chartreuse4", "lightblue", "cyan", "blue", "darkorchid", "darkorchid4", "black"))

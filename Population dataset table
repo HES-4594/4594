@@ -1,0 +1,24 @@
+###NB RUN MASTER PACKAGES SCRIPT FIRST###
+
+##Create dataset table (csv-file manually assembled)
+
+#Read file
+PopList <- read.csv("Population list.csv")
+
+#Rename categories 
+PopList <- PopList %>%
+  rename(
+    "Population (Location)" = Population..Location.,
+    "Population (Location.)" = Population..Location,
+    "Number of samples" = Number.of.samples,
+    "Number of samples." = Number.of.samples.1,
+    "Code" = Code,
+    "Code." = Code.1
+  )
+  
+#Generate table  
+table <- reactable(PopList, defaultPageSize = 21, theme = fivethirtyeight())
+table <- table %>% 
+  add_title("Dataset overview")
+table %>%
+  add_source("* denotes data collected by Hudjashov, et al. (2017); ^ denotes data from Pagani, et al. (2016); remaining data from Phase 3 of the 1000 Genomes Project (May 2, 2013 release)")

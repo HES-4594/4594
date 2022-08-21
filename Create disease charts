@@ -1,0 +1,1856 @@
+###########################
+## Create disease charts ##
+###########################
+
+##Malaria
+#Set working directory
+setwd()
+
+#Load data (incidence)
+library(readxl)
+Malaria <- read_excel("WMR2021_Annex5I.xlsx")
+Malaria <- Malaria %>%
+  rename(
+    Cases=...2,
+    '2010'=...3,
+    '2011'=...4,
+    '2012'=...5,
+    '2013'=...6,
+    '2014'=...7,
+    '2015'=...8,
+    '2016'=...9,
+    '2017'=...10,
+    '2018'=...11,
+    '2019'=...12,
+    '2020'=...13
+  )
+MalariaIndonesia <- Malaria[-c(1:514, 521:628), ]
+MalariaIndonesia$`Annex 3 – I. Reported malaria cases by species, 2010–2020`=NULL
+MalariaIndonesia <- MalariaIndonesia %>%
+  mutate(across(everything(),~ gsub("[[:punct:]]", "", .)))
+MalariaIndonesia <- as.data.frame(t(MalariaIndonesia))
+MalariaIndonesia <- MalariaIndonesia %>%
+  rename(
+    'Indigenous cases'=V1,
+    'Total P falciparum'=V2,
+    'Total P vivax'=V3,
+    'Total mixed cases'=V4,
+    'Total other species'=V5,
+    'Imported cases'=V6
+  )
+MalariaIndonesia <- MalariaIndonesia[-c(1), ]
+MalariaIndonesia <- tibble::rownames_to_column(MalariaIndonesia, "Year")
+MalariaIndonesia$Year <- as.numeric(MalariaIndonesia$Year)
+MalariaIndonesia$`Indigenous cases` <- as.numeric(MalariaIndonesia$`Indigenous cases`)
+MalariaIndonesia$`Total P falciparum` <- as.numeric(MalariaIndonesia$`Total P falciparum`)
+MalariaIndonesia$`Total P vivax` <- as.numeric(MalariaIndonesia$`Total P vivax`)
+MalariaIndonesia$`Total mixed cases` <- as.numeric(MalariaIndonesia$`Total mixed cases`)
+MalariaIndonesia$`Total other species` <- as.numeric(MalariaIndonesia$`Total other species`)
+MalariaIndonesia$`Imported cases` <- as.numeric(MalariaIndonesia$`Imported cases`)
+
+#Southeast Asia (incidence)
+
+MalariaSEA <- Malaria[-c(1:490, 552:628), ]
+MalariaSEA$`Annex 3 – I. Reported malaria cases by species, 2010–2020`=NULL
+MalariaSEA <- MalariaSEA %>%
+  mutate(across(everything(),~ gsub("[[:punct:]]", "", .)))
+
+MalariaSEA_Indig <- filter(MalariaSEA, Cases == "Indigenous cases")
+MalariaSEA_Indig$`2010` <- as.numeric(MalariaSEA_Indig$'2010')
+MalariaSEA_Indig$`2011` <- as.numeric(MalariaSEA_Indig$'2011')
+MalariaSEA_Indig$`2012` <- as.numeric(MalariaSEA_Indig$'2012')
+MalariaSEA_Indig$`2013` <- as.numeric(MalariaSEA_Indig$'2013')
+MalariaSEA_Indig$`2014` <- as.numeric(MalariaSEA_Indig$'2014')
+MalariaSEA_Indig$`2015` <- as.numeric(MalariaSEA_Indig$'2015')
+MalariaSEA_Indig$`2016` <- as.numeric(MalariaSEA_Indig$'2016')
+MalariaSEA_Indig$`2017` <- as.numeric(MalariaSEA_Indig$'2017')
+MalariaSEA_Indig$`2018` <- as.numeric(MalariaSEA_Indig$'2018')
+MalariaSEA_Indig$`2019` <- as.numeric(MalariaSEA_Indig$'2019')
+MalariaSEA_Indig$`2020` <- as.numeric(MalariaSEA_Indig$'2020')
+MalariaSEA_Indig$Cases=NULL
+
+MalariaSEA_Indig <- MalariaSEA_Indig %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise P.falciparum (incidence)
+
+MalariaSEA_PFal <- filter(MalariaSEA, Cases == "Total P falciparum") 
+MalariaSEA_PFal$`2010` <- as.numeric(MalariaSEA_PFal$'2010')
+MalariaSEA_PFal$`2011` <- as.numeric(MalariaSEA_PFal$'2011')
+MalariaSEA_PFal$`2012` <- as.numeric(MalariaSEA_PFal$'2012')
+MalariaSEA_PFal$`2013` <- as.numeric(MalariaSEA_PFal$'2013')
+MalariaSEA_PFal$`2014` <- as.numeric(MalariaSEA_PFal$'2014')
+MalariaSEA_PFal$`2015` <- as.numeric(MalariaSEA_PFal$'2015')
+MalariaSEA_PFal$`2016` <- as.numeric(MalariaSEA_PFal$'2016')
+MalariaSEA_PFal$`2017` <- as.numeric(MalariaSEA_PFal$'2017')
+MalariaSEA_PFal$`2018` <- as.numeric(MalariaSEA_PFal$'2018')
+MalariaSEA_PFal$`2019` <- as.numeric(MalariaSEA_PFal$'2019')
+MalariaSEA_PFal$`2020` <- as.numeric(MalariaSEA_PFal$'2020')
+MalariaSEA_PFal$Cases=NULL
+
+MalariaSEA_PFal <- MalariaSEA_PFal %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise P.Vivax (incidence)
+
+MalariaSEA_PVivax <- filter(MalariaSEA, Cases == "Total P vivax") 
+MalariaSEA_PVivax$`2010` <- as.numeric(MalariaSEA_PVivax$'2010')
+MalariaSEA_PVivax$`2011` <- as.numeric(MalariaSEA_PVivax$'2011')
+MalariaSEA_PVivax$`2012` <- as.numeric(MalariaSEA_PVivax$'2012')
+MalariaSEA_PVivax$`2013` <- as.numeric(MalariaSEA_PVivax$'2013')
+MalariaSEA_PVivax$`2014` <- as.numeric(MalariaSEA_PVivax$'2014')
+MalariaSEA_PVivax$`2015` <- as.numeric(MalariaSEA_PVivax$'2015')
+MalariaSEA_PVivax$`2016` <- as.numeric(MalariaSEA_PVivax$'2016')
+MalariaSEA_PVivax$`2017` <- as.numeric(MalariaSEA_PVivax$'2017')
+MalariaSEA_PVivax$`2018` <- as.numeric(MalariaSEA_PVivax$'2018')
+MalariaSEA_PVivax$`2019` <- as.numeric(MalariaSEA_PVivax$'2019')
+MalariaSEA_PVivax$`2020` <- as.numeric(MalariaSEA_PVivax$'2020')
+MalariaSEA_PVivax$Cases=NULL
+
+MalariaSEA_PVivax <- MalariaSEA_PVivax %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise Mixed cases (incidence)
+
+MalariaSEA_Mix <- filter(MalariaSEA, Cases == "Total mixed cases") 
+MalariaSEA_Mix$`2010` <- as.numeric(MalariaSEA_Mix$'2010')
+MalariaSEA_Mix$`2011` <- as.numeric(MalariaSEA_Mix$'2011')
+MalariaSEA_Mix$`2012` <- as.numeric(MalariaSEA_Mix$'2012')
+MalariaSEA_Mix$`2013` <- as.numeric(MalariaSEA_Mix$'2013')
+MalariaSEA_Mix$`2014` <- as.numeric(MalariaSEA_Mix$'2014')
+MalariaSEA_Mix$`2015` <- as.numeric(MalariaSEA_Mix$'2015')
+MalariaSEA_Mix$`2016` <- as.numeric(MalariaSEA_Mix$'2016')
+MalariaSEA_Mix$`2017` <- as.numeric(MalariaSEA_Mix$'2017')
+MalariaSEA_Mix$`2018` <- as.numeric(MalariaSEA_Mix$'2018')
+MalariaSEA_Mix$`2019` <- as.numeric(MalariaSEA_Mix$'2019')
+MalariaSEA_Mix$`2020` <- as.numeric(MalariaSEA_Mix$'2020')
+MalariaSEA_Mix$Cases=NULL
+
+MalariaSEA_Mix <- MalariaSEA_Mix %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise Other species (incidence)
+
+MalariaSEA_Other <- filter(MalariaSEA, Cases == "Total other species")
+MalariaSEA_Other$`2010` <- as.numeric(MalariaSEA_Other$'2010')
+MalariaSEA_Other$`2011` <- as.numeric(MalariaSEA_Other$'2011')
+MalariaSEA_Other$`2012` <- as.numeric(MalariaSEA_Other$'2012')
+MalariaSEA_Other$`2013` <- as.numeric(MalariaSEA_Other$'2013')
+MalariaSEA_Other$`2014` <- as.numeric(MalariaSEA_Other$'2014')
+MalariaSEA_Other$`2015` <- as.numeric(MalariaSEA_Other$'2015')
+MalariaSEA_Other$`2016` <- as.numeric(MalariaSEA_Other$'2016')
+MalariaSEA_Other$`2017` <- as.numeric(MalariaSEA_Other$'2017')
+MalariaSEA_Other$`2018` <- as.numeric(MalariaSEA_Other$'2018')
+MalariaSEA_Other$`2019` <- as.numeric(MalariaSEA_Other$'2019')
+MalariaSEA_Other$`2020` <- as.numeric(MalariaSEA_Other$'2020')
+MalariaSEA_Other$Cases=NULL
+
+MalariaSEA_Other <- MalariaSEA_Other %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise Imported cases (incidence)
+
+MalariaSEA_Import <- filter(MalariaSEA, Cases == "Imported cases")
+MalariaSEA_Import$`2010` <- as.numeric(MalariaSEA_Import$'2010')
+MalariaSEA_Import$`2011` <- as.numeric(MalariaSEA_Import$'2011')
+MalariaSEA_Import$`2012` <- as.numeric(MalariaSEA_Import$'2012')
+MalariaSEA_Import$`2013` <- as.numeric(MalariaSEA_Import$'2013')
+MalariaSEA_Import$`2014` <- as.numeric(MalariaSEA_Import$'2014')
+MalariaSEA_Import$`2015` <- as.numeric(MalariaSEA_Import$'2015')
+MalariaSEA_Import$`2016` <- as.numeric(MalariaSEA_Import$'2016')
+MalariaSEA_Import$`2017` <- as.numeric(MalariaSEA_Import$'2017')
+MalariaSEA_Import$`2018` <- as.numeric(MalariaSEA_Import$'2018')
+MalariaSEA_Import$`2019` <- as.numeric(MalariaSEA_Import$'2019')
+MalariaSEA_Import$`2020` <- as.numeric(MalariaSEA_Import$'2020')
+MalariaSEA_Import$Cases=NULL
+
+MalariaSEA_Import <- MalariaSEA_Import %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Merge summary data into one dataset (incidence)
+
+MalariaSEA_AVG <- rbind(MalariaSEA_Indig, MalariaSEA_PFal, MalariaSEA_PVivax, MalariaSEA_Mix, MalariaSEA_Other, MalariaSEA_Import)
+
+#Make dataset ready for chart creation (incidence)
+
+MalariaSEA_AVG <- as.data.frame(t(MalariaSEA_AVG))
+MalariaSEA_AVG <- MalariaSEA_AVG %>%
+  rename(
+    'Indigenous cases'=V1,
+    'Total P falciparum'=V2,
+    'Total P vivax'=V3,
+    'Total mixed cases'=V4,
+    'Total other species'=V5,
+    'Imported cases'=V6
+  )
+MalariaSEA_AVG <- tibble::rownames_to_column(MalariaSEA_AVG, "Year")
+MalariaSEA_AVG$Year <- as.numeric(MalariaSEA_AVG$Year)
+MalariaSEA_AVG$`Indigenous cases` <- as.numeric(MalariaSEA_AVG_AVG$`Indigenous cases`)
+MalariaSEA_AVG$`Total P falciparum` <- as.numeric(MalariaSEA_AVG$`Total P falciparum`)
+MalariaSEA_AVG$`Total P vivax` <- as.numeric(MalariaSEA_AVG$`Total P vivax`)
+MalariaSEA_AVG$`Total mixed cases` <- as.numeric(MalariaSEA_AVG$`Total mixed cases`)
+MalariaSEA_AVG$`Total other species` <- as.numeric(MalariaSEA_AVG$`Total other species`)
+MalariaSEA_AVG$`Imported cases` <- as.numeric(MalariaSEA_AVG$`Imported cases`)
+
+#Western Pacific Region (incidence)
+MalariaWP <- Malaria[-c(1:553, 616:628), ]
+MalariaWP$`Annex 3 – I. Reported malaria cases by species, 2010–2020`=NULL
+MalariaWP <- MalariaWP %>%
+  mutate(across(everything(),~ gsub("[[:punct:]]", "", .)))
+
+MalariaWP_Indig <- filter(MalariaWP, Cases == "Indigenous cases")
+MalariaWP_Indig$`2010` <- as.numeric(MalariaWP_Indig$'2010')
+MalariaWP_Indig$`2011` <- as.numeric(MalariaWP_Indig$'2011')
+MalariaWP_Indig$`2012` <- as.numeric(MalariaWP_Indig$'2012')
+MalariaWP_Indig$`2013` <- as.numeric(MalariaWP_Indig$'2013')
+MalariaWP_Indig$`2014` <- as.numeric(MalariaWP_Indig$'2014')
+MalariaWP_Indig$`2015` <- as.numeric(MalariaWP_Indig$'2015')
+MalariaWP_Indig$`2016` <- as.numeric(MalariaWP_Indig$'2016')
+MalariaWP_Indig$`2017` <- as.numeric(MalariaWP_Indig$'2017')
+MalariaWP_Indig$`2018` <- as.numeric(MalariaWP_Indig$'2018')
+MalariaWP_Indig$`2019` <- as.numeric(MalariaWP_Indig$'2019')
+MalariaWP_Indig$`2020` <- as.numeric(MalariaWP_Indig$'2020')
+MalariaWP_Indig$Cases=NULL
+
+MalariaWP_Indig <- MalariaWP_Indig %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise P.falciparum (incidence)
+MalariaWP_PFal <- filter(MalariaWP, Cases == "Total P falciparum") 
+MalariaWP_PFal$`2010` <- as.numeric(MalariaWP_PFal$'2010')
+MalariaWP_PFal$`2011` <- as.numeric(MalariaWP_PFal$'2011')
+MalariaWP_PFal$`2012` <- as.numeric(MalariaWP_PFal$'2012')
+MalariaWP_PFal$`2013` <- as.numeric(MalariaWP_PFal$'2013')
+MalariaWP_PFal$`2014` <- as.numeric(MalariaWP_PFal$'2014')
+MalariaWP_PFal$`2015` <- as.numeric(MalariaWP_PFal$'2015')
+MalariaWP_PFal$`2016` <- as.numeric(MalariaWP_PFal$'2016')
+MalariaWP_PFal$`2017` <- as.numeric(MalariaWP_PFal$'2017')
+MalariaWP_PFal$`2018` <- as.numeric(MalariaWP_PFal$'2018')
+MalariaWP_PFal$`2019` <- as.numeric(MalariaWP_PFal$'2019')
+MalariaWP_PFal$`2020` <- as.numeric(MalariaWP_PFal$'2020')
+MalariaWP_PFal$Cases=NULL
+
+MalariaWP_PFal <- MalariaWP_PFal %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise P.Vivax (incidence)
+MalariaWP_PVivax <- filter(MalariaWP, Cases == "Total P vivax") 
+MalariaWP_PVivax$`2010` <- as.numeric(MalariaWP_PVivax$'2010')
+MalariaWP_PVivax$`2011` <- as.numeric(MalariaWP_PVivax$'2011')
+MalariaWP_PVivax$`2012` <- as.numeric(MalariaWP_PVivax$'2012')
+MalariaWP_PVivax$`2013` <- as.numeric(MalariaWP_PVivax$'2013')
+MalariaWP_PVivax$`2014` <- as.numeric(MalariaWP_PVivax$'2014')
+MalariaWP_PVivax$`2015` <- as.numeric(MalariaWP_PVivax$'2015')
+MalariaWP_PVivax$`2016` <- as.numeric(MalariaWP_PVivax$'2016')
+MalariaWP_PVivax$`2017` <- as.numeric(MalariaWP_PVivax$'2017')
+MalariaWP_PVivax$`2018` <- as.numeric(MalariaWP_PVivax$'2018')
+MalariaWP_PVivax$`2019` <- as.numeric(MalariaWP_PVivax$'2019')
+MalariaWP_PVivax$`2020` <- as.numeric(MalariaWP_PVivax$'2020')
+MalariaWP_PVivax$Cases=NULL
+
+MalariaWP_PVivax <- MalariaWP_PVivax %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise Mixed cases (incidence)
+MalariaWP_Mix <- filter(MalariaWP, Cases == "Total mixed cases") 
+MalariaWP_Mix$`2010` <- as.numeric(MalariaWP_Mix$'2010')
+MalariaWP_Mix$`2011` <- as.numeric(MalariaWP_Mix$'2011')
+MalariaWP_Mix$`2012` <- as.numeric(MalariaWP_Mix$'2012')
+MalariaWP_Mix$`2013` <- as.numeric(MalariaWP_Mix$'2013')
+MalariaWP_Mix$`2014` <- as.numeric(MalariaWP_Mix$'2014')
+MalariaWP_Mix$`2015` <- as.numeric(MalariaWP_Mix$'2015')
+MalariaWP_Mix$`2016` <- as.numeric(MalariaWP_Mix$'2016')
+MalariaWP_Mix$`2017` <- as.numeric(MalariaWP_Mix$'2017')
+MalariaWP_Mix$`2018` <- as.numeric(MalariaWP_Mix$'2018')
+MalariaWP_Mix$`2019` <- as.numeric(MalariaWP_Mix$'2019')
+MalariaWP_Mix$`2020` <- as.numeric(MalariaWP_Mix$'2020')
+MalariaWP_Mix$Cases=NULL
+
+MalariaWP_Mix <- MalariaWP_Mix %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise Other species (incidence)
+MalariaWP_Other <- filter(MalariaWP, Cases == "Total other species")
+MalariaWP_Other$`2010` <- as.numeric(MalariaWP_Other$'2010')
+MalariaWP_Other$`2011` <- as.numeric(MalariaWP_Other$'2011')
+MalariaWP_Other$`2012` <- as.numeric(MalariaWP_Other$'2012')
+MalariaWP_Other$`2013` <- as.numeric(MalariaWP_Other$'2013')
+MalariaWP_Other$`2014` <- as.numeric(MalariaWP_Other$'2014')
+MalariaWP_Other$`2015` <- as.numeric(MalariaWP_Other$'2015')
+MalariaWP_Other$`2016` <- as.numeric(MalariaWP_Other$'2016')
+MalariaWP_Other$`2017` <- as.numeric(MalariaWP_Other$'2017')
+MalariaWP_Other$`2018` <- as.numeric(MalariaWP_Other$'2018')
+MalariaWP_Other$`2019` <- as.numeric(MalariaWP_Other$'2019')
+MalariaWP_Other$`2020` <- as.numeric(MalariaWP_Other$'2020')
+MalariaWP_Other$Cases=NULL
+
+MalariaWP_Other <- MalariaWP_Other %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Summarise Imported cases (incidence)
+MalariaWP_Import <- filter(MalariaWP, Cases == "Imported cases")
+MalariaWP_Import$`2010` <- as.numeric(MalariaWP_Import$'2010')
+MalariaWP_Import$`2011` <- as.numeric(MalariaWP_Import$'2011')
+MalariaWP_Import$`2012` <- as.numeric(MalariaWP_Import$'2012')
+MalariaWP_Import$`2013` <- as.numeric(MalariaWP_Import$'2013')
+MalariaWP_Import$`2014` <- as.numeric(MalariaWP_Import$'2014')
+MalariaWP_Import$`2015` <- as.numeric(MalariaWP_Import$'2015')
+MalariaWP_Import$`2016` <- as.numeric(MalariaWP_Import$'2016')
+MalariaWP_Import$`2017` <- as.numeric(MalariaWP_Import$'2017')
+MalariaWP_Import$`2018` <- as.numeric(MalariaWP_Import$'2018')
+MalariaWP_Import$`2019` <- as.numeric(MalariaWP_Import$'2019')
+MalariaWP_Import$`2020` <- as.numeric(MalariaWP_Import$'2020')
+MalariaWP_Import$Cases=NULL
+
+MalariaWP_Import <- MalariaWP_Import %>%
+  group_by() %>%
+  summarise_if(is.numeric, sum, na.rm = TRUE)
+
+#Merge summary data into one dataset (incidence)
+MalariaWP_AVG <- rbind(MalariaWP_Indig, MalariaWP_PFal, MalariaWP_PVivax, MalariaWP_Mix, MalariaWP_Other, MalariaWP_Import)
+
+#Make dataset ready for chart creation (incidence)
+MalariaWP_AVG <- as.data.frame(t(MalariaWP_AVG))
+MalariaWP_AVG <- MalariaWP_AVG %>%
+  rename(
+    'Indigenous cases'=V1,
+    'Total P falciparum'=V2,
+    'Total P vivax'=V3,
+    'Total mixed cases'=V4,
+    'Total other species'=V5,
+    'Imported cases'=V6
+  )
+MalariaWP_AVG <- tibble::rownames_to_column(MalariaWP_AVG, "Year")
+MalariaWP_AVG$Year <- as.numeric(MalariaWP_AVG$Year)
+MalariaWP_AVG$`Indigenous cases` <- as.numeric(MalariaWP_AVG$`Indigenous cases`)
+MalariaWP_AVG$`Total P falciparum` <- as.numeric(MalariaWP_AVG$`Total P falciparum`)
+MalariaWP_AVG$`Total P vivax` <- as.numeric(MalariaWP_AVG$`Total P vivax`)
+MalariaWP_AVG$`Total mixed cases` <- as.numeric(MalariaWP_AVG$`Total mixed cases`)
+MalariaWP_AVG$`Total other species` <- as.numeric(MalariaWP_AVG$`Total other species`)
+MalariaWP_AVG$`Imported cases` <- as.numeric(MalariaWP_AVG$`Imported cases`)
+
+#Plot malaria - Indonesia (incidence)
+
+Plot_Indo <- ggplot(data = MalariaIndonesia, aes(x=Year))+
+  geom_line(aes(y=`Indigenous cases`, color="Indigenous Cases"), size=2)+ 
+  geom_line(aes(y=`Total P falciparum`, color="Total P falciparum"), size=1.25)+
+  geom_line(aes(y=`Total P vivax`, color="Total P vivax"), size=1.25)+
+  geom_line(aes(y=`Total mixed cases`, color="Total mixed cases"), size=1.25)+
+  geom_line(aes(y=`Total other species`, color="Total other species"), size=1.25)+
+  ggtitle("Indonesia")+
+  ylab("Cases")+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020), limits = c(2000, 2020))+
+  scale_y_continuous(label=comma)+
+  scale_color_manual(values=c("red", "orange", "darkblue", "darkmagenta", "green"))+
+  theme(legend.position = "none")+
+  labs(color="Case origin")
+
+#Plot malaria - SEA summarised (incidence)
+
+Plot_SEA_AVG <- ggplot(data = MalariaSEA_AVG, aes(x=Year))+
+  geom_line(aes(y=`Indigenous cases`, color="Indigenous Cases"), size=2)+ 
+  geom_line(aes(y=`Total P falciparum`, color="Total P falciparum"), size=1.25)+
+  geom_line(aes(y=`Total P vivax`, color="Total P vivax"), size=1.25)+
+  geom_line(aes(y=`Total mixed cases`, color="Total mixed cases"), size=1.25)+
+  geom_line(aes(y=`Total other species`, color="Total other species"), size=1.25)+
+  ggtitle("Southeast Asia")+
+  ylab("Cases")+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020), limits = c(2000, 2020))+
+  scale_y_continuous(label=comma)+
+  scale_color_manual(values=c("red", "orange", "darkblue", "darkmagenta", "green"))+
+  theme(legend.position = "none")+
+  labs(color="Case origin")
+
+#Plot malaria - WP summarised (incidence)
+
+Plot_WP_AVG <- ggplot(data = MalariaWP_AVG, aes(x=Year))+
+  geom_line(aes(y=`Indigenous cases`, color="Indigenous Cases"), size=2)+ 
+  geom_line(aes(y=`Total P falciparum`, color="Total P falciparum"), size=1.25)+
+  geom_line(aes(y=`Total P vivax`, color="Total P vivax"), size=1.25)+
+  geom_line(aes(y=`Total mixed cases`, color="Total mixed cases"), size=1.25)+
+  geom_line(aes(y=`Total other species`, color="Total other species"), size=1.25)+
+  ggtitle("Western Pacific")+
+  ylab("Cases")+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020), limits = c(2000, 2020))+
+  scale_y_continuous(label=comma)+
+  scale_color_manual(values=c("red", "orange", "darkblue", "darkmagenta", "green"))+
+  theme(legend.position = "none")+
+  labs(color="Case origin")
+
+#Create combined plot (incidence)
+
+MalariaPlot <- ggarrange(Plot_Indo, Plot_SEA_AVG, Plot_WP_AVG, ncol=1, nrow=3, common.legend = TRUE, legend="bottom")
+annotate_figure(MalariaPlot, top = text_grob("Malaria cases (2010-2020)", 
+                                             color = "black", face = "bold", size = 15))
+
+##Malaria (mortality)
+setwd()
+#Load data
+Malaria_mort <- read.csv("Malaria_mortality.csv", header=TRUE)
+
+#Remove unnecessary columns
+Malaria_mort$IndicatorCode=NULL
+Malaria_mort$ValueType=NULL
+Malaria_mort$SpatialDimValueCode=NULL
+Malaria_mort$Location.type=NULL
+Malaria_mort$DateModified=NULL
+Malaria_mort$Language=NULL
+Malaria_mort$FactComments=NULL
+Malaria_mort$Indicator=NULL
+Malaria_mort$Period.type=NULL
+Malaria_mort$IsLatestYear=NULL
+Malaria_mort$Dim1.type=NULL
+Malaria_mort$Dim1=NULL
+Malaria_mort$Dim1ValueCode=NULL
+Malaria_mort$Dim2.type=NULL
+Malaria_mort$Dim2=NULL
+Malaria_mort$Dim2ValueCode=NULL
+Malaria_mort$Dim3.type=NULL
+Malaria_mort$Dim3=NULL
+Malaria_mort$Dim3ValueCode=NULL
+Malaria_mort$DataSourceDimValueCode=NULL
+Malaria_mort$DataSource=NULL
+Malaria_mort$ParentLocation=NULL
+Malaria_mort$FactValueNumericPrefix=NULL
+Malaria_mort$FactValueUoM=NULL
+Malaria_mort$FactValueNumericLowPrefix=NULL
+Malaria_mort$FactValueNumericLow=NULL
+Malaria_mort$FactValueNumericHighPrefix=NULL
+Malaria_mort$FactValueNumericHigh=NULL
+Malaria_mort$Value=NULL
+Malaria_mort$FactValueTranslationID=NULL
+
+#Rename columns
+Malaria_mort <- Malaria_mort %>%
+  rename(
+    year=Period,
+    Deaths=FactValueNumeric
+  )
+
+#Filter datasets
+Malaria_mort_Indo <- filter(Malaria_mort, Location=="Indonesia")
+MALARIA_MORT_SEA <- filter(Malaria_mort, ParentLocationCode=="SEAR")
+MALARIA_MORT_WPR <- filter(Malaria_mort, ParentLocationCode=="WPR")
+
+#Removing 2020 data from Indonesia to ensure consistency across the tables
+Malaria_mort_Indo <- Malaria_mort_Indo[-c(1),]
+#Summarising SEA data
+
+MALARIA_MORT_SEA2000 <- filter(MALARIA_MORT_SEA, year=="2000")
+MALARIA_MORT_SEA2000$Deaths <- as.numeric(MALARIA_MORT_SEA2000$Deaths)
+MALARIA_MORT_SEA2000$Location=NULL
+MALARIA_MORT_SEA2000$ParentLocationCode=NULL
+MALARIA_MORT_SEA2000$year=NULL
+MALARIA_MORT_SEA2000 <- data.frame(t(MALARIA_MORT_SEA2000))
+MALARIA_MORT_SEA2000$avgmort <- rowSums(MALARIA_MORT_SEA2000, na.rm = TRUE)
+
+MALARIA_MORT_SEA2001 <- filter(MALARIA_MORT_SEA, year=="2001")
+MALARIA_MORT_SEA2001$Deaths <- as.numeric(MALARIA_MORT_SEA2001$Deaths)
+MALARIA_MORT_SEA2001$Location=NULL
+MALARIA_MORT_SEA2001$ParentLocationCode=NULL
+MALARIA_MORT_SEA2001$year=NULL
+MALARIA_MORT_SEA2001 <- data.frame(t(MALARIA_MORT_SEA2001))
+MALARIA_MORT_SEA2001$avgmort <- rowSums(MALARIA_MORT_SEA2001, na.rm = TRUE)
+
+MALARIA_MORT_SEA2002 <- filter(MALARIA_MORT_SEA, year=="2002")
+MALARIA_MORT_SEA2002$Deaths <- as.numeric(MALARIA_MORT_SEA2002$Deaths)
+MALARIA_MORT_SEA2002$Location=NULL
+MALARIA_MORT_SEA2002$ParentLocationCode=NULL
+MALARIA_MORT_SEA2002$year=NULL
+MALARIA_MORT_SEA2002 <- data.frame(t(MALARIA_MORT_SEA2002))
+MALARIA_MORT_SEA2002$avgmort <- rowSums(MALARIA_MORT_SEA2002, na.rm = TRUE)
+
+MALARIA_MORT_SEA2003 <- filter(MALARIA_MORT_SEA, year=="2003")
+MALARIA_MORT_SEA2003$Deaths <- as.numeric(MALARIA_MORT_SEA2003$Deaths)
+MALARIA_MORT_SEA2003$Location=NULL
+MALARIA_MORT_SEA2003$ParentLocationCode=NULL
+MALARIA_MORT_SEA2003$year=NULL
+MALARIA_MORT_SEA2003 <- data.frame(t(MALARIA_MORT_SEA2003))
+MALARIA_MORT_SEA2003$avgmort <- rowSums(MALARIA_MORT_SEA2003, na.rm = TRUE)
+
+MALARIA_MORT_SEA2004 <- filter(MALARIA_MORT_SEA, year=="2004")
+MALARIA_MORT_SEA2004$Deaths <- as.numeric(MALARIA_MORT_SEA2004$Deaths)
+MALARIA_MORT_SEA2004$Location=NULL
+MALARIA_MORT_SEA2004$ParentLocationCode=NULL
+MALARIA_MORT_SEA2004$year=NULL
+MALARIA_MORT_SEA2004 <- data.frame(t(MALARIA_MORT_SEA2004))
+MALARIA_MORT_SEA2004$avgmort <- rowSums(MALARIA_MORT_SEA2004, na.rm = TRUE)
+
+MALARIA_MORT_SEA2005 <- filter(MALARIA_MORT_SEA, year=="2005")
+MALARIA_MORT_SEA2005$Deaths <- as.numeric(MALARIA_MORT_SEA2005$Deaths)
+MALARIA_MORT_SEA2005$Location=NULL
+MALARIA_MORT_SEA2005$ParentLocationCode=NULL
+MALARIA_MORT_SEA2005$year=NULL
+MALARIA_MORT_SEA2005 <- data.frame(t(MALARIA_MORT_SEA2005))
+MALARIA_MORT_SEA2005$avgmort <- rowSums(MALARIA_MORT_SEA2005, na.rm = TRUE)
+
+MALARIA_MORT_SEA2006 <- filter(MALARIA_MORT_SEA, year=="2006")
+MALARIA_MORT_SEA2006$Deaths <- as.numeric(MALARIA_MORT_SEA2006$Deaths)
+MALARIA_MORT_SEA2006$Location=NULL
+MALARIA_MORT_SEA2006$ParentLocationCode=NULL
+MALARIA_MORT_SEA2006$year=NULL
+MALARIA_MORT_SEA2006 <- data.frame(t(MALARIA_MORT_SEA2006))
+MALARIA_MORT_SEA2006$avgmort <- rowSums(MALARIA_MORT_SEA2006, na.rm = TRUE)
+
+MALARIA_MORT_SEA2007 <- filter(MALARIA_MORT_SEA, year=="2007")
+MALARIA_MORT_SEA2007$Deaths <- as.numeric(MALARIA_MORT_SEA2007$Deaths)
+MALARIA_MORT_SEA2007$Location=NULL
+MALARIA_MORT_SEA2007$ParentLocationCode=NULL
+MALARIA_MORT_SEA2007$year=NULL
+MALARIA_MORT_SEA2007 <- data.frame(t(MALARIA_MORT_SEA2007))
+MALARIA_MORT_SEA2007$avgmort <- rowSums(MALARIA_MORT_SEA2007, na.rm = TRUE)
+
+MALARIA_MORT_SEA2008 <- filter(MALARIA_MORT_SEA, year=="2008")
+MALARIA_MORT_SEA2008$Deaths <- as.numeric(MALARIA_MORT_SEA2008$Deaths)
+MALARIA_MORT_SEA2008$Location=NULL
+MALARIA_MORT_SEA2008$ParentLocationCode=NULL
+MALARIA_MORT_SEA2008$year=NULL
+MALARIA_MORT_SEA2008 <- data.frame(t(MALARIA_MORT_SEA2008))
+MALARIA_MORT_SEA2008$avgmort <- rowSums(MALARIA_MORT_SEA2008, na.rm = TRUE)
+
+MALARIA_MORT_SEA2009 <- filter(MALARIA_MORT_SEA, year=="2009")
+MALARIA_MORT_SEA2009$Deaths <- as.numeric(MALARIA_MORT_SEA2009$Deaths)
+MALARIA_MORT_SEA2009$Location=NULL
+MALARIA_MORT_SEA2009$ParentLocationCode=NULL
+MALARIA_MORT_SEA2009$year=NULL
+MALARIA_MORT_SEA2009 <- data.frame(t(MALARIA_MORT_SEA2009))
+MALARIA_MORT_SEA2009$avgmort <- rowSums(MALARIA_MORT_SEA2009, na.rm = TRUE)
+
+MALARIA_MORT_SEA2010 <- filter(MALARIA_MORT_SEA, year=="2010")
+MALARIA_MORT_SEA2010$Deaths <- as.numeric(MALARIA_MORT_SEA2010$Deaths)
+MALARIA_MORT_SEA2010$Location=NULL
+MALARIA_MORT_SEA2010$ParentLocationCode=NULL
+MALARIA_MORT_SEA2010$year=NULL
+MALARIA_MORT_SEA2010 <- data.frame(t(MALARIA_MORT_SEA2010))
+MALARIA_MORT_SEA2010$avgmort <- rowSums(MALARIA_MORT_SEA2010, na.rm = TRUE)
+
+MALARIA_MORT_SEA2011 <- filter(MALARIA_MORT_SEA, year=="2011")
+MALARIA_MORT_SEA2011$Deaths <- as.numeric(MALARIA_MORT_SEA2011$Deaths)
+MALARIA_MORT_SEA2011$Location=NULL
+MALARIA_MORT_SEA2011$ParentLocationCode=NULL
+MALARIA_MORT_SEA2011$year=NULL
+MALARIA_MORT_SEA2011 <- data.frame(t(MALARIA_MORT_SEA2011))
+MALARIA_MORT_SEA2011$avgmort <- rowSums(MALARIA_MORT_SEA2011, na.rm = TRUE)
+
+MALARIA_MORT_SEA2012 <- filter(MALARIA_MORT_SEA, year=="2012")
+MALARIA_MORT_SEA2012$Deaths <- as.numeric(MALARIA_MORT_SEA2012$Deaths)
+MALARIA_MORT_SEA2012$Location=NULL
+MALARIA_MORT_SEA2012$ParentLocationCode=NULL
+MALARIA_MORT_SEA2012$year=NULL
+MALARIA_MORT_SEA2012 <- data.frame(t(MALARIA_MORT_SEA2012))
+MALARIA_MORT_SEA2012$avgmort <- rowSums(MALARIA_MORT_SEA2012, na.rm = TRUE)
+
+MALARIA_MORT_SEA2013 <- filter(MALARIA_MORT_SEA, year=="2013")
+MALARIA_MORT_SEA2013$Deaths <- as.numeric(MALARIA_MORT_SEA2013$Deaths)
+MALARIA_MORT_SEA2013$Location=NULL
+MALARIA_MORT_SEA2013$ParentLocationCode=NULL
+MALARIA_MORT_SEA2013$year=NULL
+MALARIA_MORT_SEA2013 <- data.frame(t(MALARIA_MORT_SEA2013))
+MALARIA_MORT_SEA2013$avgmort <- rowSums(MALARIA_MORT_SEA2013, na.rm = TRUE)
+
+MALARIA_MORT_SEA2014 <- filter(MALARIA_MORT_SEA, year=="2014")
+MALARIA_MORT_SEA2014$Deaths <- as.numeric(MALARIA_MORT_SEA2014$Deaths)
+MALARIA_MORT_SEA2014$Location=NULL
+MALARIA_MORT_SEA2014$ParentLocationCode=NULL
+MALARIA_MORT_SEA2014$year=NULL
+MALARIA_MORT_SEA2014 <- data.frame(t(MALARIA_MORT_SEA2014))
+MALARIA_MORT_SEA2014$avgmort <- rowSums(MALARIA_MORT_SEA2014, na.rm = TRUE)
+
+MALARIA_MORT_SEA2015 <- filter(MALARIA_MORT_SEA, year=="2015")
+MALARIA_MORT_SEA2015$Deaths <- as.numeric(MALARIA_MORT_SEA2015$Deaths)
+MALARIA_MORT_SEA2015$Location=NULL
+MALARIA_MORT_SEA2015$ParentLocationCode=NULL
+MALARIA_MORT_SEA2015$year=NULL
+MALARIA_MORT_SEA2015 <- data.frame(t(MALARIA_MORT_SEA2015))
+MALARIA_MORT_SEA2015$avgmort <- rowSums(MALARIA_MORT_SEA2015, na.rm = TRUE)
+
+MALARIA_MORT_SEA2016 <- filter(MALARIA_MORT_SEA, year=="2016")
+MALARIA_MORT_SEA2016$Deaths <- as.numeric(MALARIA_MORT_SEA2016$Deaths)
+MALARIA_MORT_SEA2016$Location=NULL
+MALARIA_MORT_SEA2016$ParentLocationCode=NULL
+MALARIA_MORT_SEA2016$year=NULL
+MALARIA_MORT_SEA2016 <- data.frame(t(MALARIA_MORT_SEA2016))
+MALARIA_MORT_SEA2016$avgmort <- rowSums(MALARIA_MORT_SEA2016, na.rm = TRUE)
+
+MALARIA_MORT_SEA2017 <- filter(MALARIA_MORT_SEA, year=="2017")
+MALARIA_MORT_SEA2017$Deaths <- as.numeric(MALARIA_MORT_SEA2017$Deaths)
+MALARIA_MORT_SEA2017$Location=NULL
+MALARIA_MORT_SEA2017$ParentLocationCode=NULL
+MALARIA_MORT_SEA2017$year=NULL
+MALARIA_MORT_SEA2017 <- data.frame(t(MALARIA_MORT_SEA2017))
+MALARIA_MORT_SEA2017$avgmort <- rowSums(MALARIA_MORT_SEA2017, na.rm = TRUE)
+
+MALARIA_MORT_SEA2018 <- filter(MALARIA_MORT_SEA, year=="2018")
+MALARIA_MORT_SEA2018$Deaths <- as.numeric(MALARIA_MORT_SEA2018$Deaths)
+MALARIA_MORT_SEA2018$Location=NULL
+MALARIA_MORT_SEA2018$ParentLocationCode=NULL
+MALARIA_MORT_SEA2018$year=NULL
+MALARIA_MORT_SEA2018 <- data.frame(t(MALARIA_MORT_SEA2018))
+MALARIA_MORT_SEA2018$avgmort <- rowSums(MALARIA_MORT_SEA2018, na.rm = TRUE)
+
+MALARIA_MORT_SEA2019 <- filter(MALARIA_MORT_SEA, year=="2019")
+MALARIA_MORT_SEA2019$Deaths <- as.numeric(MALARIA_MORT_SEA2019$Deaths)
+MALARIA_MORT_SEA2019$Location=NULL
+MALARIA_MORT_SEA2019$ParentLocationCode=NULL
+MALARIA_MORT_SEA2019$year=NULL
+MALARIA_MORT_SEA2019 <- data.frame(t(MALARIA_MORT_SEA2019))
+MALARIA_MORT_SEA2019$avgmort <- rowSums(MALARIA_MORT_SEA2019, na.rm = TRUE)
+
+#Combine into one dataset 
+Malaria_SEA_mort <- rbind(MALARIA_MORT_SEA2000, MALARIA_MORT_SEA2001, MALARIA_MORT_SEA2002, MALARIA_MORT_SEA2003, MALARIA_MORT_SEA2004, MALARIA_MORT_SEA2005, MALARIA_MORT_SEA2006, MALARIA_MORT_SEA2007, MALARIA_MORT_SEA2008, MALARIA_MORT_SEA2009, MALARIA_MORT_SEA2010, MALARIA_MORT_SEA2011, MALARIA_MORT_SEA2012, MALARIA_MORT_SEA2013, MALARIA_MORT_SEA2014, MALARIA_MORT_SEA2015, MALARIA_MORT_SEA2016, MALARIA_MORT_SEA2017, MALARIA_MORT_SEA2018, MALARIA_MORT_SEA2019)
+#Add years
+Malaria_SEA_mort$year <- c("2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019")
+#Make variables numeric
+Malaria_SEA_mort$avgmort <- as.numeric(Malaria_SEA_mort$avgmort)
+Malaria_SEA_mort$year <- as.numeric(Malaria_SEA_mort$year)
+#Remove unnecessary columns
+Malaria_SEA_mort <- Malaria_SEA_mort[ -c(1:10)]
+
+##Summarise Western Pacific data (Mortality)
+MALARIA_MORT_WPR2000 <- filter(MALARIA_MORT_WPR, year=="2000")
+MALARIA_MORT_WPR2000$Deaths <- as.numeric(MALARIA_MORT_WPR2000$Deaths)
+MALARIA_MORT_WPR2000$Location=NULL
+MALARIA_MORT_WPR2000$ParentLocationCode=NULL
+MALARIA_MORT_WPR2000$year=NULL
+MALARIA_MORT_WPR2000 <- data.frame(t(MALARIA_MORT_WPR2000))
+MALARIA_MORT_WPR2000$avgmort <- rowSums(MALARIA_MORT_WPR2000, na.rm = TRUE)
+
+MALARIA_MORT_WPR2001 <- filter(MALARIA_MORT_WPR, year=="2001")
+MALARIA_MORT_WPR2001$Deaths <- as.numeric(MALARIA_MORT_WPR2001$Deaths)
+MALARIA_MORT_WPR2001$Location=NULL
+MALARIA_MORT_WPR2001$ParentLocationCode=NULL
+MALARIA_MORT_WPR2001$year=NULL
+MALARIA_MORT_WPR2001 <- data.frame(t(MALARIA_MORT_WPR2001))
+MALARIA_MORT_WPR2001$avgmort <- rowSums(MALARIA_MORT_WPR2001, na.rm = TRUE)
+
+MALARIA_MORT_WPR2002 <- filter(MALARIA_MORT_WPR, year=="2002")
+MALARIA_MORT_WPR2002$Deaths <- as.numeric(MALARIA_MORT_WPR2002$Deaths)
+MALARIA_MORT_WPR2002$Location=NULL
+MALARIA_MORT_WPR2002$ParentLocationCode=NULL
+MALARIA_MORT_WPR2002$year=NULL
+MALARIA_MORT_WPR2002 <- data.frame(t(MALARIA_MORT_WPR2002))
+MALARIA_MORT_WPR2002$avgmort <- rowSums(MALARIA_MORT_WPR2002, na.rm = TRUE)
+
+MALARIA_MORT_WPR2003 <- filter(MALARIA_MORT_WPR, year=="2003")
+MALARIA_MORT_WPR2003$Deaths <- as.numeric(MALARIA_MORT_WPR2003$Deaths)
+MALARIA_MORT_WPR2003$Location=NULL
+MALARIA_MORT_WPR2003$ParentLocationCode=NULL
+MALARIA_MORT_WPR2003$year=NULL
+MALARIA_MORT_WPR2003 <- data.frame(t(MALARIA_MORT_WPR2003))
+MALARIA_MORT_WPR2003$avgmort <- rowSums(MALARIA_MORT_WPR2003, na.rm = TRUE)
+
+MALARIA_MORT_WPR2004 <- filter(MALARIA_MORT_WPR, year=="2004")
+MALARIA_MORT_WPR2004$Deaths <- as.numeric(MALARIA_MORT_WPR2004$Deaths)
+MALARIA_MORT_WPR2004$Location=NULL
+MALARIA_MORT_WPR2004$ParentLocationCode=NULL
+MALARIA_MORT_WPR2004$year=NULL
+MALARIA_MORT_WPR2004 <- data.frame(t(MALARIA_MORT_WPR2004))
+MALARIA_MORT_WPR2004$avgmort <- rowSums(MALARIA_MORT_WPR2004, na.rm = TRUE)
+
+MALARIA_MORT_WPR2005 <- filter(MALARIA_MORT_WPR, year=="2005")
+MALARIA_MORT_WPR2005$Deaths <- as.numeric(MALARIA_MORT_WPR2005$Deaths)
+MALARIA_MORT_WPR2005$Location=NULL
+MALARIA_MORT_WPR2005$ParentLocationCode=NULL
+MALARIA_MORT_WPR2005$year=NULL
+MALARIA_MORT_WPR2005 <- data.frame(t(MALARIA_MORT_WPR2005))
+MALARIA_MORT_WPR2005$avgmort <- rowSums(MALARIA_MORT_WPR2005, na.rm = TRUE)
+
+MALARIA_MORT_WPR2006 <- filter(MALARIA_MORT_WPR, year=="2006")
+MALARIA_MORT_WPR2006$Deaths <- as.numeric(MALARIA_MORT_WPR2006$Deaths)
+MALARIA_MORT_WPR2006$Location=NULL
+MALARIA_MORT_WPR2006$ParentLocationCode=NULL
+MALARIA_MORT_WPR2006$year=NULL
+MALARIA_MORT_WPR2006 <- data.frame(t(MALARIA_MORT_WPR2006))
+MALARIA_MORT_WPR2006$avgmort <- rowSums(MALARIA_MORT_WPR2006, na.rm = TRUE)
+
+MALARIA_MORT_WPR2007 <- filter(MALARIA_MORT_WPR, year=="2007")
+MALARIA_MORT_WPR2007$Deaths <- as.numeric(MALARIA_MORT_WPR2007$Deaths)
+MALARIA_MORT_WPR2007$Location=NULL
+MALARIA_MORT_WPR2007$ParentLocationCode=NULL
+MALARIA_MORT_WPR2007$year=NULL
+MALARIA_MORT_WPR2007 <- data.frame(t(MALARIA_MORT_WPR2007))
+MALARIA_MORT_WPR2007$avgmort <- rowSums(MALARIA_MORT_WPR2007, na.rm = TRUE)
+
+MALARIA_MORT_WPR2008 <- filter(MALARIA_MORT_WPR, year=="2008")
+MALARIA_MORT_WPR2008$Deaths <- as.numeric(MALARIA_MORT_WPR2008$Deaths)
+MALARIA_MORT_WPR2008$Location=NULL
+MALARIA_MORT_WPR2008$ParentLocationCode=NULL
+MALARIA_MORT_WPR2008$year=NULL
+MALARIA_MORT_WPR2008 <- data.frame(t(MALARIA_MORT_WPR2008))
+MALARIA_MORT_WPR2008$avgmort <- rowSums(MALARIA_MORT_WPR2008, na.rm = TRUE)
+
+MALARIA_MORT_WPR2009 <- filter(MALARIA_MORT_WPR, year=="2009")
+MALARIA_MORT_WPR2009$Deaths <- as.numeric(MALARIA_MORT_WPR2009$Deaths)
+MALARIA_MORT_WPR2009$Location=NULL
+MALARIA_MORT_WPR2009$ParentLocationCode=NULL
+MALARIA_MORT_WPR2009$year=NULL
+MALARIA_MORT_WPR2009 <- data.frame(t(MALARIA_MORT_WPR2009))
+MALARIA_MORT_WPR2009$avgmort <- rowSums(MALARIA_MORT_WPR2009, na.rm = TRUE)
+
+MALARIA_MORT_WPR2010 <- filter(MALARIA_MORT_WPR, year=="2010")
+MALARIA_MORT_WPR2010$Deaths <- as.numeric(MALARIA_MORT_WPR2010$Deaths)
+MALARIA_MORT_WPR2010$Location=NULL
+MALARIA_MORT_WPR2010$ParentLocationCode=NULL
+MALARIA_MORT_WPR2010$year=NULL
+MALARIA_MORT_WPR2010 <- data.frame(t(MALARIA_MORT_WPR2010))
+MALARIA_MORT_WPR2010$avgmort <- rowSums(MALARIA_MORT_WPR2010, na.rm = TRUE)
+
+MALARIA_MORT_WPR2011 <- filter(MALARIA_MORT_WPR, year=="2011")
+MALARIA_MORT_WPR2011$Deaths <- as.numeric(MALARIA_MORT_WPR2011$Deaths)
+MALARIA_MORT_WPR2011$Location=NULL
+MALARIA_MORT_WPR2011$ParentLocationCode=NULL
+MALARIA_MORT_WPR2011$year=NULL
+MALARIA_MORT_WPR2011 <- data.frame(t(MALARIA_MORT_WPR2011))
+MALARIA_MORT_WPR2011$avgmort <- rowSums(MALARIA_MORT_WPR2011, na.rm = TRUE)
+
+MALARIA_MORT_WPR2012 <- filter(MALARIA_MORT_WPR, year=="2012")
+MALARIA_MORT_WPR2012$Deaths <- as.numeric(MALARIA_MORT_WPR2012$Deaths)
+MALARIA_MORT_WPR2012$Location=NULL
+MALARIA_MORT_WPR2012$ParentLocationCode=NULL
+MALARIA_MORT_WPR2012$year=NULL
+MALARIA_MORT_WPR2012 <- data.frame(t(MALARIA_MORT_WPR2012))
+MALARIA_MORT_WPR2012$avgmort <- rowSums(MALARIA_MORT_WPR2012, na.rm = TRUE)
+
+MALARIA_MORT_WPR2013 <- filter(MALARIA_MORT_WPR, year=="2013")
+MALARIA_MORT_WPR2013$Deaths <- as.numeric(MALARIA_MORT_WPR2013$Deaths)
+MALARIA_MORT_WPR2013$Location=NULL
+MALARIA_MORT_WPR2013$ParentLocationCode=NULL
+MALARIA_MORT_WPR2013$year=NULL
+MALARIA_MORT_WPR2013 <- data.frame(t(MALARIA_MORT_WPR2013))
+MALARIA_MORT_WPR2013$avgmort <- rowSums(MALARIA_MORT_WPR2013, na.rm = TRUE)
+
+MALARIA_MORT_WPR2014 <- filter(MALARIA_MORT_WPR, year=="2014")
+MALARIA_MORT_WPR2014$Deaths <- as.numeric(MALARIA_MORT_WPR2014$Deaths)
+MALARIA_MORT_WPR2014$Location=NULL
+MALARIA_MORT_WPR2014$ParentLocationCode=NULL
+MALARIA_MORT_WPR2014$year=NULL
+MALARIA_MORT_WPR2014 <- data.frame(t(MALARIA_MORT_WPR2014))
+MALARIA_MORT_WPR2014$avgmort <- rowSums(MALARIA_MORT_WPR2014, na.rm = TRUE)
+
+MALARIA_MORT_WPR2015 <- filter(MALARIA_MORT_WPR, year=="2015")
+MALARIA_MORT_WPR2015$Deaths <- as.numeric(MALARIA_MORT_WPR2015$Deaths)
+MALARIA_MORT_WPR2015$Location=NULL
+MALARIA_MORT_WPR2015$ParentLocationCode=NULL
+MALARIA_MORT_WPR2015$year=NULL
+MALARIA_MORT_WPR2015 <- data.frame(t(MALARIA_MORT_WPR2015))
+MALARIA_MORT_WPR2015$avgmort <- rowSums(MALARIA_MORT_WPR2015, na.rm = TRUE)
+
+MALARIA_MORT_WPR2016 <- filter(MALARIA_MORT_WPR, year=="2016")
+MALARIA_MORT_WPR2016$Deaths <- as.numeric(MALARIA_MORT_WPR2016$Deaths)
+MALARIA_MORT_WPR2016$Location=NULL
+MALARIA_MORT_WPR2016$ParentLocationCode=NULL
+MALARIA_MORT_WPR2016$year=NULL
+MALARIA_MORT_WPR2016 <- data.frame(t(MALARIA_MORT_WPR2016))
+MALARIA_MORT_WPR2016$avgmort <- rowSums(MALARIA_MORT_WPR2016, na.rm = TRUE)
+
+MALARIA_MORT_WPR2017 <- filter(MALARIA_MORT_WPR, year=="2017")
+MALARIA_MORT_WPR2017$Deaths <- as.numeric(MALARIA_MORT_WPR2017$Deaths)
+MALARIA_MORT_WPR2017$Location=NULL
+MALARIA_MORT_WPR2017$ParentLocationCode=NULL
+MALARIA_MORT_WPR2017$year=NULL
+MALARIA_MORT_WPR2017 <- data.frame(t(MALARIA_MORT_WPR2017))
+MALARIA_MORT_WPR2017$avgmort <- rowSums(MALARIA_MORT_WPR2017, na.rm = TRUE)
+
+MALARIA_MORT_WPR2018 <- filter(MALARIA_MORT_WPR, year=="2018")
+MALARIA_MORT_WPR2018$Deaths <- as.numeric(MALARIA_MORT_WPR2018$Deaths)
+MALARIA_MORT_WPR2018$Location=NULL
+MALARIA_MORT_WPR2018$ParentLocationCode=NULL
+MALARIA_MORT_WPR2018$year=NULL
+MALARIA_MORT_WPR2018 <- data.frame(t(MALARIA_MORT_WPR2018))
+MALARIA_MORT_WPR2018$avgmort <- rowSums(MALARIA_MORT_WPR2018, na.rm = TRUE)
+
+MALARIA_MORT_WPR2019 <- filter(MALARIA_MORT_WPR, year=="2019")
+MALARIA_MORT_WPR2019$Deaths <- as.numeric(MALARIA_MORT_WPR2019$Deaths)
+MALARIA_MORT_WPR2019$Location=NULL
+MALARIA_MORT_WPR2019$ParentLocationCode=NULL
+MALARIA_MORT_WPR2019$year=NULL
+MALARIA_MORT_WPR2019 <- data.frame(t(MALARIA_MORT_WPR2019))
+MALARIA_MORT_WPR2019$avgmort <- rowSums(MALARIA_MORT_WPR2019, na.rm = TRUE)
+
+#Combine into one dataset 
+Malaria_WPR_mort <- rbind(MALARIA_MORT_WPR2000, MALARIA_MORT_WPR2001, MALARIA_MORT_WPR2002, MALARIA_MORT_WPR2003, MALARIA_MORT_WPR2004, MALARIA_MORT_WPR2005, MALARIA_MORT_WPR2006, MALARIA_MORT_WPR2007, MALARIA_MORT_WPR2008, MALARIA_MORT_WPR2009, MALARIA_MORT_WPR2010, MALARIA_MORT_WPR2011, MALARIA_MORT_WPR2012, MALARIA_MORT_WPR2013, MALARIA_MORT_WPR2014, MALARIA_MORT_WPR2015, MALARIA_MORT_WPR2016, MALARIA_MORT_WPR2017, MALARIA_MORT_WPR2018, MALARIA_MORT_WPR2019)
+#Add years
+Malaria_WPR_mort$year <- c("2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019")
+#Make variables numeric
+Malaria_WPR_mort$avgmort <- as.numeric(Malaria_WPR_mort$avgmort)
+Malaria_WPR_mort$year <- as.numeric(Malaria_WPR_mort$year)
+#Remove unnecessary columns
+Malaria_WPR_mort <- Malaria_WPR_mort[ -c(1:10)]
+
+#Plot malaria mortality
+#Plot SEA
+Malaria_SEA_mort_plot <- ggplot(data=Malaria_SEA_mort, aes(x=year))+
+  geom_line(aes(y=avgmort, colour="Mortality"), size=1.5)+
+  ggtitle("South-East Asia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot WPR
+Malaria_WPR_mort_plot <- ggplot(data=Malaria_WPR_mort, aes(x=year))+
+  geom_line(aes(y=avgmort, colour="Mortality"), size=1.5)+
+  ggtitle("Western Pacific")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot Indonesia
+Malaria_Indo_mort_plot <- ggplot(data=Malaria_mort_Indo, aes(x=year))+
+  geom_line(aes(y=Deaths, colour="Mortality"), size=1.5)+
+  ggtitle("Indonesia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+Malariaplot <- ggarrange(Malaria_Indo_mort_plot, Malaria_SEA_mort_plot, Malaria_WPR_mort_plot, ncol=1, nrow=3, common.legend = TRUE, legend="bottom")
+annotate_figure(Malariaplot, top = text_grob("Malaria mortality (2000-2019)", 
+                                        color = "black", face = "bold", size = 15))
+
+#######################
+## Visualise TB data ##
+#######################
+#Set working directory 
+setwd()
+
+#Read CSV files
+TB_full <- read.csv("TB_burden_countries_2022-06-15.csv")
+TB_dictionary <- read.csv("TB_data_dictionary_2022-06-15.csv")
+TB_drugres <- read.csv("TB_dr_surveillance_2022-06-18.csv")
+
+#Remove non-Indonesian data (full dataset)
+TB_Indo <- filter(TB_full, country == "Indonesia")
+
+#Remove non-Indonesian data (drug resistance)
+TB_Indo_DR <- filter(TB_drugres, country =="Indonesia")
+
+#Create South-East Asia dataset
+TB_SEA <- filter(TB_full, g_whoregion=="SEA")
+
+#Create Western Pacific dataset
+TB_WPR <- filter(TB_full, g_whoregion=="WPR")
+
+#Remove unwanted labels (using TB data dictionary)
+TB_Indo <- TB_Indo %>%
+  select("year", "e_inc_100k", "c_cdr", "e_inc_num", "e_inc_num", "e_mort_num", "e_mort_exc_tbhiv_num", "e_mort_num")
+
+TB_SEA <- TB_SEA %>%
+  select("country", "year", "e_inc_num", "e_mort_num")
+
+TB_WPR <- TB_WPR %>%
+  select("country", "year", "e_inc_num", "e_mort_num")
+
+TB_Indo_DR <- TB_Indo_DR %>%
+  select("year", "dst_rlt_hr_new", "dst_rlt_hr_ret", "rr_new", "rr_rel", "rr_ret", "xdr", "rr_dr_2li", "rr_fqr", "mdr_dst_rlt", "mdr_new", "mdr_ret", "dst_rlt_rr_new", "dst_rlt_rr_ret")
+
+#Summarised South-East Asia data (New cases)
+TB_SEA$e_inc_num <- as.numeric(TB_SEA$e_inc_num)
+TB_SEA$e_mort_num <- as.numeric(TB_SEA$e_mort_num)
+TB_SEA$country=NULL
+
+TB_SEA2000 <- filter(TB_SEA, year=="2000")
+TB_SEA2000$e_inc_num <- as.numeric(TB_SEA2000$e_inc_num)
+TB_SEA2000$country=NULL
+TB_SEA2000$e_mort_num=NULL
+TB_SEA2000$year=NULL
+TB_SEA2000 <- data.frame(t(TB_SEA2000))
+X11 <- c(NA)
+TB_SEA2000$X11 <- X11
+TB_SEA2000$avg <- rowSums(TB_SEA2000, na.rm = TRUE)
+
+TB_SEA2001 <- filter(TB_SEA, year=="2001")
+TB_SEA2001$e_inc_num <- as.numeric(TB_SEA2001$e_inc_num)
+TB_SEA2001$country=NULL
+TB_SEA2001$e_mort_num=NULL
+TB_SEA2001$year=NULL
+TB_SEA2001 <- data.frame(t(TB_SEA2001))
+X11 <- c(NA)
+TB_SEA2001$X11 <- X11
+TB_SEA2001$avg <- rowSums(TB_SEA2001, na.rm = TRUE)
+
+TB_SEA2002 <- filter(TB_SEA, year=="2002")
+TB_SEA2002$e_inc_num <- as.numeric(TB_SEA2002$e_inc_num)
+TB_SEA2002$country=NULL
+TB_SEA2002$e_mort_num=NULL
+TB_SEA2002$year=NULL
+TB_SEA2002 <- data.frame(t(TB_SEA2002))
+TB_SEA2002$avg <- rowSums(TB_SEA2002, na.rm = TRUE)
+
+TB_SEA2003 <- filter(TB_SEA, year=="2003")
+TB_SEA2003$e_inc_num <- as.numeric(TB_SEA2003$e_inc_num)
+TB_SEA2003$country=NULL
+TB_SEA2003$e_mort_num=NULL
+TB_SEA2003$year=NULL
+TB_SEA2003 <- data.frame(t(TB_SEA2003))
+TB_SEA2003$avg <- rowSums(TB_SEA2003, na.rm = TRUE)
+
+TB_SEA2004 <- filter(TB_SEA, year=="2004")
+TB_SEA2004$e_inc_num <- as.numeric(TB_SEA2004$e_inc_num)
+TB_SEA2004$country=NULL
+TB_SEA2004$e_mort_num=NULL
+TB_SEA2004$year=NULL
+TB_SEA2004 <- data.frame(t(TB_SEA2004))
+TB_SEA2004$avg <- rowSums(TB_SEA2004, na.rm = TRUE)
+
+TB_SEA2005 <- filter(TB_SEA, year=="2005")
+TB_SEA2005$e_inc_num <- as.numeric(TB_SEA2005$e_inc_num)
+TB_SEA2005$country=NULL
+TB_SEA2005$e_mort_num=NULL
+TB_SEA2005$year=NULL
+TB_SEA2005 <- data.frame(t(TB_SEA2005))
+TB_SEA2005$avg <- rowSums(TB_SEA2005, na.rm = TRUE)
+
+TB_SEA2006 <- filter(TB_SEA, year=="2006")
+TB_SEA2006$e_inc_num <- as.numeric(TB_SEA2006$e_inc_num)
+TB_SEA2006$country=NULL
+TB_SEA2006$e_mort_num=NULL
+TB_SEA2006$year=NULL
+TB_SEA2006 <- data.frame(t(TB_SEA2006))
+TB_SEA2006$avg <- rowSums(TB_SEA2006, na.rm = TRUE)
+
+TB_SEA2007 <- filter(TB_SEA, year=="2007")
+TB_SEA2007$e_inc_num <- as.numeric(TB_SEA2007$e_inc_num)
+TB_SEA2007$country=NULL
+TB_SEA2007$e_mort_num=NULL
+TB_SEA2007$year=NULL
+TB_SEA2007 <- data.frame(t(TB_SEA2007))
+TB_SEA2007$avg <- rowSums(TB_SEA2007, na.rm = TRUE)
+
+TB_SEA2008 <- filter(TB_SEA, year=="2008")
+TB_SEA2008$e_inc_num <- as.numeric(TB_SEA2008$e_inc_num)
+TB_SEA2008$country=NULL
+TB_SEA2008$e_mort_num=NULL
+TB_SEA2008$year=NULL
+TB_SEA2008 <- data.frame(t(TB_SEA2008))
+TB_SEA2008$avg <- rowSums(TB_SEA2008, na.rm = TRUE)
+
+TB_SEA2009 <- filter(TB_SEA, year=="2009")
+TB_SEA2009$e_inc_num <- as.numeric(TB_SEA2009$e_inc_num)
+TB_SEA2009$country=NULL
+TB_SEA2009$e_mort_num=NULL
+TB_SEA2009$year=NULL
+TB_SEA2009 <- data.frame(t(TB_SEA2009))
+TB_SEA2009$avg <- rowSums(TB_SEA2009, na.rm = TRUE)
+
+TB_SEA2010 <- filter(TB_SEA, year=="2010")
+TB_SEA2010$e_inc_num <- as.numeric(TB_SEA2010$e_inc_num)
+TB_SEA2010$country=NULL
+TB_SEA2010$e_mort_num=NULL
+TB_SEA2010$year=NULL
+TB_SEA2010 <- data.frame(t(TB_SEA2010))
+TB_SEA2010$avg <- rowSums(TB_SEA2010, na.rm = TRUE)
+
+TB_SEA2011 <- filter(TB_SEA, year=="2011")
+TB_SEA2011$e_inc_num <- as.numeric(TB_SEA2011$e_inc_num)
+TB_SEA2011$country=NULL
+TB_SEA2011$e_mort_num=NULL
+TB_SEA2011$year=NULL
+TB_SEA2011 <- data.frame(t(TB_SEA2011))
+TB_SEA2011$avg <- rowSums(TB_SEA2011, na.rm = TRUE)
+
+TB_SEA2012 <- filter(TB_SEA, year=="2012")
+TB_SEA2012$e_inc_num <- as.numeric(TB_SEA2012$e_inc_num)
+TB_SEA2012$country=NULL
+TB_SEA2012$e_mort_num=NULL
+TB_SEA2012$year=NULL
+TB_SEA2012 <- data.frame(t(TB_SEA2012))
+TB_SEA2012$avg <- rowSums(TB_SEA2012, na.rm = TRUE)
+
+TB_SEA2013 <- filter(TB_SEA, year=="2013")
+TB_SEA2013$e_inc_num <- as.numeric(TB_SEA2013$e_inc_num)
+TB_SEA2013$country=NULL
+TB_SEA2013$e_mort_num=NULL
+TB_SEA2013$year=NULL
+TB_SEA2013 <- data.frame(t(TB_SEA2013))
+TB_SEA2013$avg <- rowSums(TB_SEA2013, na.rm = TRUE)
+
+TB_SEA2014 <- filter(TB_SEA, year=="2014")
+TB_SEA2014$e_inc_num <- as.numeric(TB_SEA2014$e_inc_num)
+TB_SEA2014$country=NULL
+TB_SEA2014$e_mort_num=NULL
+TB_SEA2014$year=NULL
+TB_SEA2014 <- data.frame(t(TB_SEA2014))
+TB_SEA2014$avg <- rowSums(TB_SEA2014, na.rm = TRUE)
+
+TB_SEA2015 <- filter(TB_SEA, year=="2015")
+TB_SEA2015$e_inc_num <- as.numeric(TB_SEA2015$e_inc_num)
+TB_SEA2015$country=NULL
+TB_SEA2015$e_mort_num=NULL
+TB_SEA2015$year=NULL
+TB_SEA2015 <- data.frame(t(TB_SEA2015))
+TB_SEA2015$avg <- rowSums(TB_SEA2015, na.rm = TRUE)
+
+TB_SEA2016 <- filter(TB_SEA, year=="2016")
+TB_SEA2016$e_inc_num <- as.numeric(TB_SEA2016$e_inc_num)
+TB_SEA2016$country=NULL
+TB_SEA2016$e_mort_num=NULL
+TB_SEA2016$year=NULL
+TB_SEA2016 <- data.frame(t(TB_SEA2016))
+TB_SEA2016$avg <- rowSums(TB_SEA2016, na.rm = TRUE)
+
+TB_SEA2017 <- filter(TB_SEA, year=="2017")
+TB_SEA2017$e_inc_num <- as.numeric(TB_SEA2017$e_inc_num)
+TB_SEA2017$country=NULL
+TB_SEA2017$e_mort_num=NULL
+TB_SEA2017$year=NULL
+TB_SEA2017 <- data.frame(t(TB_SEA2017))
+TB_SEA2017$avg <- rowSums(TB_SEA2017, na.rm = TRUE)
+
+TB_SEA2018 <- filter(TB_SEA, year=="2018")
+TB_SEA2018$e_inc_num <- as.numeric(TB_SEA2018$e_inc_num)
+TB_SEA2018$country=NULL
+TB_SEA2018$e_mort_num=NULL
+TB_SEA2018$year=NULL
+TB_SEA2018 <- data.frame(t(TB_SEA2018))
+TB_SEA2018$avg <- rowSums(TB_SEA2018, na.rm = TRUE)
+
+TB_SEA2019 <- filter(TB_SEA, year=="2019")
+TB_SEA2019$e_inc_num <- as.numeric(TB_SEA2019$e_inc_num)
+TB_SEA2019$country=NULL
+TB_SEA2019$e_mort_num=NULL
+TB_SEA2019$year=NULL
+TB_SEA2019 <- data.frame(t(TB_SEA2019))
+TB_SEA2019$avg <- rowSums(TB_SEA2019, na.rm = TRUE)
+
+TB_SEA2020 <- filter(TB_SEA, year=="2020")
+TB_SEA2020$e_inc_num <- as.numeric(TB_SEA2020$e_inc_num)
+TB_SEA2020$country=NULL
+TB_SEA2020$e_mort_num=NULL
+TB_SEA2020$year=NULL
+TB_SEA2020 <- data.frame(t(TB_SEA2020))
+TB_SEA2020$avg <- rowSums(TB_SEA2020, na.rm = TRUE)
+
+#Combine into one dataset 
+
+TB_SEA_AVG <- rbind(TB_SEA2000, TB_SEA2001, TB_SEA2002, TB_SEA2003, TB_SEA2004, TB_SEA2005, TB_SEA2006, TB_SEA2007, TB_SEA2008, TB_SEA2009, TB_SEA2010, TB_SEA2011, TB_SEA2012, TB_SEA2013, TB_SEA2014, TB_SEA2015, TB_SEA2016, TB_SEA2017, TB_SEA2018, TB_SEA2019, TB_SEA2020)
+#Add years
+TB_SEA_AVG$year <- c("2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020")
+#Make variables numeric
+TB_SEA_AVG$avg <- as.numeric(TB_SEA_AVG$avg)
+TB_SEA_AVG$year <- as.numeric(TB_SEA_AVG$year)
+#Remove unnecessary columns
+TB_SEA_AVG <- TB_SEA_AVG[ -c(1:11)]
+
+##Summarise South-East Asia data (Mortality)
+TB_SEA2000 <- filter(TB_SEA, year=="2000")
+TB_SEA2000$e_mort_num <- as.numeric(TB_SEA2000$e_mort_num)
+TB_SEA2000$country=NULL
+TB_SEA2000$e_inc_num=NULL
+TB_SEA2000$year=NULL
+TB_SEA2000 <- data.frame(t(TB_SEA2000))
+X11 <- c(NA)
+TB_SEA2000$X11 <- X11
+TB_SEA2000$avgmort <- rowSums(TB_SEA2000, na.rm = TRUE)
+
+TB_SEA2001 <- filter(TB_SEA, year=="2001")
+TB_SEA2001$e_mort_num <- as.numeric(TB_SEA2001$e_mort_num)
+TB_SEA2001$country=NULL
+TB_SEA2001$e_inc_num=NULL
+TB_SEA2001$year=NULL
+TB_SEA2001 <- data.frame(t(TB_SEA2001))
+X11 <- c(NA)
+TB_SEA2001$X11 <- X11
+TB_SEA2001$avgmort <- rowSums(TB_SEA2001, na.rm = TRUE)
+
+TB_SEA2002 <- filter(TB_SEA, year=="2002")
+TB_SEA2002$e_mort_num <- as.numeric(TB_SEA2002$e_mort_num)
+TB_SEA2002$country=NULL
+TB_SEA2002$e_inc_num=NULL
+TB_SEA2002$year=NULL
+TB_SEA2002 <- data.frame(t(TB_SEA2002))
+TB_SEA2002$avgmort <- rowSums(TB_SEA2002, na.rm = TRUE)
+
+TB_SEA2003 <- filter(TB_SEA, year=="2003")
+TB_SEA2003$e_mort_num <- as.numeric(TB_SEA2003$e_mort_num)
+TB_SEA2003$country=NULL
+TB_SEA2003$e_inc_num=NULL
+TB_SEA2003$year=NULL
+TB_SEA2003 <- data.frame(t(TB_SEA2003))
+TB_SEA2003$avgmort <- rowSums(TB_SEA2003, na.rm = TRUE)
+
+TB_SEA2004 <- filter(TB_SEA, year=="2004")
+TB_SEA2004$e_mort_num <- as.numeric(TB_SEA2004$e_mort_num)
+TB_SEA2004$country=NULL
+TB_SEA2004$e_inc_num=NULL
+TB_SEA2004$year=NULL
+TB_SEA2004 <- data.frame(t(TB_SEA2004))
+TB_SEA2004$avgmort <- rowSums(TB_SEA2004, na.rm = TRUE)
+
+TB_SEA2005 <- filter(TB_SEA, year=="2005")
+TB_SEA2005$e_mort_num <- as.numeric(TB_SEA2005$e_mort_num)
+TB_SEA2005$country=NULL
+TB_SEA2005$e_inc_num=NULL
+TB_SEA2005$year=NULL
+TB_SEA2005 <- data.frame(t(TB_SEA2005))
+TB_SEA2005$avgmort <- rowSums(TB_SEA2005, na.rm = TRUE)
+
+TB_SEA2006 <- filter(TB_SEA, year=="2006")
+TB_SEA2006$e_mort_num <- as.numeric(TB_SEA2006$e_mort_num)
+TB_SEA2006$country=NULL
+TB_SEA2006$e_inc_num=NULL
+TB_SEA2006$year=NULL
+TB_SEA2006 <- data.frame(t(TB_SEA2006))
+TB_SEA2006$avgmort <- rowSums(TB_SEA2006, na.rm = TRUE)
+
+TB_SEA2007 <- filter(TB_SEA, year=="2007")
+TB_SEA2007$e_mort_num <- as.numeric(TB_SEA2007$e_mort_num)
+TB_SEA2007$country=NULL
+TB_SEA2007$e_inc_num=NULL
+TB_SEA2007$year=NULL
+TB_SEA2007 <- data.frame(t(TB_SEA2007))
+TB_SEA2007$avgmort <- rowSums(TB_SEA2007, na.rm = TRUE)
+
+TB_SEA2008 <- filter(TB_SEA, year=="2008")
+TB_SEA2008$e_mort_num <- as.numeric(TB_SEA2008$e_mort_num)
+TB_SEA2008$country=NULL
+TB_SEA2008$e_inc_num=NULL
+TB_SEA2008$year=NULL
+TB_SEA2008 <- data.frame(t(TB_SEA2008))
+TB_SEA2008$avgmort <- rowSums(TB_SEA2008, na.rm = TRUE)
+
+TB_SEA2009 <- filter(TB_SEA, year=="2009")
+TB_SEA2009$e_mort_num <- as.numeric(TB_SEA2009$e_mort_num)
+TB_SEA2009$country=NULL
+TB_SEA2009$e_inc_num=NULL
+TB_SEA2009$year=NULL
+TB_SEA2009 <- data.frame(t(TB_SEA2009))
+TB_SEA2009$avgmort <- rowSums(TB_SEA2009, na.rm = TRUE)
+
+TB_SEA2010 <- filter(TB_SEA, year=="2010")
+TB_SEA2010$e_mort_num <- as.numeric(TB_SEA2010$e_mort_num)
+TB_SEA2010$country=NULL
+TB_SEA2010$e_inc_num=NULL
+TB_SEA2010$year=NULL
+TB_SEA2010 <- data.frame(t(TB_SEA2010))
+TB_SEA2010$avgmort <- rowSums(TB_SEA2010, na.rm = TRUE)
+
+TB_SEA2011 <- filter(TB_SEA, year=="2011")
+TB_SEA2011$e_mort_num <- as.numeric(TB_SEA2011$e_mort_num)
+TB_SEA2011$country=NULL
+TB_SEA2011$e_inc_num=NULL
+TB_SEA2011$year=NULL
+TB_SEA2011 <- data.frame(t(TB_SEA2011))
+TB_SEA2011$avgmort <- rowSums(TB_SEA2011, na.rm = TRUE)
+
+TB_SEA2012 <- filter(TB_SEA, year=="2012")
+TB_SEA2012$e_mort_num <- as.numeric(TB_SEA2012$e_mort_num)
+TB_SEA2012$country=NULL
+TB_SEA2012$e_inc_num=NULL
+TB_SEA2012$year=NULL
+TB_SEA2012 <- data.frame(t(TB_SEA2012))
+TB_SEA2012$avgmort <- rowSums(TB_SEA2012, na.rm = TRUE)
+
+TB_SEA2013 <- filter(TB_SEA, year=="2013")
+TB_SEA2013$e_mort_num <- as.numeric(TB_SEA2013$e_mort_num)
+TB_SEA2013$country=NULL
+TB_SEA2013$e_inc_num=NULL
+TB_SEA2013$year=NULL
+TB_SEA2013 <- data.frame(t(TB_SEA2013))
+TB_SEA2013$avgmort <- rowSums(TB_SEA2013, na.rm = TRUE)
+
+TB_SEA2014 <- filter(TB_SEA, year=="2014")
+TB_SEA2014$e_mort_num <- as.numeric(TB_SEA2014$e_mort_num)
+TB_SEA2014$country=NULL
+TB_SEA2014$e_inc_num=NULL
+TB_SEA2014$year=NULL
+TB_SEA2014 <- data.frame(t(TB_SEA2014))
+TB_SEA2014$avgmort <- rowSums(TB_SEA2014, na.rm = TRUE)
+
+TB_SEA2015 <- filter(TB_SEA, year=="2015")
+TB_SEA2015$e_mort_num <- as.numeric(TB_SEA2015$e_mort_num)
+TB_SEA2015$country=NULL
+TB_SEA2015$e_inc_num=NULL
+TB_SEA2015$year=NULL
+TB_SEA2015 <- data.frame(t(TB_SEA2015))
+TB_SEA2015$avgmort <- rowSums(TB_SEA2015, na.rm = TRUE)
+
+TB_SEA2016 <- filter(TB_SEA, year=="2016")
+TB_SEA2016$e_mort_num <- as.numeric(TB_SEA2016$e_mort_num)
+TB_SEA2016$country=NULL
+TB_SEA2016$e_inc_num=NULL
+TB_SEA2016$year=NULL
+TB_SEA2016 <- data.frame(t(TB_SEA2016))
+TB_SEA2016$avgmort <- rowSums(TB_SEA2016, na.rm = TRUE)
+
+TB_SEA2017 <- filter(TB_SEA, year=="2017")
+TB_SEA2017$e_mort_num <- as.numeric(TB_SEA2017$e_mort_num)
+TB_SEA2017$country=NULL
+TB_SEA2017$e_inc_num=NULL
+TB_SEA2017$year=NULL
+TB_SEA2017 <- data.frame(t(TB_SEA2017))
+TB_SEA2017$avgmort <- rowSums(TB_SEA2017, na.rm = TRUE)
+
+TB_SEA2018 <- filter(TB_SEA, year=="2018")
+TB_SEA2018$e_mort_num <- as.numeric(TB_SEA2018$e_mort_num)
+TB_SEA2018$country=NULL
+TB_SEA2018$e_inc_num=NULL
+TB_SEA2018$year=NULL
+TB_SEA2018 <- data.frame(t(TB_SEA2018))
+TB_SEA2018$avgmort <- rowSums(TB_SEA2018, na.rm = TRUE)
+
+TB_SEA2019 <- filter(TB_SEA, year=="2019")
+TB_SEA2019$e_mort_num <- as.numeric(TB_SEA2019$e_mort_num)
+TB_SEA2019$country=NULL
+TB_SEA2019$e_inc_num=NULL
+TB_SEA2019$year=NULL
+TB_SEA2019 <- data.frame(t(TB_SEA2019))
+TB_SEA2019$avgmort <- rowSums(TB_SEA2019, na.rm = TRUE)
+
+TB_SEA2020 <- filter(TB_SEA, year=="2020")
+TB_SEA2020$e_mort_num <- as.numeric(TB_SEA2020$e_mort_num)
+TB_SEA2020$country=NULL
+TB_SEA2020$e_inc_num=NULL
+TB_SEA2020$year=NULL
+TB_SEA2020 <- data.frame(t(TB_SEA2020))
+TB_SEA2020$avgmort <- rowSums(TB_SEA2020, na.rm = TRUE)
+
+#Combine into one dataset 
+TB_SEA_AVGmort <- rbind(TB_SEA2000, TB_SEA2001, TB_SEA2002, TB_SEA2003, TB_SEA2004, TB_SEA2005, TB_SEA2006, TB_SEA2007, TB_SEA2008, TB_SEA2009, TB_SEA2010, TB_SEA2011, TB_SEA2012, TB_SEA2013, TB_SEA2014, TB_SEA2015, TB_SEA2016, TB_SEA2017, TB_SEA2018, TB_SEA2019, TB_SEA2020)
+#Add years
+TB_SEA_AVGmort$year <- c("2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020")
+#Make variables numeric
+TB_SEA_AVGmort$avgmort <- as.numeric(TB_SEA_AVGmort$avgmort)
+TB_SEA_AVGmort$year <- as.numeric(TB_SEA_AVGmort$year)
+#Remove unnecessary columns
+TB_SEA_AVGmort <- TB_SEA_AVGmort[ -c(1:11)]
+
+#Combine case and mortality datasets
+TB_SEA_Combine <- merge(TB_SEA_AVGmort, TB_SEA_AVG)
+
+#Summarise Western Pacific data (New cases)
+TB_WPR$e_inc_num <- as.numeric(TB_WPR$e_inc_num)
+TB_WPR$e_mort_num <- as.numeric(TB_WPR$e_mort_num)
+TB_WPR$country=NULL
+
+TB_WPR2000 <- filter(TB_WPR, year=="2000")
+TB_WPR2000$e_inc_num <- as.numeric(TB_WPR2000$e_inc_num)
+TB_WPR2000$country=NULL
+TB_WPR2000$e_mort_num=NULL
+TB_WPR2000$year=NULL
+TB_WPR2000 <- data.frame(t(TB_WPR2000))
+TB_WPR2000$avg <- rowSums(TB_WPR2000, na.rm = TRUE)
+
+TB_WPR2001 <- filter(TB_WPR, year=="2001")
+TB_WPR2001$e_inc_num <- as.numeric(TB_WPR2001$e_inc_num)
+TB_WPR2001$country=NULL
+TB_WPR2001$e_mort_num=NULL
+TB_WPR2001$year=NULL
+TB_WPR2001 <- data.frame(t(TB_WPR2001))
+TB_WPR2001$avg <- rowSums(TB_WPR2001, na.rm = TRUE)
+
+TB_WPR2002 <- filter(TB_WPR, year=="2002")
+TB_WPR2002$e_inc_num <- as.numeric(TB_WPR2002$e_inc_num)
+TB_WPR2002$country=NULL
+TB_WPR2002$e_mort_num=NULL
+TB_WPR2002$year=NULL
+TB_WPR2002 <- data.frame(t(TB_WPR2002))
+TB_WPR2002$avg <- rowSums(TB_WPR2002, na.rm = TRUE)
+
+TB_WPR2003 <- filter(TB_WPR, year=="2003")
+TB_WPR2003$e_inc_num <- as.numeric(TB_WPR2003$e_inc_num)
+TB_WPR2003$country=NULL
+TB_WPR2003$e_mort_num=NULL
+TB_WPR2003$year=NULL
+TB_WPR2003 <- data.frame(t(TB_WPR2003))
+TB_WPR2003$avg <- rowSums(TB_WPR2003, na.rm = TRUE)
+
+TB_WPR2004 <- filter(TB_WPR, year=="2004")
+TB_WPR2004$e_inc_num <- as.numeric(TB_WPR2004$e_inc_num)
+TB_WPR2004$country=NULL
+TB_WPR2004$e_mort_num=NULL
+TB_WPR2004$year=NULL
+TB_WPR2004 <- data.frame(t(TB_WPR2004))
+TB_WPR2004$avg <- rowSums(TB_WPR2004, na.rm = TRUE)
+
+TB_WPR2005 <- filter(TB_WPR, year=="2005")
+TB_WPR2005$e_inc_num <- as.numeric(TB_WPR2005$e_inc_num)
+TB_WPR2005$country=NULL
+TB_WPR2005$e_mort_num=NULL
+TB_WPR2005$year=NULL
+TB_WPR2005 <- data.frame(t(TB_WPR2005))
+TB_WPR2005$avg <- rowSums(TB_WPR2005, na.rm = TRUE)
+
+TB_WPR2006 <- filter(TB_WPR, year=="2006")
+TB_WPR2006$e_inc_num <- as.numeric(TB_WPR2006$e_inc_num)
+TB_WPR2006$country=NULL
+TB_WPR2006$e_mort_num=NULL
+TB_WPR2006$year=NULL
+TB_WPR2006 <- data.frame(t(TB_WPR2006))
+TB_WPR2006$avg <- rowSums(TB_WPR2006, na.rm = TRUE)
+
+TB_WPR2007 <- filter(TB_WPR, year=="2007")
+TB_WPR2007$e_inc_num <- as.numeric(TB_WPR2007$e_inc_num)
+TB_WPR2007$country=NULL
+TB_WPR2007$e_mort_num=NULL
+TB_WPR2007$year=NULL
+TB_WPR2007 <- data.frame(t(TB_WPR2007))
+TB_WPR2007$avg <- rowSums(TB_WPR2007, na.rm = TRUE)
+
+TB_WPR2008 <- filter(TB_WPR, year=="2008")
+TB_WPR2008$e_inc_num <- as.numeric(TB_WPR2008$e_inc_num)
+TB_WPR2008$country=NULL
+TB_WPR2008$e_mort_num=NULL
+TB_WPR2008$year=NULL
+TB_WPR2008 <- data.frame(t(TB_WPR2008))
+TB_WPR2008$avg <- rowSums(TB_WPR2008, na.rm = TRUE)
+
+TB_WPR2009 <- filter(TB_WPR, year=="2009")
+TB_WPR2009$e_inc_num <- as.numeric(TB_WPR2009$e_inc_num)
+TB_WPR2009$country=NULL
+TB_WPR2009$e_mort_num=NULL
+TB_WPR2009$year=NULL
+TB_WPR2009 <- data.frame(t(TB_WPR2009))
+TB_WPR2009$avg <- rowSums(TB_WPR2009, na.rm = TRUE)
+
+TB_WPR2010 <- filter(TB_WPR, year=="2010")
+TB_WPR2010$e_inc_num <- as.numeric(TB_WPR2010$e_inc_num)
+TB_WPR2010$country=NULL
+TB_WPR2010$e_mort_num=NULL
+TB_WPR2010$year=NULL
+TB_WPR2010 <- data.frame(t(TB_WPR2010))
+TB_WPR2010$avg <- rowSums(TB_WPR2010, na.rm = TRUE)
+
+TB_WPR2011 <- filter(TB_WPR, year=="2011")
+TB_WPR2011$e_inc_num <- as.numeric(TB_WPR2011$e_inc_num)
+TB_WPR2011$country=NULL
+TB_WPR2011$e_mort_num=NULL
+TB_WPR2011$year=NULL
+TB_WPR2011 <- data.frame(t(TB_WPR2011))
+TB_WPR2011$avg <- rowSums(TB_WPR2011, na.rm = TRUE)
+
+TB_WPR2012 <- filter(TB_WPR, year=="2012")
+TB_WPR2012$e_inc_num <- as.numeric(TB_WPR2012$e_inc_num)
+TB_WPR2012$country=NULL
+TB_WPR2012$e_mort_num=NULL
+TB_WPR2012$year=NULL
+TB_WPR2012 <- data.frame(t(TB_WPR2012))
+TB_WPR2012$avg <- rowSums(TB_WPR2012, na.rm = TRUE)
+
+TB_WPR2013 <- filter(TB_WPR, year=="2013")
+TB_WPR2013$e_inc_num <- as.numeric(TB_WPR2013$e_inc_num)
+TB_WPR2013$country=NULL
+TB_WPR2013$e_mort_num=NULL
+TB_WPR2013$year=NULL
+TB_WPR2013 <- data.frame(t(TB_WPR2013))
+TB_WPR2013$avg <- rowSums(TB_WPR2013, na.rm = TRUE)
+
+TB_WPR2014 <- filter(TB_WPR, year=="2014")
+TB_WPR2014$e_inc_num <- as.numeric(TB_WPR2014$e_inc_num)
+TB_WPR2014$country=NULL
+TB_WPR2014$e_mort_num=NULL
+TB_WPR2014$year=NULL
+TB_WPR2014 <- data.frame(t(TB_WPR2014))
+TB_WPR2014$avg <- rowSums(TB_WPR2014, na.rm = TRUE)
+
+TB_WPR2015 <- filter(TB_WPR, year=="2015")
+TB_WPR2015$e_inc_num <- as.numeric(TB_WPR2015$e_inc_num)
+TB_WPR2015$country=NULL
+TB_WPR2015$e_mort_num=NULL
+TB_WPR2015$year=NULL
+TB_WPR2015 <- data.frame(t(TB_WPR2015))
+TB_WPR2015$avg <- rowSums(TB_WPR2015, na.rm = TRUE)
+
+TB_WPR2016 <- filter(TB_WPR, year=="2016")
+TB_WPR2016$e_inc_num <- as.numeric(TB_WPR2016$e_inc_num)
+TB_WPR2016$country=NULL
+TB_WPR2016$e_mort_num=NULL
+TB_WPR2016$year=NULL
+TB_WPR2016 <- data.frame(t(TB_WPR2016))
+TB_WPR2016$avg <- rowSums(TB_WPR2016, na.rm = TRUE)
+
+TB_WPR2017 <- filter(TB_WPR, year=="2017")
+TB_WPR2017$e_inc_num <- as.numeric(TB_WPR2017$e_inc_num)
+TB_WPR2017$country=NULL
+TB_WPR2017$e_mort_num=NULL
+TB_WPR2017$year=NULL
+TB_WPR2017 <- data.frame(t(TB_WPR2017))
+TB_WPR2017$avg <- rowSums(TB_WPR2017, na.rm = TRUE)
+
+TB_WPR2018 <- filter(TB_WPR, year=="2018")
+TB_WPR2018$e_inc_num <- as.numeric(TB_WPR2018$e_inc_num)
+TB_WPR2018$country=NULL
+TB_WPR2018$e_mort_num=NULL
+TB_WPR2018$year=NULL
+TB_WPR2018 <- data.frame(t(TB_WPR2018))
+TB_WPR2018$avg <- rowSums(TB_WPR2018, na.rm = TRUE)
+
+TB_WPR2019 <- filter(TB_WPR, year=="2019")
+TB_WPR2019$e_inc_num <- as.numeric(TB_WPR2019$e_inc_num)
+TB_WPR2019$country=NULL
+TB_WPR2019$e_mort_num=NULL
+TB_WPR2019$year=NULL
+TB_WPR2019 <- data.frame(t(TB_WPR2019))
+TB_WPR2019$avg <- rowSums(TB_WPR2019, na.rm = TRUE)
+
+TB_WPR2020 <- filter(TB_WPR, year=="2020")
+TB_WPR2020$e_inc_num <- as.numeric(TB_WPR2020$e_inc_num)
+TB_WPR2020$country=NULL
+TB_WPR2020$e_mort_num=NULL
+TB_WPR2020$year=NULL
+TB_WPR2020 <- data.frame(t(TB_WPR2020))
+TB_WPR2020$avg <- rowSums(TB_WPR2020, na.rm = TRUE)
+
+#Combine into one dataset 
+TB_WPR_AVG <- rbind(TB_WPR2000, TB_WPR2001, TB_WPR2002, TB_WPR2003, TB_WPR2004, TB_WPR2005, TB_WPR2006, TB_WPR2007, TB_WPR2008, TB_WPR2009, TB_WPR2010, TB_WPR2011, TB_WPR2012, TB_WPR2013, TB_WPR2014, TB_WPR2015, TB_WPR2016, TB_WPR2017, TB_WPR2018, TB_WPR2019, TB_WPR2020)
+#Add years
+TB_WPR_AVG$year <- c("2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020")
+#Make variables numeric
+TB_WPR_AVG$avg <- as.numeric(TB_WPR_AVG$avg)
+TB_WPR_AVG$year <- as.numeric(TB_WPR_AVG$year)
+#Remove unnecessary columns
+TB_WPR_AVG <- TB_WPR_AVG[ -c(1:36)]
+
+##Summarise Western Pacific data (Mortality)
+TB_WPR2000 <- filter(TB_WPR, year=="2000")
+TB_WPR2000$e_mort_num <- as.numeric(TB_WPR2000$e_mort_num)
+TB_WPR2000$country=NULL
+TB_WPR2000$e_inc_num=NULL
+TB_WPR2000$year=NULL
+TB_WPR2000 <- data.frame(t(TB_WPR2000))
+TB_WPR2000$avgmort <- rowSums(TB_WPR2000, na.rm = TRUE)
+
+TB_WPR2001 <- filter(TB_WPR, year=="2001")
+TB_WPR2001$e_mort_num <- as.numeric(TB_WPR2001$e_mort_num)
+TB_WPR2001$country=NULL
+TB_WPR2001$e_inc_num=NULL
+TB_WPR2001$year=NULL
+TB_WPR2001 <- data.frame(t(TB_WPR2001))
+TB_WPR2001$avgmort <- rowSums(TB_WPR2001, na.rm = TRUE)
+
+TB_WPR2002 <- filter(TB_WPR, year=="2002")
+TB_WPR2002$e_mort_num <- as.numeric(TB_WPR2002$e_mort_num)
+TB_WPR2002$country=NULL
+TB_WPR2002$e_inc_num=NULL
+TB_WPR2002$year=NULL
+TB_WPR2002 <- data.frame(t(TB_WPR2002))
+TB_WPR2002$avgmort <- rowSums(TB_WPR2002, na.rm = TRUE)
+
+TB_WPR2003 <- filter(TB_WPR, year=="2003")
+TB_WPR2003$e_mort_num <- as.numeric(TB_WPR2003$e_mort_num)
+TB_WPR2003$country=NULL
+TB_WPR2003$e_inc_num=NULL
+TB_WPR2003$year=NULL
+TB_WPR2003 <- data.frame(t(TB_WPR2003))
+TB_WPR2003$avgmort <- rowSums(TB_WPR2003, na.rm = TRUE)
+
+TB_WPR2004 <- filter(TB_WPR, year=="2004")
+TB_WPR2004$e_mort_num <- as.numeric(TB_WPR2004$e_mort_num)
+TB_WPR2004$country=NULL
+TB_WPR2004$e_inc_num=NULL
+TB_WPR2004$year=NULL
+TB_WPR2004 <- data.frame(t(TB_WPR2004))
+TB_WPR2004$avgmort <- rowSums(TB_WPR2004, na.rm = TRUE)
+
+TB_WPR2005 <- filter(TB_WPR, year=="2005")
+TB_WPR2005$e_mort_num <- as.numeric(TB_WPR2005$e_mort_num)
+TB_WPR2005$country=NULL
+TB_WPR2005$e_inc_num=NULL
+TB_WPR2005$year=NULL
+TB_WPR2005 <- data.frame(t(TB_WPR2005))
+TB_WPR2005$avgmort <- rowSums(TB_WPR2005, na.rm = TRUE)
+
+TB_WPR2006 <- filter(TB_WPR, year=="2006")
+TB_WPR2006$e_mort_num <- as.numeric(TB_WPR2006$e_mort_num)
+TB_WPR2006$country=NULL
+TB_WPR2006$e_inc_num=NULL
+TB_WPR2006$year=NULL
+TB_WPR2006 <- data.frame(t(TB_WPR2006))
+TB_WPR2006$avgmort <- rowSums(TB_WPR2006, na.rm = TRUE)
+
+TB_WPR2007 <- filter(TB_WPR, year=="2007")
+TB_WPR2007$e_mort_num <- as.numeric(TB_WPR2007$e_mort_num)
+TB_WPR2007$country=NULL
+TB_WPR2007$e_inc_num=NULL
+TB_WPR2007$year=NULL
+TB_WPR2007 <- data.frame(t(TB_WPR2007))
+TB_WPR2007$avgmort <- rowSums(TB_WPR2007, na.rm = TRUE)
+
+TB_WPR2008 <- filter(TB_WPR, year=="2008")
+TB_WPR2008$e_mort_num <- as.numeric(TB_WPR2008$e_mort_num)
+TB_WPR2008$country=NULL
+TB_WPR2008$e_inc_num=NULL
+TB_WPR2008$year=NULL
+TB_WPR2008 <- data.frame(t(TB_WPR2008))
+TB_WPR2008$avgmort <- rowSums(TB_WPR2008, na.rm = TRUE)
+
+TB_WPR2009 <- filter(TB_WPR, year=="2009")
+TB_WPR2009$e_mort_num <- as.numeric(TB_WPR2009$e_mort_num)
+TB_WPR2009$country=NULL
+TB_WPR2009$e_inc_num=NULL
+TB_WPR2009$year=NULL
+TB_WPR2009 <- data.frame(t(TB_WPR2009))
+TB_WPR2009$avgmort <- rowSums(TB_WPR2009, na.rm = TRUE)
+
+TB_WPR2010 <- filter(TB_WPR, year=="2010")
+TB_WPR2010$e_mort_num <- as.numeric(TB_WPR2010$e_mort_num)
+TB_WPR2010$country=NULL
+TB_WPR2010$e_inc_num=NULL
+TB_WPR2010$year=NULL
+TB_WPR2010 <- data.frame(t(TB_WPR2010))
+TB_WPR2010$avgmort <- rowSums(TB_WPR2010, na.rm = TRUE)
+
+TB_WPR2011 <- filter(TB_WPR, year=="2011")
+TB_WPR2011$e_mort_num <- as.numeric(TB_WPR2011$e_mort_num)
+TB_WPR2011$country=NULL
+TB_WPR2011$e_inc_num=NULL
+TB_WPR2011$year=NULL
+TB_WPR2011 <- data.frame(t(TB_WPR2011))
+TB_WPR2011$avgmort <- rowSums(TB_WPR2011, na.rm = TRUE)
+
+TB_WPR2012 <- filter(TB_WPR, year=="2012")
+TB_WPR2012$e_mort_num <- as.numeric(TB_WPR2012$e_mort_num)
+TB_WPR2012$country=NULL
+TB_WPR2012$e_inc_num=NULL
+TB_WPR2012$year=NULL
+TB_WPR2012 <- data.frame(t(TB_WPR2012))
+TB_WPR2012$avgmort <- rowSums(TB_WPR2012, na.rm = TRUE)
+
+TB_WPR2013 <- filter(TB_WPR, year=="2013")
+TB_WPR2013$e_mort_num <- as.numeric(TB_WPR2013$e_mort_num)
+TB_WPR2013$country=NULL
+TB_WPR2013$e_inc_num=NULL
+TB_WPR2013$year=NULL
+TB_WPR2013 <- data.frame(t(TB_WPR2013))
+TB_WPR2013$avgmort <- rowSums(TB_WPR2013, na.rm = TRUE)
+
+TB_WPR2014 <- filter(TB_WPR, year=="2014")
+TB_WPR2014$e_mort_num <- as.numeric(TB_WPR2014$e_mort_num)
+TB_WPR2014$country=NULL
+TB_WPR2014$e_inc_num=NULL
+TB_WPR2014$year=NULL
+TB_WPR2014 <- data.frame(t(TB_WPR2014))
+TB_WPR2014$avgmort <- rowSums(TB_WPR2014, na.rm = TRUE)
+
+TB_WPR2015 <- filter(TB_WPR, year=="2015")
+TB_WPR2015$e_mort_num <- as.numeric(TB_WPR2015$e_mort_num)
+TB_WPR2015$country=NULL
+TB_WPR2015$e_inc_num=NULL
+TB_WPR2015$year=NULL
+TB_WPR2015 <- data.frame(t(TB_WPR2015))
+TB_WPR2015$avgmort <- rowSums(TB_WPR2015, na.rm = TRUE)
+
+TB_WPR2016 <- filter(TB_WPR, year=="2016")
+TB_WPR2016$e_mort_num <- as.numeric(TB_WPR2016$e_mort_num)
+TB_WPR2016$country=NULL
+TB_WPR2016$e_inc_num=NULL
+TB_WPR2016$year=NULL
+TB_WPR2016 <- data.frame(t(TB_WPR2016))
+TB_WPR2016$avgmort <- rowSums(TB_WPR2016, na.rm = TRUE)
+
+TB_WPR2017 <- filter(TB_WPR, year=="2017")
+TB_WPR2017$e_mort_num <- as.numeric(TB_WPR2017$e_mort_num)
+TB_WPR2017$country=NULL
+TB_WPR2017$e_inc_num=NULL
+TB_WPR2017$year=NULL
+TB_WPR2017 <- data.frame(t(TB_WPR2017))
+TB_WPR2017$avgmort <- rowSums(TB_WPR2017, na.rm = TRUE)
+
+TB_WPR2018 <- filter(TB_WPR, year=="2018")
+TB_WPR2018$e_mort_num <- as.numeric(TB_WPR2018$e_mort_num)
+TB_WPR2018$country=NULL
+TB_WPR2018$e_inc_num=NULL
+TB_WPR2018$year=NULL
+TB_WPR2018 <- data.frame(t(TB_WPR2018))
+TB_WPR2018$avgmort <- rowSums(TB_WPR2018, na.rm = TRUE)
+
+TB_WPR2019 <- filter(TB_WPR, year=="2019")
+TB_WPR2019$e_mort_num <- as.numeric(TB_WPR2019$e_mort_num)
+TB_WPR2019$country=NULL
+TB_WPR2019$e_inc_num=NULL
+TB_WPR2019$year=NULL
+TB_WPR2019 <- data.frame(t(TB_WPR2019))
+TB_WPR2019$avgmort <- rowSums(TB_WPR2019, na.rm = TRUE)
+
+TB_WPR2020 <- filter(TB_WPR, year=="2020")
+TB_WPR2020$e_mort_num <- as.numeric(TB_WPR2020$e_mort_num)
+TB_WPR2020$country=NULL
+TB_WPR2020$e_inc_num=NULL
+TB_WPR2020$year=NULL
+TB_WPR2020 <- data.frame(t(TB_WPR2020))
+TB_WPR2020$avgmort <- rowSums(TB_WPR2020, na.rm = TRUE)
+
+#Combine into one dataset 
+TB_WPR_AVGmort <- rbind(TB_WPR2000, TB_WPR2001, TB_WPR2002, TB_WPR2003, TB_WPR2004, TB_WPR2005, TB_WPR2006, TB_WPR2007, TB_WPR2008, TB_WPR2009, TB_WPR2010, TB_WPR2011, TB_WPR2012, TB_WPR2013, TB_WPR2014, TB_WPR2015, TB_WPR2016, TB_WPR2017, TB_WPR2018, TB_WPR2019, TB_WPR2020)
+#Add years
+TB_WPR_AVGmort$year <- c("2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020")
+#Make variables numeric
+TB_WPR_AVGmort$avgmort <- as.numeric(TB_WPR_AVGmort$avgmort)
+TB_WPR_AVGmort$year <- as.numeric(TB_WPR_AVGmort$year)
+#Remove unnecessary columns
+TB_WPR_AVGmort <- TB_WPR_AVGmort[ -c(1:36)]
+
+#Combine case and mortality datasets
+TB_WPR_Combine <- merge(TB_WPR_AVGmort, TB_WPR_AVG)
+
+##Plot 
+
+#Plot TB mortality (SEA)
+TB_SEA_mort_plot <- ggplot(data=TB_SEA_Combine, aes(x=year))+
+  geom_line(aes(y=avgmort, colour="Mortality"), size=1.5)+
+  ggtitle("South-East Asia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot TB mortality  (WPR)
+TB_WPR_mort_plot <- ggplot(data=TB_WPR_Combine, aes(x=year))+
+  geom_line(aes(y=avgmort, colour="Mortality"), size=1.5)+
+  ggtitle("Western Pacific")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot TB mortality  (Indonesia)
+TB_Indo_mort_plot <- ggplot(data=TB_Indo, aes(x=year))+
+  geom_line(aes(y=e_mort_num, colour="Mortality"), size=1.5)+
+  ggtitle("Indonesia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+TBplot <- ggarrange(TB_Indo_mort_plot, TB_SEA_mort_plot, TB_WPR_mort_plot, ncol=1, nrow=3, common.legend = TRUE, legend="bottom")
+annotate_figure(TBplot, top = text_grob("Tuberculosis mortality (2000-2020)", 
+                                        color = "black", face = "bold", size = 15))
+
+#Plot TB incidence (SEA)
+TB_SEA_inci_plot <- ggplot(data=TB_SEA_Combine, aes(x=year))+
+  geom_line(aes(y=avg, colour="Cases"), size=1.5)+
+  ggtitle("South-East Asia")+
+  xlab("Year")+
+  ylab("Cases")+
+  scale_color_manual(values=c("black"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot TB incidence  (WPR)
+TB_WPR_inci_plot <- ggplot(data=TB_WPR_Combine, aes(x=year))+
+  geom_line(aes(y=avg, colour="Cases"), size=1.5)+
+  ggtitle("Western Pacific")+
+  xlab("Year")+
+  ylab("Cases")+
+  scale_color_manual(values=c("black"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot TB incidence  (Indonesia)
+TB_Indo_inci_plot <- ggplot(data=TB_Indo, aes(x=year))+
+  geom_line(aes(y=e_inc_num, colour="Cases"), size=1.5)+
+  ggtitle("Indonesia")+
+  xlab("Year")+
+  ylab("Cases")+
+  scale_color_manual(values=c("black"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Create combined plot
+TBplot <- ggarrange(TB_Indo_inci_plot, TB_SEA_inci_plot, TB_WPR_inci_plot, ncol=1, nrow=3, common.legend = TRUE, legend="bottom")
+annotate_figure(TBplot, top = text_grob("Tuberculosis cases (2000-2020)", 
+                                        color = "black", face = "bold", size = 15))
+
+#Plot TB mortality (SEA)
+TB_SEA_mort_plot <- ggplot(data=TB_SEA_Combine, aes(x=year))+
+  geom_line(aes(y=avgmort, colour="Mortality"), size=1.5)+
+  ggtitle("South-East Asia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot TB mortality  (WPR)
+MALARIA_MORT_WPR_mort_plot <- ggplot(data=MALARIA_MORT_WPR_Combine, aes(x=year))+
+  geom_line(aes(y=avgmort, colour="Mortality"), size=1.5)+
+  ggtitle("Western Pacific")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Plot TB mortality  (Indonesia)
+TB_Indo_mort_plot <- ggplot(data=TB_Indo, aes(x=year))+
+  geom_line(aes(y=e_mort_num, colour="Mortality"), size=1.5)+
+  ggtitle("Indonesia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019, 2020))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+TBplot <- ggarrange(TB_Indo_mort_plot, TB_SEA_mort_plot, MALARIA_MORT_WPR_mort_plot, ncol=1, nrow=3, common.legend = TRUE, legend="bottom")
+annotate_figure(TBplot, top = text_grob("Tuberculosis mortality (2000-2020)", 
+                                        color = "black", face = "bold", size = 15))
+
+
+###HEP B visualisation###
+##Set working directory
+setwd()
+
+##Read data
+HEPB <- read.csv("GBD_HEPB.csv")
+
+##Remove unwanted columns
+HEPB$measure_id = NULL
+HEPB$location_id = NULL
+HEPB$age_id = NULL
+HEPB$age_name = NULL
+HEPB$sex_id = NULL
+HEPB$sex_name = NULL
+HEPB$cause_id = NULL
+HEPB$metric_id = NULL
+HEPB$upper = NULL
+HEPB$lower = NULL
+
+##Make datasets
+#Total numbers
+HEPB_Num <- filter(HEPB, cause_name=="Total burden related to hepatitis B")
+HEPB_Num <- filter(HEPB_Num, metric_name=="Number")
+#Rate
+HEPB_Rate <- filter(HEPB, cause_name=="Total burden related to hepatitis B")
+HEPB_Rate <- filter(HEPB_Rate, metric_name=="Rate")
+#Numbers - Indonesia
+HEPB_Num_Indo <- filter(HEPB_Num, location_name=="Indonesia")
+#Numbers - SEA
+HEPB_Num_SEA <- filter(HEPB_Num, location_name=="South-East Asia Region")
+#Numbers - WPR
+HEPB_Num_WPR <- filter(HEPB_Num, location_name=="Western Pacific Region")
+#Numbers - Mortality - Indonesia
+HEPB_Num_Mort_Indo <- filter(HEPB_Num_Indo, measure_name=="Deaths")
+#Numbers - Incidence - Indonesia
+HEPB_Num_Inci_Indo <- filter(HEPB_Num_Indo, measure_name=="Incidence")
+#Numbers - Mortality - SEA
+HEPB_Num_Mort_SEA <- filter(HEPB_Num_SEA, measure_name=="Deaths")
+#Numbers - Incidence - SEA
+HEPB_Num_Inci_SEA <- filter(HEPB_Num_SEA, measure_name=="Incidence")
+#Numbers - Mortality - WPR
+HEPB_Num_Mort_WPR <- filter(HEPB_Num_WPR, measure_name=="Deaths")
+#Numbers - Incidence - WPR
+HEPB_Num_Inci_WPR <- filter(HEPB_Num_WPR, measure_name=="Incidence")
+#Rate - Indonesia
+HEPB_Rate_Indo <- filter(HEPB_Rate, location_name=="Indonesia")
+#Rate - SEA
+HEPB_Rate_SEA <- filter(HEPB_Rate, location_name=="South-East Asia Region")
+#Rate - WPR
+HEPB_Rate_WPR <- filter(HEPB_Rate, location_name=="Western Pacific Region")
+#Rate - Mortality - Indonesia
+HEPB_Rate_Mort_Indo <- filter(HEPB_Rate_Indo, measure_name=="Deaths")
+#Rate - Incidence - Indonesia
+HEPB_Rate_Inci_Indo <- filter(HEPB_Rate_Indo, measure_name=="Incidence")
+#Rate - Mortality - SEA
+HEPB_Rate_Mort_SEA <- filter(HEPB_Rate_SEA, measure_name=="Deaths")
+#Rate - Incidence - SEA
+HEPB_Rate_Inci_SEA <- filter(HEPB_Rate_SEA, measure_name=="Incidence")
+#Rate - Mortality - WPR
+HEPB_Rate_Mort_WPR <- filter(HEPB_Rate_WPR, measure_name=="Deaths")
+#Rate - Incidence - WPR
+HEPB_Rate_Inci_WPR <- filter(HEPB_Rate_WPR, measure_name=="Incidence")
+
+##Create plots
+#Number - Incidence - Indonesia
+HEPB_Num_Inci_Indo_plot <- ggplot(data=HEPB_Num_Inci_Indo, aes(x=year))+
+  geom_line(aes(y=val, colour="Cases"), size=1.5)+
+  ggtitle("Indonesia")+
+  xlab("Year")+
+  ylab("Cases")+
+  scale_color_manual(values=c("black"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Number - Incidence - SEA
+HEPB_Num_Inci_SEA_plot <- ggplot(data=HEPB_Num_Inci_SEA, aes(x=year))+
+  geom_line(aes(y=val, colour="Cases"), size=1.5)+
+  ggtitle("South-East Asia")+
+  xlab("Year")+
+  ylab("Cases")+
+  scale_color_manual(values=c("black"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Number - Incidence - WPR
+HEPB_Num_Inci_WPR_plot <- ggplot(data=HEPB_Num_Inci_WPR, aes(x=year))+
+  geom_line(aes(y=val, colour="Cases"), size=1.5)+
+  ggtitle("Western Pacific")+
+  xlab("Year")+
+  ylab("Cases")+
+  scale_color_manual(values=c("black"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Number - Mortality - Indonesia
+HEPB_Num_Mort_Indo_plot <- ggplot(data=HEPB_Num_Mort_Indo, aes(x=year))+
+  geom_line(aes(y=val, colour="Mortality"), size=1.5)+
+  ggtitle("Indonesia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Number - Mortality - SEA
+HEPB_Num_Mort_SEA_plot <- ggplot(data=HEPB_Num_Mort_WPR, aes(x=year))+
+  geom_line(aes(y=val, colour="Mortality"), size=1.5)+
+  ggtitle("South-East Asia")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Number - Mortality - WPR
+HEPB_Num_Mort_WPR_plot <- ggplot(data=HEPB_Num_Mort_WPR, aes(x=year))+
+  geom_line(aes(y=val, colour="Mortality"), size=1.5)+
+  ggtitle("Western Pacific")+
+  xlab("Year")+
+  ylab("Deaths")+
+  scale_color_manual(values=c("red"))+
+  scale_x_continuous(name="Year", breaks= c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019))+
+  theme(legend.position = "none")+
+  labs(colour=NULL)
+
+#Create chart - Incidence 
+HEPB_inci_plot <- ggarrange(HEPB_Num_Inci_Indo_plot, HEPB_Num_Inci_SEA_plot, HEPB_Num_Inci_WPR_plot, ncol=1, nrow=3, common.legend = TRUE, legend="bottom")
+annotate_figure(HEPB_inci_plot, top = text_grob("Hepatitis B cases (2000-2019)", 
+                                                color = "black", face = "bold", size = 15))
+#Create chart - Mortality 
+HEPB_Mort_plot <- ggarrange(HEPB_Num_Mort_Indo_plot, HEPB_Num_Mort_SEA_plot, HEPB_Num_Mort_WPR_plot, ncol=1, nrow=3, common.legend = TRUE, legend="bottom")
+annotate_figure(HEPB_Mort_plot, top = text_grob("Hepatitis B mortality (2000-2019)", 
+                                                color = "black", face = "bold", size = 15))

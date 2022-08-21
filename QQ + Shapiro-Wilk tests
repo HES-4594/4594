@@ -1,0 +1,28 @@
+###################################
+## QQ plots + Shapiro-Wilk tests ##
+###################################
+
+#Set working directory
+setwd()
+
+#Read data
+ObHom <- read.csv("ObHom.csv")
+Chr6_FST <- read.csv("Chr6FSTHOM.csv")
+HLA_FST <- read.csv("HLAFSTHOM.csv")
+
+#Run Shapiro-Wilk tests
+shapiro.test(ObHom$Chr6)
+shapiro.test(ObHom$HLA)
+shapiro.test(Chr6_FST_HOM$FST)
+shapiro.test(HLA_FST_HOM$FST)
+
+#Draw QQ plots + arrange in joint plot
+HomQQ <- ggqqplot(ObHom$HLA, title="HLA genes")
+Chr6QQ <- ggqqplot(ObHom$Chr6, title="Chromosome 6")
+
+ggarrange(Chr6QQ, HomQQ)
+
+Chr6FSTQQ <- ggqqplot(Chr6_FST$FST, title="Chromosome 6")
+HLAFSTQQ <- ggqqplot(HLA_FST$FST, title="HLA genes")
+
+ggarrange(Chr6FSTQQ, HLAFSTQQ)

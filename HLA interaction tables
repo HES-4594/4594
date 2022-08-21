@@ -1,0 +1,113 @@
+##############################
+### HLA interaction tables ###
+##############################
+
+#Set working directory 
+setwd()
+
+#Read manually created tables
+Malaria <- read.csv("Malaria.csv", header=TRUE)
+
+#Create tables 
+Mtable <- reactable(Malaria, defaultPageSize = 27, theme = fivethirtyeight(),
+                    columns = list(
+                      HLA.gene = colDef(name="HLA gene", minWidth = 80),
+                      Malaria.species = colDef(name="Malaria species", minWidth = 40),
+                      Disease.type = colDef(name="Disease type", minWidth = 70),
+                      Severity = colDef(minWidth = 40),
+                      Protection.Susceptibility = colDef(name="Protection/Susceptibility", minWidth = 70),
+                      Reference = colDef(minWidth = 70)
+                    ))
+Mtable <- Mtable %>% 
+  add_title("Malaria-HLA interaction")
+Mtable %>%
+  add_source("Nb. F denotes Plasmodium falciparum; V denotes Plasmodium vivax; Mix denotes a mixture of malaria species")
+
+#Read manually created tables
+TB <- read.csv("TB.csv", header=TRUE)
+
+#Create tables 
+TBtable <- reactable(TB, defaultPageSize = 30, theme = fivethirtyeight(),
+                    columns = list(
+                      HLA.gene = colDef(name="HLA gene", minWidth = 80),
+                      Clinical.manifestation = colDef(name="Clinical manifestation", minWidth = 70),
+                      Strain = colDef(minWidth = 50),
+                      Protection.Susceptibility = colDef(name="Protection/Susceptibility", minWidth = 70),
+                      Reference = colDef(minWidth = 70)
+                    ))
+TBtable %>% 
+  add_title("Tuberculosis-HLA interaction")
+
+#Read manually created tables
+MVt <- read.csv("Malaria_vac.csv", header=TRUE)
+
+#Create tables 
+MVtable <- reactable(MVt, defaultPageSize = 25, theme = fivethirtyeight(),
+                     columns = list(
+                       Gene = colDef(name="HLA gene", minWidth = 80),
+                       Vaccine = colDef(name="Vaccine", minWidth = 70),
+                       Response = colDef(minWidth = 70),
+                       Reference = colDef(minWidth = 70)
+                     ))
+MVtable %>% 
+  add_title("Malaria vaccine-HLA interaction")
+
+
+#Read manually created tables
+TBmed <- read.csv("TB_med.csv", header=TRUE)
+
+#Create tables 
+TBmed <- reactable(TBmed, defaultPageSize = 25, theme = fivethirtyeight(),
+                     columns = list(
+                       Gene = colDef(name="HLA gene", minWidth = 80),
+                       Drug = colDef(name="Drug", minWidth = 70),
+                       Effect = colDef(minWidth = 70),
+                       Reference = colDef(minWidth = 70)
+                     ))
+TBmed %>% 
+  add_title("Tuberculosis medication-HLA interaction")
+
+
+#Read manually created tables
+HBVM <- read.csv("HBV_med.csv", header=TRUE)
+
+#Create tables 
+HBVM <- reactable(HBVM, defaultPageSize = 80, theme = fivethirtyeight(),
+                   columns = list(
+                     Gene = colDef(name="HLA gene", minWidth = 80),
+                     Drug = colDef(name="Drug", minWidth = 70),
+                     Effect = colDef(minWidth = 70),
+                     Reference = colDef(minWidth = 70)
+                   ))
+HBVM %>% 
+  add_title("Hepatitis B medication-HLA interaction")
+
+
+#Read manually created tables
+HBV <- read.csv("HBV.csv", header=TRUE)
+
+#Create tables 
+HBV <- reactable(HBV, defaultPageSize = 70, theme = fivethirtyeight(),
+                    columns = list(
+                      HLA.gene = colDef(name="HLA gene", minWidth = 30),
+                      Protection.Susceptibility = colDef(name="Protection/Susceptibility", minWidth = 30),
+                      Clinical.manifestation = colDef(name="Clinical manifestation", minWidth = 30),
+                      Reference = colDef(minWidth = 30)
+                    ))
+HBV %>% 
+  add_title("Hepatitis B-HLA interaction")
+
+
+#Read manually created tables
+HBVV <- read.csv("HBV_vac.csv", header=TRUE)
+
+#Create tables 
+HBVV <- reactable(HBVV, defaultPageSize = 80, theme = fivethirtyeight(),
+                  columns = list(
+                    Gene = colDef(name="HLA gene", minWidth = 30),
+                    Vaccine = colDef(name="Vaccine", minWidth = 15),
+                    Response = colDef(minWidth = 15),
+                    Reference = colDef(minWidth = 30)
+                 ))
+HBVV %>% 
+  add_title("Hepatitis B vaccine-HLA interaction")
