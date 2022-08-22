@@ -1,0 +1,51 @@
+setwd("D:")
+
+BetaReg <- cbind(RiskGrid, AverageHeritage)
+BetaReg$Family.ID=NULL
+BetaReg$Malaria <- as.numeric(BetaReg$Malaria)
+
+BetaReg <- as.data.frame(t(BetaReg))
+BetaReg$V3=NULL
+BetaReg$V5=NULL
+BetaReg$V6=NULL
+BetaReg$V7=NULL
+BetaReg$V8=NULL
+BetaReg$V12=NULL
+BetaReg$V13=NULL
+BetaReg$V15=NULL
+BetaReg$V16=NULL
+BetaReg$V22=NULL
+BetaReg$V23=NULL
+BetaReg$V24=NULL
+BetaReg$V25=NULL
+BetaReg$V30=NULL
+BetaReg$V36=NULL
+BetaReg$V39=NULL
+BetaReg$V40=NULL
+BetaReg$V41=NULL
+
+BetaReg <- as.data.frame(t(BetaReg))
+
+BetaReg$HBV <- as.numeric(BetaReg$HBV)
+BetaReg$HBV.Med <- as.numeric(BetaReg$HBV.Med)
+BetaReg$HBV.Vac <- as.numeric(BetaReg$HBV.Vac)
+BetaReg$Malaria <- as.numeric(BetaReg$Malaria)
+BetaReg$Malaria.Vac <- as.numeric(BetaReg$Malaria.Vac)
+BetaReg$TB <- as.numeric(BetaReg$TB)
+BetaReg$TB.med <- as.numeric(BetaReg$TB.med)
+BetaReg$AvgPapuan <- as.numeric(BetaReg$AvgPapuan)
+BetaReg$AvgAustronesian <- as.numeric(BetaReg$AvgAustronesian)
+BetaReg$AvgEastAsian <- as.numeric(BetaReg$AvgEastAsian)
+BetaReg$AvgAsian <- BetaReg$AvgPapuan+BetaReg$AvgAustronesian
+
+Mal <- gamlss(Malaria~AvgPapuan, family=BEZI, data=BetaReg, trace=F)
+MalVac <- gamlss(Malaria.Vac ~ AvgPapuan,  family = BEZI, data = BetaReg, trace = F)
+HBV <- gamlss(HBV~AvgPapuan, family=BE, data=BetaReg, trace=F)
+HBVM <- gamlss(HBV.Med ~ AvgPapuan,  family = BE, data = BetaReg, trace = F)
+HBVV <- gamlss(HBV.Vac ~ AvgPapuan, family=BE, data=BetaReg, trace=F)
+TB <- gamlss(TB~AvgPapuan, family=BE, data=BetaReg, trace=F)
+TBM <- gamlss(TB.med~AvgPapuan, family=BEZI, data=BetaReg, trace=F)
+
+tab_model(HBV, HBVM, HBVV, pred.labels=c("Papuan heritage"), dv.labels = c("HBV clinical", "HBV medication", "HBV vaccine"), string.pred = "Coeffcient", string.ci = "Conf. Int (95%)", string.p = "P-Value", terms=("AvgPapuan"))
+tab_model(Mal, MalVac, pred.labels=c("Papuan heritage"), dv.labels = c("Malaria clinical", "Malaria vaccine"), string.pred = "Coeffcient", string.ci = "Conf. Int (95%)", string.p = "P-Value", terms=("AvgPapuan"))
+tab_model(TB, TBM, pred.labels=c("Papuan heritage"), dv.labels = c("TB clinical", "TB medication"), string.pred = "Coeffcient", string.ci = "Conf. Int (95%)", string.p = "P-Value", terms=("AvgPapuan"))
